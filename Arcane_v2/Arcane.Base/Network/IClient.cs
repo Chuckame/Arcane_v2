@@ -6,17 +6,16 @@ using System.Threading.Tasks;
 
 namespace Arcane.Base.Network
 {
-    public interface IClient<TClient, TMessage>
-        where TClient : IClient<TClient, TMessage>
-        where TMessage : IMessage
+    public interface IClient<TClient>
+        where TClient : IClient<TClient>
     {
         string RemoteHost { get; }
         int RemotePort { get; }
-        IEnumerable<IFrame<TClient, TMessage>> Frames { get; }
+        IEnumerable<IFrame<TClient>> Frames { get; }
 
         event Action OnDisconnected;
-        event Action<TMessage> OnMessageReceived;
+        event Action<IMessage> OnMessageReceived;
 
-        void SendData(TMessage message);
+        void SendData(IMessage message);
     }
 }

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Arcane.Login.Frames
 {
-    class ConnectionFrame : Frame<LoginClient, NetworkMessage>
+    class ConnectionFrame : Frame<LoginClient>
     {
         ConnectionFrame()
         {
-            RegisterMessageHandler((LoginClient c, TestM m) => test(c, m));
+            RegisterMessageHandler<TestM>(test);
         }
         static void test(LoginClient client, TestM m)
         {

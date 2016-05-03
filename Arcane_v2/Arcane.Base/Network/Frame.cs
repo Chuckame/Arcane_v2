@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Arcane.Base.Network
 {
-    public abstract class Frame<TClient, TMessage> : IFrame<TClient, TMessage>
-        where TMessage : IMessage
-        where TClient : IClient<TClient, TMessage>
+    public abstract class Frame<TClient> : IFrame<TClient>
+        where TClient : IClient<TClient>
     {
-        private readonly IDictionary<Type, Action<TClient, TMessage>> _mHandledMessages;
+        private readonly Dictionary<Type, Action<TClient, IMessage>> _mHandledMessages;
 
         protected Frame()
         {
@@ -19,19 +19,19 @@ namespace Arcane.Base.Network
         public event Action OnAttached;
         public event Action OnDetached;
 
-        public IDictionary<Type, Action<TClient, TMessage>> HandledMessages
+        public IReadOnlyDictionary<Type, Action<TClient, IMessage>> HandledMessages
         {
             get
             {
-                return _mHandledMessages;
+                return new ReadOnlyDictionary<Type, Action<TClient, IMessage>>(_mHandledMessages);
             }
         }
 
-        public void RegisterMessageHandler<THandledMessage>(Action<TClient, THandledMessage> messageHandler) where THandledMessage : TMessage
+        public void RegisterMessageHandler<THandledMessage>(Action<TClient, IMessage> messageHandler) where THandledMessage : IMessage
         {
             if (messageHandler == null)
                 throw new ArgumentNullException(nameof(messageHandler));
-            _mHandledMessages.Add(typeof(THandledMessage), new Action<TClient, TMessage>((c, m) => messageHandler(c, (THandledMessage)m)));
+            _mHandledMessages.Add(typeof(THandledMessage), messageHandler);
         }
     }
 }

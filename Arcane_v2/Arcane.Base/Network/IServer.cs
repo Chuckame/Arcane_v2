@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Arcane.Base.Network
 {
-    public interface IServer<TClient, TMessage>
-        where TMessage : IMessage
-        where TClient : IClient<TClient, TMessage>
+    public interface IServer<TClient>
+        where TClient : IClient<TClient>
     {
         string Host { get; }
         int Port { get; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Arcane.Base.Network
 {
-    public abstract class AbstractServer<TClient> : IServer<TClient, NetworkMessage>
+    public abstract class AbstractServer<TClient> : IServer<TClient>
         where TClient : AbstractBaseClient<TClient>
     {
         private readonly IEnumerable<TClient> _mClients;

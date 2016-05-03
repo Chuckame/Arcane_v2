@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 
 namespace Arcane.Base.Network
 {
-    public interface IFrame<TClient, TMessage>
-        where TMessage : IMessage
-        where TClient : IClient<TClient, TMessage>
+    public interface IFrame<TClient>
+        where TClient : IClient<TClient>
     {
-        IDictionary<Type, Action<TClient, TMessage>> HandledMessages { get; }
+        IReadOnlyDictionary<Type, Action<TClient, IMessage>> HandledMessages { get; }
 
         event Action OnAttached;
         event Action OnDetached;
 
-        void RegisterMessageHandler<THandledMessage>(Action<TClient, THandledMessage> messageHandler) where THandledMessage : TMessage;
+        void RegisterMessageHandler<THandledMessage>(Action<TClient, IMessage> messageHandler) where THandledMessage : IMessage;
     }
 }
