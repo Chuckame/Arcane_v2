@@ -3,7 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arcane_v2", "Arcane_v2\Arcane_v2.csproj", "{FC0F3F09-F032-405B-9DF0-E0AA32C4487A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arcane", "Arcane_v2\Arcane.csproj", "{FC0F3F09-F032-405B-9DF0-E0AA32C4487A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1D1C247C-8F0C-4A8F-9BB0-E54A4602CD72} = {1D1C247C-8F0C-4A8F-9BB0-E54A4602CD72}
+		{6A349DD8-96E1-4180-A6CF-87155E4D6055} = {6A349DD8-96E1-4180-A6CF-87155E4D6055}
+		{2D442FFC-E435-473F-BC62-7E3552173C69} = {2D442FFC-E435-473F-BC62-7E3552173C69}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arcane.Game", "Arcane.Game\Arcane.Game.csproj", "{1D1C247C-8F0C-4A8F-9BB0-E54A4602CD72}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2D442FFC-E435-473F-BC62-7E3552173C69} = {2D442FFC-E435-473F-BC62-7E3552173C69}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arcane.Login", "Arcane.Login\Arcane.Login.csproj", "{6A349DD8-96E1-4180-A6CF-87155E4D6055}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2D442FFC-E435-473F-BC62-7E3552173C69} = {2D442FFC-E435-473F-BC62-7E3552173C69}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arcane.Base", "Arcane.Base\Arcane.Base.csproj", "{2D442FFC-E435-473F-BC62-7E3552173C69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +32,18 @@ Global
 		{FC0F3F09-F032-405B-9DF0-E0AA32C4487A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC0F3F09-F032-405B-9DF0-E0AA32C4487A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC0F3F09-F032-405B-9DF0-E0AA32C4487A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D1C247C-8F0C-4A8F-9BB0-E54A4602CD72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D1C247C-8F0C-4A8F-9BB0-E54A4602CD72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D1C247C-8F0C-4A8F-9BB0-E54A4602CD72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D1C247C-8F0C-4A8F-9BB0-E54A4602CD72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A349DD8-96E1-4180-A6CF-87155E4D6055}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A349DD8-96E1-4180-A6CF-87155E4D6055}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A349DD8-96E1-4180-A6CF-87155E4D6055}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A349DD8-96E1-4180-A6CF-87155E4D6055}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D442FFC-E435-473F-BC62-7E3552173C69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D442FFC-E435-473F-BC62-7E3552173C69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D442FFC-E435-473F-BC62-7E3552173C69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D442FFC-E435-473F-BC62-7E3552173C69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
