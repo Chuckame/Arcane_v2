@@ -1,16 +1,13 @@
-﻿using Arcane.Network;
+﻿using Arcane.Base.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arcane
+namespace Arcane.Login.Network
 {
-    class Program
+    public class LoginClient : AbstractBaseClient<LoginClient>
     {
-        static void Main(string[] args)
-        {
-        }
     }
 }
