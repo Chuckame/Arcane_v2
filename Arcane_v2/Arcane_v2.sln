@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arcane", "Arcane_v2\Arcane.csproj", "{FC0F3F09-F032-405B-9DF0-E0AA32C4487A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arcane", "Arcane\Arcane.csproj", "{FC0F3F09-F032-405B-9DF0-E0AA32C4487A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1D1C247C-8F0C-4A8F-9BB0-E54A4602CD72} = {1D1C247C-8F0C-4A8F-9BB0-E54A4602CD72}
 		{6A349DD8-96E1-4180-A6CF-87155E4D6055} = {6A349DD8-96E1-4180-A6CF-87155E4D6055}
@@ -25,6 +25,8 @@ EndProject
 Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "ModelingProject1", "ModelingProject1\ModelingProject1.modelproj", "{48A83FCD-B423-4335-8EB5-CD5E3F5DF664}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelingProject1Lib", "ModelingProject1Lib\ModelingProject1Lib.csproj", "{D96DFF3D-0EC5-403B-B5E8-58D2D4BBAB6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arcane.IO", "Arcane.IO\Arcane.IO.csproj", "{7F9E3F14-6652-4D2F-9356-ACA136B56229}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +58,10 @@ Global
 		{D96DFF3D-0EC5-403B-B5E8-58D2D4BBAB6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D96DFF3D-0EC5-403B-B5E8-58D2D4BBAB6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D96DFF3D-0EC5-403B-B5E8-58D2D4BBAB6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F9E3F14-6652-4D2F-9356-ACA136B56229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F9E3F14-6652-4D2F-9356-ACA136B56229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F9E3F14-6652-4D2F-9356-ACA136B56229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F9E3F14-6652-4D2F-9356-ACA136B56229}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

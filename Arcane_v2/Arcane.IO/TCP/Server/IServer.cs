@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Arcane.IO.TCP.Client;
+using Arcane.IO.TCP.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -6,7 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arcane.Base.Network
+namespace Arcane.IO.TCP.Server
 {
     /// <summary>
     /// Représente un serveur TCP.

@@ -1,6 +1,6 @@
 ﻿using System.Net.Sockets;
 
-namespace Arcane.Base.Network
+namespace Arcane.IO.TCP.Client
 {
     /// <summary>
     /// Usine permettant la création d'un <see cref="TClient"/> à partir d'une <see cref="Socket"/>.

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Arcane.Base.Network
+namespace Arcane.IO.TCP.Exceptions
 {
     [Serializable]
     public class AlreadyStoppedException : NetworkException

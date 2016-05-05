@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Arcane.IO.TCP.Client;
+using Arcane.IO.TCP.Exceptions;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -8,21 +11,19 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Arcane.Base.Network
+namespace Arcane.IO.TCP.Server
 {
     public class BaseServer<TServer, TClient> : IServer<TServer, TClient>
         where TClient : IClient<TClient>
         where TServer : BaseServer<TServer, TClient>
     {
-        private readonly object _clientsLock;
         private readonly TcpListener _listener;
         private readonly Collection<TClient> _mClients;
         private readonly Mutex _startStopLock;
 
         public BaseServer(IPAddress host, int port, int maxConnections, IClientFactory<TClient> clientFactory)
         {
-            _startStopLock = new Mutex(true, "_startStopLock");
-            _clientsLock = new object();
+            _startStopLock = new Mutex();
             _mClients = new Collection<TClient>();
             Host = host;
             ClientFactory = clientFactory;
@@ -44,9 +45,9 @@ namespace Arcane.Base.Network
         {
             get
             {
-                lock (_clientsLock)
+                lock (_mClients)
                 {
-                    return _mClients;
+                    return new ReadOnlyCollection<TClient>(_mClients);
                 }
             }
         }
@@ -61,7 +62,7 @@ namespace Arcane.Base.Network
 
         public void DisconnectAll()
         {
-            lock (_clientsLock)
+            lock (_mClients)
             {
                 var clients = new TClient[_mClients.Count];
                 _mClients.CopyTo(clients, 0);
@@ -117,19 +118,6 @@ namespace Arcane.Base.Network
             }
         }
 
-        private void BeginAccept()
-        {
-            _listener.BeginAcceptSocket(AcceptCallback, null);
-        }
-
-        private void Client_OnDisconnected(TClient client)
-        {
-            lock (_clientsLock)
-            {
-                _mClients.Remove(client);
-            }
-        }
-
         private void AcceptCallback(IAsyncResult result)
         {
             Socket clientSocket;
@@ -144,7 +132,7 @@ namespace Arcane.Base.Network
             if (clientSocket != null)
             {
                 var count = 0;
-                lock (_clientsLock)
+                lock (_mClients)
                 {
                     count = _mClients.Count;
                 }
@@ -155,7 +143,7 @@ namespace Arcane.Base.Network
                 else
                 {
                     var client = ClientFactory.createClient(clientSocket);
-                    lock (_clientsLock)
+                    lock (_mClients)
                     {
                         _mClients.Add(client);
                     }
@@ -166,6 +154,19 @@ namespace Arcane.Base.Network
             if (IsStarted)
             {
                 BeginAccept();
+            }
+        }
+
+        private void BeginAccept()
+        {
+            _listener.BeginAcceptSocket(AcceptCallback, null);
+        }
+
+        private void Client_OnDisconnected(TClient client)
+        {
+            lock (_mClients)
+            {
+                _mClients.Remove(client);
             }
         }
     }

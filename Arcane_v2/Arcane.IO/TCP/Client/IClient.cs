@@ -5,8 +5,9 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
+using Arcane.IO.TCP.Messages;
 
-namespace Arcane.Base.Network
+namespace Arcane.IO.TCP.Client
 {
     /// <summary>
     /// Représente le client d'un serveur TCP.
@@ -63,7 +64,7 @@ namespace Arcane.Base.Network
         /// <summary>
         /// Evénement déclenché lorsqu'un <see cref="IMessage"/> a été envoyé.
         /// </summary>
-        event Action<TClient, IMessage> OnMessageSended;
+        event Action<TClient, IMessage> OnMessageSent;
 
         /// <summary>
         /// Ajoute une <see cref="IFrame{TClient}"/> dans la collection <see cref="IClient{TClient}.Frames"/>.

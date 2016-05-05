@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Arcane.IO.TCP.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -7,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Arcane
 {
-    class TestClientFactory : Base.Network.IClientFactory<TestClient>
+    class TestClientFactory : IClientFactory<TestClient>
     {
         public TestClient createClient(Socket client)
         {
-            return new TestClient(client, 1, new TestMessageFactory());
+            return new TestClient(client, 3, new TestMessageFactory());
         }
     }
 }

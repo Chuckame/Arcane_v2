@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Arcane.IO.TCP.Messages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

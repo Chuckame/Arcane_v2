@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2D442FFC-E435-473F-BC62-7E3552173C69}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{FC0F3F09-F032-405B-9DF0-E0AA32C4487A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Arcane.Base</RootNamespace>
-    <AssemblyName>Arcane.Base</AssemblyName>
+    <RootNamespace>Arcane</RootNamespace>
+    <AssemblyName>Arcane</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,21 +44,38 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Later\FrameInitializer.cs" />
-    <Compile Include="Later\MessageHandler.cs" />
-    <Compile Include="Network\Messages\RawMessage.cs" />
-    <Compile Include="Network\Messages\EmptyMessage.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestClient.cs" />
+    <Compile Include="TestClientFactory.cs" />
+    <Compile Include="TestMessageFactory.cs" />
+    <Compile Include="TestServer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Arcane.Base\Arcane.Base.csproj">
+      <Project>{2d442ffc-e435-473f-bc62-7e3552173c69}</Project>
+      <Name>Arcane.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arcane.Game\Arcane.Game.csproj">
+      <Project>{1d1c247c-8f0c-4a8f-9bb0-e54a4602cd72}</Project>
+      <Name>Arcane.Game</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arcane.IO\Arcane.IO.csproj">
       <Project>{7f9e3f14-6652-4d2f-9356-aca136b56229}</Project>
       <Name>Arcane.IO</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Arcane.Login\Arcane.Login.csproj">
+      <Project>{6a349dd8-96e1-4180-a6cf-87155e4d6055}</Project>
+      <Name>Arcane.Login</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

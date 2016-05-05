@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arcane.Base.Network
+namespace Arcane.IO.TCP.Messages
 {
     /// <summary>
     /// Représente un message.

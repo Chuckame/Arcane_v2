@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arcane.Base.Network
+namespace Arcane.IO.TCP.Messages
 {
     /// <summary>
     /// Usine permettant la création de <see cref="IMessage"/>(s) depuis des données brutes.

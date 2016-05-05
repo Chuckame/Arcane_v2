@@ -1,4 +1,5 @@
 ﻿using Arcane.Base.Network.Messages;
+using Arcane.IO.TCP.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +23,9 @@ namespace Arcane
                 client.Connect("127.0.0.1", 5555);
                 Thread.Sleep(1000);
                 client.Send(new byte[] { 68, 69, 65, 75 });
+                new Thread(() => { Thread.Sleep(2000); client.Disconnect(false); }).Start();
+                Console.ReadLine();
             }
-            Console.ReadLine();
         }
 
         private static void Server_OnClientAccepted(TestServer arg1, TestClient arg2)
@@ -33,7 +35,7 @@ namespace Arcane
             arg2.OnMessageReceived += Arg2_OnMessageReceived;
         }
 
-        private static void Arg2_OnMessageReceived(TestClient arg1, Base.Network.IMessage arg2)
+        private static void Arg2_OnMessageReceived(TestClient arg1, IMessage arg2)
         {
             Console.WriteLine($"RECEIVED from client : {Encoding.UTF8.GetString((arg2 as RawMessage).Bytes)} !");
         }

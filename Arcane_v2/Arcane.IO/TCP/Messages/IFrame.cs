@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Arcane.IO.TCP.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arcane.Base.Network
+namespace Arcane.IO.TCP.Messages
 {
     /// <summary>
     /// Cette classe permet la répartition d'un message.

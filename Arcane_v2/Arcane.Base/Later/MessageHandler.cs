@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arcane.Base.Network
+namespace Arcane.IO.TCP.Messages
 {
     public delegate void MessageHandler<in TMessage>(TMessage message) where TMessage : IMessage;
 }
