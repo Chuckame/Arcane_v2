@@ -15,14 +15,12 @@ namespace Arcane.Login.Frames
         {
         }
 
-        public override bool Dispatch(IMessage message)
+        public override void Dispatch(IMessage message)
         {
             if (message is MessageTest)
             {
                 test(message as MessageTest);
-                return true;
             }
-            return false;
         }
 
         [MessageHandler]

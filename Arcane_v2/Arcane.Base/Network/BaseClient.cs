@@ -40,6 +40,7 @@ namespace Arcane.Base.Network
 
         public event Action<TClient> OnDisconnected;
         public event Action<TClient, IMessage> OnMessageReceived;
+        public event Action<IMessage> DispatchMessage;
         public event Action<TClient, IMessage> OnMessageSended;
         public event Action<TClient> OnMessageReceiving;
         public event Action<TClient, IMessage> OnMessageSending;
@@ -83,6 +84,7 @@ namespace Arcane.Base.Network
         public void AddFrame(IFrame<TClient> frame)
         {
             _mFrames.Add(frame);
+            DispatchMessage += frame.Dispatch;
         }
 
         public void Disconnect()
@@ -94,6 +96,7 @@ namespace Arcane.Base.Network
         public void RemoveFrame(IFrame<TClient> frame)
         {
             _mFrames.Remove(frame);
+            DispatchMessage -= frame.Dispatch;
         }
 
         public void SendMessage(IMessage message, bool async = false)
@@ -111,7 +114,7 @@ namespace Arcane.Base.Network
         {
             OnMessageSended?.Invoke((TClient)this, (IMessage)ar.AsyncState);
         }
-        class StateObject
+        private class StateObject
         {
             public readonly Collection<byte[]> Parts = new Collection<byte[]>();
 
@@ -154,6 +157,7 @@ namespace Arcane.Base.Network
                 foreach (var msg in messages)
                 {
                     OnMessageReceived?.Invoke((TClient)this, msg);
+                    DispatchMessage?.Invoke(msg);
                 }
                 if (IsConnected)
                 {

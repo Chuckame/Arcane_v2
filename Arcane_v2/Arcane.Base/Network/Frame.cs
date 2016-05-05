@@ -17,6 +17,6 @@ namespace Arcane.Base.Network
 
         public TClient Client { get; }
 
-        public abstract bool Dispatch(IMessage message);
+        public abstract void Dispatch(IMessage message);
     }
 }

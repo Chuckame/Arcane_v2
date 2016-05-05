@@ -6,11 +6,19 @@ using System.Threading.Tasks;
 
 namespace Arcane.Base.Network
 {
+    /// <summary>
+    /// Cette classe permet la répartition d'un message.
+    /// </summary>
+    /// <typeparam name="TClient"></typeparam>
     public interface IFrame<TClient>
         where TClient : IClient<TClient>
     {
         TClient Client { get; }
 
-        bool Dispatch(IMessage message);
+        /// <summary>
+        /// Prend en charge un message si possible.
+        /// </summary>
+        /// <param name="message"></param>
+        void Dispatch(IMessage message);
     }
 }
