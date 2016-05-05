@@ -7,21 +7,24 @@ using System.Threading.Tasks;
 
 namespace Arcane.Base.Network
 {
-    public interface IServer<TClient>
+    public interface IServer<TServer, TClient> : IDisposable
         where TClient : IClient<TClient>
+        where TServer : IServer<TServer, TClient>
     {
-        string Host { get; }
+        IPAddress Host { get; }
         int Port { get; }
         bool IsStarted { get; }
-        IEnumerable<TClient> Clients { get; }
+        IReadOnlyCollection<TClient> Clients { get; }
+        IClientFactory<TClient> ClientFactory { get; }
 
-        event Action OnStarting;
-        event Action OnStarted;
-        event Action<TClient> OnClientAccepted;
-        event Action OnStopping;
-        event Action OnStopped;
+        event Action<TServer, TClient> OnClientAccepted;
+        event Action<TServer> OnStarting;
+        event Action<TServer> OnStarted;
+        event Action<TServer> OnStopping;
+        event Action<TServer> OnStopped;
 
         void Start();
         void Stop();
+        void DisconnectAll();
     }
 }

@@ -9,11 +9,8 @@ namespace Arcane.Base.Network
     public interface IFrame<TClient>
         where TClient : IClient<TClient>
     {
-        IReadOnlyDictionary<Type, Action<TClient, IMessage>> HandledMessages { get; }
+        TClient Client { get; }
 
-        event Action OnAttached;
-        event Action OnDetached;
-
-        void RegisterMessageHandler<THandledMessage>(Action<TClient, IMessage> messageHandler) where THandledMessage : IMessage;
+        bool Dispatch(IMessage message);
     }
 }

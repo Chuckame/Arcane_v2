@@ -1,4 +1,5 @@
 ﻿using Arcane.Base.Network;
+using Arcane.Base.Network.Messages;
 using Arcane.Login.Network;
 using System;
 using System.Collections.Generic;
@@ -8,17 +9,24 @@ using System.Threading.Tasks;
 
 namespace Arcane.Login.Frames
 {
-    class ConnectionFrame : Frame<LoginClient>
+    class ConnectionFrame : AbstractFrame<LoginClient>
     {
-        ConnectionFrame()
-        {
-            RegisterMessageHandler<TestM>(test);
-        }
-        static void test(LoginClient client, TestM m)
+        public ConnectionFrame(LoginClient client) : base(client)
         {
         }
 
-        class TestM : NetworkMessage
+        public override bool Dispatch(IMessage message)
+        {
+            if (message is MessageTest)
+            {
+                test(message as MessageTest);
+                return true;
+            }
+            return false;
+        }
+
+        [MessageHandler]
+        void test(MessageTest msg)
         {
         }
     }

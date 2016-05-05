@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Arcane.Login</RootNamespace>
     <AssemblyName>Arcane.Login</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Frames\ConnectionFrame.cs" />
+    <Compile Include="Frames\MessageTest.cs" />
     <Compile Include="Network\LoginClient.cs" />
     <Compile Include="Network\LoginServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

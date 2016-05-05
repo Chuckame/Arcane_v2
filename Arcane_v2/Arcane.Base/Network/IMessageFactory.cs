@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arcane.Base.Tools
+namespace Arcane.Base.Network
 {
-    public interface ISingleton<T> where T : class
+    public interface IMessageFactory
     {
-        T Instance { get; }
+        IEnumerable<IMessage> buildMessages(byte[] raw);
     }
 }

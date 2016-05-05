@@ -7,31 +7,16 @@ using System.Threading.Tasks;
 
 namespace Arcane.Base.Network
 {
-    public abstract class Frame<TClient> : IFrame<TClient>
+    public abstract class AbstractFrame<TClient> : IFrame<TClient>
         where TClient : IClient<TClient>
     {
-        private readonly Dictionary<Type, Action<TClient, IMessage>> _mHandledMessages;
-
-        protected Frame()
+        protected AbstractFrame(TClient client)
         {
+            Client = client;
         }
 
-        public event Action OnAttached;
-        public event Action OnDetached;
+        public TClient Client { get; }
 
-        public IReadOnlyDictionary<Type, Action<TClient, IMessage>> HandledMessages
-        {
-            get
-            {
-                return new ReadOnlyDictionary<Type, Action<TClient, IMessage>>(_mHandledMessages);
-            }
-        }
-
-        public void RegisterMessageHandler<THandledMessage>(Action<TClient, IMessage> messageHandler) where THandledMessage : IMessage
-        {
-            if (messageHandler == null)
-                throw new ArgumentNullException(nameof(messageHandler));
-            _mHandledMessages.Add(typeof(THandledMessage), messageHandler);
-        }
+        public abstract bool Dispatch(IMessage message);
     }
 }

@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Arcane.Base</RootNamespace>
     <AssemblyName>Arcane.Base</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,17 +41,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Network\AbstractBaseClient.cs" />
-    <Compile Include="Network\AbstractServer.cs" />
+    <Compile Include="Network\BaseClient.cs" />
+    <Compile Include="Network\BaseServer.cs" />
+    <Compile Include="Network\AlreadyStartedException.cs" />
+    <Compile Include="Network\AlreadyStoppedException.cs" />
     <Compile Include="Network\Frame.cs" />
+    <Compile Include="Later\FrameInitializer.cs" />
     <Compile Include="Network\IClient.cs" />
+    <Compile Include="Network\IClientFactory.cs" />
     <Compile Include="Network\IFrame.cs" />
     <Compile Include="Network\IMessage.cs" />
+    <Compile Include="Network\IMessageFactory.cs" />
     <Compile Include="Network\IServer.cs" />
-    <Compile Include="Network\MessageHandler.cs" />
-    <Compile Include="Network\NetworkMessage.cs" />
+    <Compile Include="Later\MessageHandler.cs" />
+    <Compile Include="Network\MessageHandlerAttribute.cs" />
+    <Compile Include="Network\Messages\RawMessage.cs" />
+    <Compile Include="Network\Messages\EmptyMessage.cs" />
+    <Compile Include="Network\NetworkException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tools\ISingleton.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />

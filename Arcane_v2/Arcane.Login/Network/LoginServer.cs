@@ -1,28 +1,17 @@
 ﻿using Arcane.Base.Network;
-using Arcane.Base.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace Arcane.Login.Network
 {
-    public class LoginServer : AbstractServer<LoginClient>, ISingleton<LoginServer>
+    public class LoginServer : BaseServer<LoginServer, LoginClient>
     {
-        private readonly LoginServer _mInstance = new LoginServer();
-
-        private LoginServer()
+        public LoginServer(IPAddress host, int port, int maxConnections, IClientFactory<LoginClient> clientFactory) : base(host, port, maxConnections, clientFactory)
         {
-
-        }
-
-        public LoginServer Instance
-        {
-            get
-            {
-                return _mInstance;
-            }
         }
     }
 }
