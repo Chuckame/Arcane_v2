@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FC0F3F09-F032-405B-9DF0-E0AA32C4487A}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{5651C23C-6B74-431B-A1DA-0E036C12AC8B}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Arcane</RootNamespace>
-    <AssemblyName>Arcane</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <RootNamespace>Arcane.Protocol</RootNamespace>
+    <AssemblyName>Arcane.Protocol</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,13 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.3.3\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,39 +40,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="AbstractMessage.cs" />
+    <Compile Include="BooleanByteWrapper.cs" />
+    <Compile Include="Messages\HelloConnectMessage.cs" />
+    <Compile Include="Messages\IdentificationMessage.cs" />
+    <Compile Include="Messages\MessageBuilder.cs" />
+    <Compile Include="Messages\ProtocolRequired.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Types\AbstractType.cs" />
+    <Compile Include="Types\IMessageType.cs" />
+    <Compile Include="Types\ProtocolTypeManager.cs" />
+    <Compile Include="Types\Version\Version.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
+    <Folder Include="Enums\" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Documents\Visual Studio 2015\Projects\Dofus\Dofus.IO\Dofus.IO.csproj">
+      <Project>{909eca69-52a6-47b5-9a86-99d17437f833}</Project>
+      <Name>Dofus.IO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arcane.Base\Arcane.Base.csproj">
       <Project>{2d442ffc-e435-473f-bc62-7e3552173c69}</Project>
       <Name>Arcane.Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Arcane.Game\Arcane.Game.csproj">
-      <Project>{1d1c247c-8f0c-4a8f-9bb0-e54a4602cd72}</Project>
-      <Name>Arcane.Game</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Arcane.Login\Arcane.Login.csproj">
-      <Project>{6a349dd8-96e1-4180-a6cf-87155e4d6055}</Project>
-      <Name>Arcane.Login</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Arcane.Protocol\Arcane.Protocol.csproj">
-      <Project>{5651c23c-6b74-431b-a1da-0e036c12ac8b}</Project>
-      <Name>Arcane.Protocol</Name>
     </ProjectReference>
     <ProjectReference Include="..\Chuckame.IO\Chuckame.IO.csproj">
       <Project>{ed4417af-b794-4e0e-be94-aaf7cb182819}</Project>
       <Name>Chuckame.IO</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

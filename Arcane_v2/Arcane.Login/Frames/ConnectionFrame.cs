@@ -1,31 +1,38 @@
-﻿using Arcane.Base.Network;
-using Arcane.Base.Network.Messages;
+﻿using Chuckame.IO.TCP.Messages;
 using Arcane.Login.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Arcane.Protocol;
+using Arcane.Protocol.Messages;
+using Arcane.Base.Tools;
+using Arcane.Base.Encryption;
 
 namespace Arcane.Login.Frames
 {
-    class ConnectionFrame : AbstractFrame<LoginClient>
+    public class ConnectionFrame : AbstractFrame<ConnectionFrame, LoginClient, AbstractMessage>
     {
+        public string Salt = Utils.RandomString(32);
         public ConnectionFrame(LoginClient client) : base(client)
         {
         }
 
-        public override void Dispatch(IMessage message)
+        public override void OnAttached()
         {
-            if (message is MessageTest)
-            {
-                test(message as MessageTest);
-            }
+            Client.SendMessage(new ProtocolRequired(1444, 1444));
+            Client.SendMessage(new HelloConnectMessage(Salt, RSAProtocol.PublicKey));
         }
 
-        [MessageHandler]
-        void test(MessageTest msg)
+        public override void OnDettached()
         {
         }
+
+        //[MessageHandler]
+        //public void test(MessageTest msg)
+        //{
+        //    Console.WriteLine($"ConnectionFrame: new MessageTest(Value:{msg.Value})");
+        //}
     }
 }

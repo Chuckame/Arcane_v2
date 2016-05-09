@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FC0F3F09-F032-405B-9DF0-E0AA32C4487A}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{ED4417AF-B794-4E0E-BE94-AAF7CB182819}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Arcane</RootNamespace>
-    <AssemblyName>Arcane</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <RootNamespace>Chuckame.IO</RootNamespace>
+    <AssemblyName>Chuckame.IO</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,15 +20,16 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
@@ -39,7 +38,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,39 +46,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TCP\Client\AbstractBaseClient.cs" />
+    <Compile Include="TCP\Client\IClient.cs" />
+    <Compile Include="TCP\Client\IClientFactory.cs" />
+    <Compile Include="TCP\Exceptions\AlreadyStartedException.cs" />
+    <Compile Include="TCP\Exceptions\AlreadyStoppedException.cs" />
+    <Compile Include="TCP\Exceptions\NetworkException.cs" />
+    <Compile Include="TCP\Messages\AbstractFrame.cs" />
+    <Compile Include="TCP\Messages\IFrame.cs" />
+    <Compile Include="TCP\Messages\IMessage.cs" />
+    <Compile Include="TCP\Messages\IMessageFactory.cs" />
+    <Compile Include="TCP\Messages\MessageHandlerAttribute.cs" />
+    <Compile Include="TCP\Server\AbstractBaseServer.cs" />
+    <Compile Include="TCP\Server\IServer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Arcane.Base\Arcane.Base.csproj">
-      <Project>{2d442ffc-e435-473f-bc62-7e3552173c69}</Project>
-      <Name>Arcane.Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Arcane.Game\Arcane.Game.csproj">
-      <Project>{1d1c247c-8f0c-4a8f-9bb0-e54a4602cd72}</Project>
-      <Name>Arcane.Game</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Arcane.Login\Arcane.Login.csproj">
-      <Project>{6a349dd8-96e1-4180-a6cf-87155e4d6055}</Project>
-      <Name>Arcane.Login</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Arcane.Protocol\Arcane.Protocol.csproj">
-      <Project>{5651c23c-6b74-431b-a1da-0e036c12ac8b}</Project>
-      <Name>Arcane.Protocol</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Chuckame.IO\Chuckame.IO.csproj">
-      <Project>{ed4417af-b794-4e0e-be94-aaf7cb182819}</Project>
-      <Name>Chuckame.IO</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

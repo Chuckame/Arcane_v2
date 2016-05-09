@@ -1,5 +1,11 @@
-﻿using Arcane.Base.Network.Messages;
-using Arcane.IO.TCP.Messages;
+﻿using Arcane.Base.Encryption;
+using Arcane.Login.Frames;
+using Arcane.Login.Network;
+using Arcane.Protocol.Messages;
+using Chuckame.IO.TCP.Messages;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,35 +20,48 @@ namespace Arcane
     {
         static void Main(string[] args)
         {
-            using (var server = new TestServer(System.Net.IPAddress.Parse("127.0.0.1"), 5555, 1000, new TestClientFactory()))
-            using (var client = new Socket(AddressFamily.InterNetwork,
-                SocketType.Stream, ProtocolType.Tcp))
+            Console.BufferHeight = 5000;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            var config = new LoggingConfiguration();
+
+            // Step 2. Create targets and add them to the configuration 
+            var consoleTarget = new ColoredConsoleTarget();
+            config.AddTarget("console", consoleTarget);
+
+            // Step 3. Set target properties 
+            consoleTarget.Layout = @"${threadid}|${longdate}|${level}|${logger}|${message}";
+
+            // Step 4. Define rules
+            var rule1 = new LoggingRule("*", LogLevel.Trace, consoleTarget);
+            config.LoggingRules.Add(rule1);
+
+            // Step 5. Activate the configuration
+            LogManager.Configuration = config;
+            MessageBuilder.Instance.Initialize(typeof(MessageBuilder).Assembly);
+            RSAProtocol.GenerateKey();
+            var server = new LoginServer(System.Net.IPAddress.Parse("127.0.0.1"), 443, 1000);
+            server.Start();
+            using (var client = new TcpClient("127.0.0.1", 443))
             {
-                server.OnClientAccepted += Server_OnClientAccepted;
-                server.Start();
-                client.Connect("127.0.0.1", 5555);
-                Thread.Sleep(1000);
-                client.Send(new byte[] { 68, 69, 65, 75 });
-                new Thread(() => { Thread.Sleep(2000); client.Disconnect(false); }).Start();
-                Console.ReadLine();
+                //client.Connect(System.Net.IPAddress.Parse("127.0.0.1"), 443);
+                using (var loginClient = new LoginClient(client.Client))
+                {
+                    loginClient.OnMessageReceived += LoginClient_OnMessageReceived;
+                    Console.ReadLine();
+                }
             }
+            Console.ReadLine();
+            server.Dispose();
         }
 
-        private static void Server_OnClientAccepted(TestServer arg1, TestClient arg2)
+        private static void LoginClient_OnMessageReceived(LoginClient arg1, Protocol.AbstractMessage arg2)
         {
-            Console.WriteLine("New client !");
-            arg2.OnMessageReceiving += Arg2_OnMessageReceiving;
-            arg2.OnMessageReceived += Arg2_OnMessageReceived;
+            Console.WriteLine("MAIN: msg received");
         }
 
-        private static void Arg2_OnMessageReceived(TestClient arg1, IMessage arg2)
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Console.WriteLine($"RECEIVED from client : {Encoding.UTF8.GetString((arg2 as RawMessage).Bytes)} !");
-        }
-
-        private static void Arg2_OnMessageReceiving(TestClient obj)
-        {
-            Console.WriteLine("Receiving from client...");
+            Console.WriteLine("Erreur : " + e.ExceptionObject);
         }
     }
 }

@@ -22,11 +22,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arcane.Login", "Arcane.Logi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arcane.Base", "Arcane.Base\Arcane.Base.csproj", "{2D442FFC-E435-473F-BC62-7E3552173C69}"
 EndProject
-Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "ModelingProject1", "ModelingProject1\ModelingProject1.modelproj", "{48A83FCD-B423-4335-8EB5-CD5E3F5DF664}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arcane.Protocol", "Arcane.Protocol\Arcane.Protocol.csproj", "{5651C23C-6B74-431B-A1DA-0E036C12AC8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelingProject1Lib", "ModelingProject1Lib\ModelingProject1Lib.csproj", "{D96DFF3D-0EC5-403B-B5E8-58D2D4BBAB6F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Externe", "Externe", "{75CCC0EA-6514-474A-993D-AA1443DB6465}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arcane.IO", "Arcane.IO\Arcane.IO.csproj", "{7F9E3F14-6652-4D2F-9356-ACA136B56229}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dofus.IO", "..\..\..\..\Documents\Visual Studio 2015\Projects\Dofus\Dofus.IO\Dofus.IO.csproj", "{909ECA69-52A6-47B5-9A86-99D17437F833}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chuckame.IO", "Chuckame.IO\Chuckame.IO.csproj", "{ED4417AF-B794-4E0E-BE94-AAF7CB182819}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,20 +52,24 @@ Global
 		{2D442FFC-E435-473F-BC62-7E3552173C69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D442FFC-E435-473F-BC62-7E3552173C69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D442FFC-E435-473F-BC62-7E3552173C69}.Release|Any CPU.Build.0 = Release|Any CPU
-		{48A83FCD-B423-4335-8EB5-CD5E3F5DF664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48A83FCD-B423-4335-8EB5-CD5E3F5DF664}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48A83FCD-B423-4335-8EB5-CD5E3F5DF664}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48A83FCD-B423-4335-8EB5-CD5E3F5DF664}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D96DFF3D-0EC5-403B-B5E8-58D2D4BBAB6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D96DFF3D-0EC5-403B-B5E8-58D2D4BBAB6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D96DFF3D-0EC5-403B-B5E8-58D2D4BBAB6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D96DFF3D-0EC5-403B-B5E8-58D2D4BBAB6F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7F9E3F14-6652-4D2F-9356-ACA136B56229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F9E3F14-6652-4D2F-9356-ACA136B56229}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F9E3F14-6652-4D2F-9356-ACA136B56229}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F9E3F14-6652-4D2F-9356-ACA136B56229}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5651C23C-6B74-431B-A1DA-0E036C12AC8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5651C23C-6B74-431B-A1DA-0E036C12AC8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5651C23C-6B74-431B-A1DA-0E036C12AC8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5651C23C-6B74-431B-A1DA-0E036C12AC8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{909ECA69-52A6-47B5-9A86-99D17437F833}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{909ECA69-52A6-47B5-9A86-99D17437F833}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{909ECA69-52A6-47B5-9A86-99D17437F833}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{909ECA69-52A6-47B5-9A86-99D17437F833}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED4417AF-B794-4E0E-BE94-AAF7CB182819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED4417AF-B794-4E0E-BE94-AAF7CB182819}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED4417AF-B794-4E0E-BE94-AAF7CB182819}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED4417AF-B794-4E0E-BE94-AAF7CB182819}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{909ECA69-52A6-47B5-9A86-99D17437F833} = {75CCC0EA-6514-474A-993D-AA1443DB6465}
+		{ED4417AF-B794-4E0E-BE94-AAF7CB182819} = {75CCC0EA-6514-474A-993D-AA1443DB6465}
 	EndGlobalSection
 EndGlobal

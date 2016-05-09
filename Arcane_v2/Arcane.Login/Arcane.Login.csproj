@@ -42,15 +42,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Frames\ConnectionFrame.cs" />
-    <Compile Include="Frames\MessageTest.cs" />
     <Compile Include="Network\LoginClient.cs" />
     <Compile Include="Network\LoginServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Documents\Visual Studio 2015\Projects\Dofus\Dofus.IO\Dofus.IO.csproj">
+      <Project>{909ECA69-52A6-47B5-9A86-99D17437F833}</Project>
+      <Name>Dofus.IO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arcane.Base\Arcane.Base.csproj">
       <Project>{2d442ffc-e435-473f-bc62-7e3552173c69}</Project>
       <Name>Arcane.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arcane.Protocol\Arcane.Protocol.csproj">
+      <Project>{5651c23c-6b74-431b-a1da-0e036c12ac8b}</Project>
+      <Name>Arcane.Protocol</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Chuckame.IO\Chuckame.IO.csproj">
+      <Project>{ED4417AF-B794-4E0E-BE94-AAF7CB182819}</Project>
+      <Name>Chuckame.IO</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

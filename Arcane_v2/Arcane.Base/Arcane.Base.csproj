@@ -41,20 +41,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Later\FrameInitializer.cs" />
-    <Compile Include="Later\MessageHandler.cs" />
-    <Compile Include="Network\Messages\RawMessage.cs" />
-    <Compile Include="Network\Messages\EmptyMessage.cs" />
+    <Compile Include="Encryption\AsnKeyBuilder.cs" />
+    <Compile Include="Encryption\RSAProtocol.cs" />
+    <Compile Include="Extentions\StringExtentions.cs" />
+    <Compile Include="Extentions\CollectionExtentions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Arcane.IO\Arcane.IO.csproj">
-      <Project>{7f9e3f14-6652-4d2f-9356-aca136b56229}</Project>
-      <Name>Arcane.IO</Name>
+    <ProjectReference Include="..\Chuckame.IO\Chuckame.IO.csproj">
+      <Project>{ed4417af-b794-4e0e-be94-aaf7cb182819}</Project>
+      <Name>Chuckame.IO</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Network\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
