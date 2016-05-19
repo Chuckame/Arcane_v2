@@ -30,6 +30,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chuckame.IO", "Chuckame.IO\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dofus.IO", "..\Dofus\Dofus.IO\Dofus.IO.csproj", "{909ECA69-52A6-47B5-9A86-99D17437F833}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dofus.Files", "..\Dofus\Dofus.Files\Dofus.Files.csproj", "{14CBD131-B777-49D0-8198-239BEA76CC06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dofus.Common", "..\Dofus\Dofus.Common\Dofus.Common.csproj", "{269D4C18-697C-4E68-9D10-DDC44B65E484}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +68,14 @@ Global
 		{909ECA69-52A6-47B5-9A86-99D17437F833}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{909ECA69-52A6-47B5-9A86-99D17437F833}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{909ECA69-52A6-47B5-9A86-99D17437F833}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14CBD131-B777-49D0-8198-239BEA76CC06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14CBD131-B777-49D0-8198-239BEA76CC06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14CBD131-B777-49D0-8198-239BEA76CC06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14CBD131-B777-49D0-8198-239BEA76CC06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{269D4C18-697C-4E68-9D10-DDC44B65E484}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{269D4C18-697C-4E68-9D10-DDC44B65E484}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{269D4C18-697C-4E68-9D10-DDC44B65E484}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{269D4C18-697C-4E68-9D10-DDC44B65E484}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,5 +83,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{ED4417AF-B794-4E0E-BE94-AAF7CB182819} = {75CCC0EA-6514-474A-993D-AA1443DB6465}
 		{909ECA69-52A6-47B5-9A86-99D17437F833} = {75CCC0EA-6514-474A-993D-AA1443DB6465}
+		{14CBD131-B777-49D0-8198-239BEA76CC06} = {75CCC0EA-6514-474A-993D-AA1443DB6465}
+		{269D4C18-697C-4E68-9D10-DDC44B65E484} = {75CCC0EA-6514-474A-993D-AA1443DB6465}
 	EndGlobalSection
 EndGlobal

@@ -71,6 +71,10 @@
       <HintPath>..\packages\Castle.Activerecord.3.0.0.1\lib\Net40\NHibernate.Search.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.3.4\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Remotion.Data.Linq, Version=1.13.41.2, Culture=neutral, PublicKeyToken=cab60358ab4081ea, processorArchitecture=MSIL">
       <HintPath>..\packages\NHibernate.3.0.0.4000\lib\Remotion.Data.Linq.dll</HintPath>
       <Private>True</Private>
@@ -86,13 +90,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\Database.cs" />
+    <Compile Include="Common\CommonConfig.cs" />
+    <Compile Include="Common\DatabaseConfig.cs" />
+    <Compile Include="Common\LogConfig.cs" />
     <Compile Include="Encryption\AsnKeyBuilder.cs" />
     <Compile Include="Encryption\RSAProtocol.cs" />
     <Compile Include="Entities\Account.cs" />
+    <Compile Include="Entities\GameServerEntity.cs" />
     <Compile Include="Enums\ServerCommunitiesEnum.cs" />
     <Compile Include="Extentions\StringExtentions.cs" />
     <Compile Include="Extentions\CollectionExtentions.cs" />
+    <Compile Include="Network\AbstractServerManager.cs" />
+    <Compile Include="Network\GameLink\GameLinkMessageBuilder.cs" />
+    <Compile Include="Network\GameLink\Messages\IGameLinkMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Utils.cs" />
   </ItemGroup>
@@ -102,13 +112,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Arcane.Protocol\Arcane.Protocol.csproj">
+      <Project>{5651c23c-6b74-431b-a1da-0e036c12ac8b}</Project>
+      <Name>Arcane.Protocol</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chuckame.IO\Chuckame.IO.csproj">
       <Project>{ed4417af-b794-4e0e-be94-aaf7cb182819}</Project>
       <Name>Chuckame.IO</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Network\" />
+    <Folder Include="Database\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

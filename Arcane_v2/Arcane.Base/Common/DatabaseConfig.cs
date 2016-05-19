@@ -2,19 +2,18 @@
 using Castle.ActiveRecord;
 using Castle.ActiveRecord.Framework.Config;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arcane.Base.Database
+namespace Arcane.Base.Common
 {
-    public class Database
+    public static class DatabaseConfig
     {
-        public static void Init()
+        public static void Initialize()
         {
-            ActiveRecordStarter.Initialize(new XmlConfigurationSource("login_database.xml"), typeof(Account));
+            ActiveRecordStarter.Initialize(typeof(Account).Assembly, new XmlConfigurationSource("database.xml"));
             ActiveRecordStarter.UpdateSchema();
         }
     }

@@ -18,7 +18,6 @@ namespace Chuckame.IO.TCP.Messages
         private readonly Dictionary<Type, MethodInfo> _messageHandlers = new Dictionary<Type, MethodInfo>();
         private void Init()
         {
-            Console.WriteLine(typeof(TFrame));
             foreach (var method in typeof(TFrame).GetRuntimeMethods())
             {
                 var attr = (method.GetCustomAttributes(typeof(MessageHandlerAttribute), false) as MessageHandlerAttribute[]).FirstOrDefault();
@@ -39,6 +38,8 @@ namespace Chuckame.IO.TCP.Messages
         }
         protected AbstractFrame(TClient client)
         {
+            if (client == null)
+                throw new ArgumentNullException(nameof(client));
             Client = client;
             Init();
         }
@@ -47,6 +48,8 @@ namespace Chuckame.IO.TCP.Messages
 
         public void Dispatch(TMessage message)
         {
+            if (message == null)
+                throw new ArgumentNullException(nameof(message));
             if (_messageHandlers.ContainsKey(message.GetType()))
             {
                 LOGGER.Debug($"{typeof(TFrame)}: {message.GetType()} Caught !");

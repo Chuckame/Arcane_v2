@@ -12,6 +12,7 @@ using Arcane.Base.Encryption;
 using NLog;
 using Arcane.Protocol.Enums;
 using Arcane.Base.Entities;
+using Arcane.Login.Helpers;
 
 namespace Arcane.Login.Frames
 {
@@ -25,9 +26,9 @@ namespace Arcane.Login.Frames
 
         public override void OnAttached()
         {
-            Client.CurrentContext = ContextEnum.Connection;
+            Client.CurrentContext = ContextEnum.ServerSelection;
             Client.AddFrame(new PseudoSearchFrame(Client));
-            Client.SendMessage(new ServersListMessage(new[] { new Protocol.Types.GameServerInformations(1, ServerStatusEnum.ONLINE.ToSByte(), 0, false, 1, 0) }));
+            Client.SendMessage(GameServerHelper.MakeServersListMessage(Client.Account));
         }
 
         public override void OnDettached()
@@ -39,7 +40,7 @@ namespace Arcane.Login.Frames
         public void ServerSelectionMessage(ServerSelectionMessage msg)
         {
             Client.SendMessage(new SelectedServerRefusedMessage(msg.serverId, ServerConnectionErrorEnum.SERVER_CONNECTION_ERROR_DUE_TO_STATUS.ToSByte(), ServerStatusEnum.OFFLINE.ToSByte()));
-            Client.SendMessage(new ServersListMessage(new[] { new Protocol.Types.GameServerInformations(1, ServerStatusEnum.ONLINE.ToSByte(), 0, false, 1, 0) }));
+            Client.SendMessage(GameServerHelper.MakeServersListMessage(Client.Account));
         }
     }
 }

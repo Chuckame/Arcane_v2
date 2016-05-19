@@ -15,23 +15,6 @@ namespace Arcane.Login.Network
 {
     public class LoginServer : AbstractBaseServer<LoginServer, LoginClient, AbstractMessage>
     {
-        class LoginClientFactory : IClientFactory<LoginClient, AbstractMessage>
-        {
-            private static LoginClientFactory _instance = new LoginClientFactory();
-
-            public static LoginClientFactory Instance
-            {
-                get
-                {
-                    return _instance;
-                }
-            }
-
-            public LoginClient createClient(Socket socket)
-            {
-                return new LoginClient(socket);
-            }
-        }
         public LoginServer(IPAddress host, int port, int maxConnections) : base(host, port, maxConnections, LoginClientFactory.Instance)
         {
             OnClientAccepted += LoginServer_OnClientAccepted;

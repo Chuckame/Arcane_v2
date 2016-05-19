@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Arcane.Base.Entities
 {
-    [ActiveRecord("accounts")]
+    [ActiveRecord("accounts", "arcane2_login")]
     public class Account : ActiveRecordLinqBase<Account>
     {
         [Property("account_creation_date", NotNull = true)]
@@ -27,7 +27,7 @@ namespace Arcane.Base.Entities
         [PrimaryKey("account_id", Generator = PrimaryKeyType.Identity)]
         public int Id { get; private set; }
 
-        [Property("is_admin")]
+        [Property("is_admin", NotNull = true)]
         public bool IsAdmin { get; set; }
 
         [Property("last_connection_date")]

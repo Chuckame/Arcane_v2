@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arcane.Login.Network
+namespace Arcane.Base.Common
 {
-    public enum ContextEnum
+    public static class CommonConfig
     {
-        Connection,
-        NicknameRegistration,
-        ServerSelection
     }
 }

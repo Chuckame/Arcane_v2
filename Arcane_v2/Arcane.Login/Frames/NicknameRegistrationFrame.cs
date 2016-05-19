@@ -27,6 +27,7 @@ namespace Arcane.Login.Frames
 
         public override void OnAttached()
         {
+            Client.CurrentContext = ContextEnum.NicknameRegistration;
             Client.SendMessage(new NicknameRegistrationMessage());
         }
 

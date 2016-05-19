@@ -10,7 +10,7 @@ namespace Arcane.Base.Tools
 {
     public static class Utils
     {
-        private static string[] Hash = { "a", "z", "e", "r", "t", "y", "u", "i", "o", "p", "q", "s", "d", "f", "g", "h", "j", "k", "l", "m", "w", "x", "c", "v", "b", "n" };
+        private static char[] Hash = { 'a', 'z', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'q', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'w', 'x', 'c', 'v', 'b', 'n' };
         private static Random random = new Random((int)DateTime.Now.Ticks);
 
         public static int RandomNumber(int min, int max)

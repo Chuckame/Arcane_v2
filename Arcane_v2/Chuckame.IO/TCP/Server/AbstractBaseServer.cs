@@ -25,6 +25,10 @@ namespace Chuckame.IO.TCP.Server
 
         protected AbstractBaseServer(IPAddress host, int port, int maxConnections, IClientFactory<TClient, TMessage> clientFactory)
         {
+            if (host == null)
+                throw new ArgumentNullException(nameof(host));
+            if (clientFactory == null)
+                throw new ArgumentNullException(nameof(clientFactory));
             _startStopLock = new Mutex();
             _mClients = new Collection<TClient>();
             Host = host;
