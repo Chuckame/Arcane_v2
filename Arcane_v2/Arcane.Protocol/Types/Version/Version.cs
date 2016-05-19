@@ -1,27 +1,50 @@
-﻿using System;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Generated on 05/16/2016 23:27:40
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Dofus.IO;
 
-namespace Arcane.Protocol.Types.Version
+namespace Arcane.Protocol.Types
 {
-    public class Version : AbstractType
-    {
-        public sbyte buildType;
-        public const uint Id = 11;
-        public sbyte major;
+
+public class Version : AbstractType
+{
+
+public const short Id = 11;
+public override short TypeId { get { return Id; } }
+
+public sbyte major;
         public sbyte minor;
-        public sbyte patch;
         public sbyte release;
         public ushort revision;
+        public sbyte patch;
+        public sbyte buildType;
+        
 
-        public Version()
-        {
-        }
+public Version()
+{
+}
 
-        public Version(sbyte major, sbyte minor, sbyte release, ushort revision, sbyte patch, sbyte buildType)
+public Version(sbyte major, sbyte minor, sbyte release, ushort revision, sbyte patch, sbyte buildType)
         {
             this.major = major;
             this.minor = minor;
@@ -30,57 +53,48 @@ namespace Arcane.Protocol.Types.Version
             this.patch = patch;
             this.buildType = buildType;
         }
+        
 
-        public override void Deserialize(IDataReader reader)
-        {
-            this.major = reader.ReadSByte();
-            if (this.major < 0)
-            {
-                throw new Exception("Forbidden value on major = " + this.major + ", it doesn't respect the following condition : major < 0");
-            }
-            this.minor = reader.ReadSByte();
-            if (this.minor < 0)
-            {
-                throw new Exception("Forbidden value on minor = " + this.minor + ", it doesn't respect the following condition : minor < 0");
-            }
-            this.release = reader.ReadSByte();
-            if (this.release < 0)
-            {
-                throw new Exception("Forbidden value on release = " + this.release + ", it doesn't respect the following condition : release < 0");
-            }
-            this.revision = reader.ReadUShort();
-            if ((this.revision < 0) || (this.revision > 0xffff))
-            {
-                throw new Exception("Forbidden value on revision = " + this.revision + ", it doesn't respect the following condition : revision < 0 || revision > 65535");
-            }
-            this.patch = reader.ReadSByte();
-            if (this.patch < 0)
-            {
-                throw new Exception("Forbidden value on patch = " + this.patch + ", it doesn't respect the following condition : patch < 0");
-            }
-            this.buildType = reader.ReadSByte();
-            if (this.buildType < 0)
-            {
-                throw new Exception("Forbidden value on buildType = " + this.buildType + ", it doesn't respect the following condition : buildType < 0");
-            }
-        }
+public override void Serialize(IDataWriter writer)
+{
 
-        public override void Serialize(IDataWriter writer)
-        {
-            writer.WriteSByte(this.major);
-            writer.WriteSByte(this.minor);
-            writer.WriteSByte(this.release);
-            writer.WriteUShort(this.revision);
-            writer.WriteSByte(this.patch);
-            writer.WriteSByte(this.buildType);
-        }
+writer.WriteSByte(major);
+            writer.WriteSByte(minor);
+            writer.WriteSByte(release);
+            writer.WriteUShort(revision);
+            writer.WriteSByte(patch);
+            writer.WriteSByte(buildType);
+            
 
-        public override uint TypeId
-        {
-            get
-            {
-                return Id;
-            }
-        }
-    }
+}
+
+public override void Deserialize(IDataReader reader)
+{
+
+major = reader.ReadSByte();
+            if (major < 0)
+                throw new Exception("Forbidden value on major = " + major + ", it doesn't respect the following condition : major < 0");
+            minor = reader.ReadSByte();
+            if (minor < 0)
+                throw new Exception("Forbidden value on minor = " + minor + ", it doesn't respect the following condition : minor < 0");
+            release = reader.ReadSByte();
+            if (release < 0)
+                throw new Exception("Forbidden value on release = " + release + ", it doesn't respect the following condition : release < 0");
+            revision = reader.ReadUShort();
+            if (revision < 0 || revision > 65535)
+                throw new Exception("Forbidden value on revision = " + revision + ", it doesn't respect the following condition : revision < 0 || revision > 65535");
+            patch = reader.ReadSByte();
+            if (patch < 0)
+                throw new Exception("Forbidden value on patch = " + patch + ", it doesn't respect the following condition : patch < 0");
+            buildType = reader.ReadSByte();
+            if (buildType < 0)
+                throw new Exception("Forbidden value on buildType = " + buildType + ", it doesn't respect the following condition : buildType < 0");
+            
+
+}
+
+
+}
+
+
 }

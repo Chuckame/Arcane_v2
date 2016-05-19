@@ -9,6 +9,7 @@ using Chuckame.IO.TCP.Client;
 using Arcane.Protocol;
 using System.Net.Sockets;
 using Arcane.Login.Frames;
+using Arcane.Login.Helpers;
 
 namespace Arcane.Login.Network
 {
@@ -37,12 +38,12 @@ namespace Arcane.Login.Network
             OnStarted += LoginServer_OnStarted;
         }
 
-        private void LoginServer_OnStarted(LoginServer obj)
+        private static void LoginServer_OnStarted(LoginServer obj)
         {
             Console.WriteLine("Serveur lancé !");
         }
 
-        private void LoginServer_OnClientAccepted(LoginServer me, LoginClient client)
+        private static void LoginServer_OnClientAccepted(LoginServer me, LoginClient client)
         {
             Console.WriteLine(client + " accepted !");
             client.AddFrame(new ConnectionFrame(client));

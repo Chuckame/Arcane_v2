@@ -1,4 +1,5 @@
-﻿using Chuckame.IO.TCP.Messages;
+﻿using Chuckame.IO.TCP.Exceptions;
+using Chuckame.IO.TCP.Messages;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -32,8 +33,8 @@ namespace Chuckame.IO.TCP.Client
             MessageFactory = messageFactory;
             _buffer = new byte[BufferSize];
 
-            BeginReceive(new StateObject());
-            //new Task(() => BeginReceive(new StateObject())).Start();
+            //BeginReceive(new StateObject());
+            new Task(() => BeginReceive(new StateObject())).Start();
         }
 
         public event Action<TClient> OnDisconnected;
@@ -87,6 +88,11 @@ namespace Chuckame.IO.TCP.Client
             frame.OnAttached();
         }
 
+        public IFrame<TClient, TMessage> GetFrame<TFrame>() where TFrame : IFrame<TClient, TMessage>
+        {
+            return _mFrames.FirstOrDefault(f => f is TFrame);
+        }
+
         public void Disconnect()
         {
             lock (_socket)
@@ -133,7 +139,7 @@ namespace Chuckame.IO.TCP.Client
             LOGGER.Debug($"Sending message ({message}) :");
             OnMessageSending?.Invoke((TClient)this, message);
             LOGGER.Trace($"Serializing...");
-            var buffer = MessageFactory.serializeMessage(message);
+            var buffer = MessageFactory.SerializeMessage(message);
             LOGGER.Trace($"Sending...");
             try
             {
@@ -190,9 +196,15 @@ namespace Chuckame.IO.TCP.Client
                 Array.Copy(_buffer, partBuffer, bytesRead);
                 stateObject.Parts.Add(partBuffer);
                 LOGGER.Trace($"Received part. Parts number : {stateObject.Parts.Count}");
-                var messages = MessageFactory.buildMessages(partBuffer);
-                LOGGER.Trace($"{messages.Count()} messages built !");
-                BeginReceive(stateObject);
+                ICollection<TMessage> messages;
+                if (MessageFactory.TryBuildMessages(stateObject.CombineParts(), out messages))
+                {
+                    MessagesReceived(messages);
+                }
+                else
+                {
+                    BeginReceive(stateObject);
+                }
             }
             //message entier reçu
             else
@@ -208,20 +220,40 @@ namespace Chuckame.IO.TCP.Client
                     LOGGER.Trace($"Part combination ({stateObject.Parts.Count} parts).");
                     var finalBuffer = stateObject.CombineParts();
                     LOGGER.Trace($"Building messages from combined parts...");
-                    var messages = MessageFactory.buildMessages(finalBuffer);
-                    LOGGER.Trace($"{messages.Count()} messages built !");
-                    LOGGER.Trace($"Notifying for messages...");
-                    LOGGER.Debug($"Data received: {finalBuffer.Length} bytes, messages built: {messages.Count()}.");
-                    foreach (var msg in messages)
+                    ICollection<TMessage> messages;
+                    if (MessageFactory.TryBuildMessages(finalBuffer, out messages))
                     {
-                        OnMessageReceived?.Invoke((TClient)this, msg);
-                        _dispatchMessageEvent?.Invoke(msg);
+                        LOGGER.Debug($"Data received: {finalBuffer.Length} bytes, messages built: {messages.Count()}.");
+                        MessagesReceived(messages);
                     }
-                    if (IsConnected)
+                    else
                     {
+                        LOGGER.Debug($"Data received: {finalBuffer.Length} bytes, but no messages built. Maybe there's problems !");
                         BeginReceive(new StateObject());
                     }
                 }
+            }
+        }
+
+        private void MessagesReceived(ICollection<TMessage> messages)
+        {
+            LOGGER.Trace($"{messages.Count()} messages received : [{string.Join(",", messages.Select(m => m.GetType()))}]");
+            LOGGER.Trace($"Notifying for messages...");
+            try
+            {
+                foreach (var msg in messages)
+                {
+                    OnMessageReceived?.Invoke((TClient)this, msg);
+                    _dispatchMessageEvent?.Invoke(msg);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new NetworkException("Exception during dispatch.", e);
+            }
+            if (IsConnected)
+            {
+                BeginReceive(new StateObject());
             }
         }
 

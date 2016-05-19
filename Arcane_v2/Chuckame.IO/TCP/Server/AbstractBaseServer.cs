@@ -91,8 +91,8 @@ namespace Chuckame.IO.TCP.Server
                     throw new AlreadyStartedException();
                 OnStarting?.Invoke((TServer)this);
                 _listener.Start();
-                //new Task(BeginAccept).Start();
-                BeginAccept();
+                new Task(BeginAccept).Start();
+                //BeginAccept();
                 IsStarted = true;
                 OnStarted?.Invoke((TServer)this);
             }

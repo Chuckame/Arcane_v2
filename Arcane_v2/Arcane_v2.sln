@@ -26,9 +26,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arcane.Protocol", "Arcane.P
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Externe", "Externe", "{75CCC0EA-6514-474A-993D-AA1443DB6465}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dofus.IO", "..\..\..\..\Documents\Visual Studio 2015\Projects\Dofus\Dofus.IO\Dofus.IO.csproj", "{909ECA69-52A6-47B5-9A86-99D17437F833}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chuckame.IO", "Chuckame.IO\Chuckame.IO.csproj", "{ED4417AF-B794-4E0E-BE94-AAF7CB182819}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dofus.IO", "..\Dofus\Dofus.IO\Dofus.IO.csproj", "{909ECA69-52A6-47B5-9A86-99D17437F833}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,20 +56,20 @@ Global
 		{5651C23C-6B74-431B-A1DA-0E036C12AC8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5651C23C-6B74-431B-A1DA-0E036C12AC8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5651C23C-6B74-431B-A1DA-0E036C12AC8B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{909ECA69-52A6-47B5-9A86-99D17437F833}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{909ECA69-52A6-47B5-9A86-99D17437F833}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{909ECA69-52A6-47B5-9A86-99D17437F833}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{909ECA69-52A6-47B5-9A86-99D17437F833}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ED4417AF-B794-4E0E-BE94-AAF7CB182819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ED4417AF-B794-4E0E-BE94-AAF7CB182819}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED4417AF-B794-4E0E-BE94-AAF7CB182819}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED4417AF-B794-4E0E-BE94-AAF7CB182819}.Release|Any CPU.Build.0 = Release|Any CPU
+		{909ECA69-52A6-47B5-9A86-99D17437F833}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{909ECA69-52A6-47B5-9A86-99D17437F833}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{909ECA69-52A6-47B5-9A86-99D17437F833}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{909ECA69-52A6-47B5-9A86-99D17437F833}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{909ECA69-52A6-47B5-9A86-99D17437F833} = {75CCC0EA-6514-474A-993D-AA1443DB6465}
 		{ED4417AF-B794-4E0E-BE94-AAF7CB182819} = {75CCC0EA-6514-474A-993D-AA1443DB6465}
+		{909ECA69-52A6-47B5-9A86-99D17437F833} = {75CCC0EA-6514-474A-993D-AA1443DB6465}
 	EndGlobalSection
 EndGlobal

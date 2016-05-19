@@ -12,17 +12,18 @@ namespace Chuckame.IO.TCP.Messages
     public interface IMessageFactory<TMessage> where TMessage : IMessage
     {
         /// <summary>
-        /// Crée, si possible, un ou plusieurs <see cref="IMessage"/>(s) depuis des données brutes.
+        /// Extrait un ou plusieurs messages(s) depuis un buffer. Retourne true si un ou plusieurs message(s) peuvent être lu(s), sinon false.
         /// </summary>
-        /// <param name="raw">Données brutes à convertir.</param>
-        /// <returns></returns>
-        IEnumerable<TMessage> buildMessages(byte[] raw);
+        /// <param name="raw">Buffer.</param>
+        /// <param name="builtMessages">Paramètre de sortie contenant les messages s'ils ont pu être extraits.</param>
+        /// <returns>true si un ou plusieurs message(s) peuvent être lu(s), sinon false.</returns>
+        bool TryBuildMessages(byte[] raw, out ICollection<TMessage> builtMessages);
 
         /// <summary>
         /// Sérialise un message en un tableau d'octet.
         /// </summary>
         /// <param name="message">Message à sérialiser.</param>
         /// <returns></returns>
-        byte[] serializeMessage(TMessage message);
+        byte[] SerializeMessage(TMessage message);
     }
 }

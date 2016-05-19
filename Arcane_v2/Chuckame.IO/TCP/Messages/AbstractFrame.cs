@@ -1,4 +1,5 @@
 ﻿using Chuckame.IO.TCP.Client;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,6 +14,7 @@ namespace Chuckame.IO.TCP.Messages
         where TMessage : IMessage
         where TClient : IClient<TClient, TMessage>
     {
+        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
         private readonly Dictionary<Type, MethodInfo> _messageHandlers = new Dictionary<Type, MethodInfo>();
         private void Init()
         {
@@ -31,6 +33,7 @@ namespace Chuckame.IO.TCP.Messages
                     if (_messageHandlers.ContainsKey(paramType))
                         throw new AmbiguousMatchException($"There's an existing message handler for the message Type '{paramType}'. Ambiguity between {_messageHandlers[paramType]} and {method}");
                     _messageHandlers.Add(paramType, method);
+                    LOGGER.Trace($"{typeof(TFrame)}: Message handler added : {method}");
                 }
             }
         }
@@ -46,12 +49,28 @@ namespace Chuckame.IO.TCP.Messages
         {
             if (_messageHandlers.ContainsKey(message.GetType()))
             {
-                Console.WriteLine($"{typeof(TFrame)}: {message.GetType()} Caught !");
-                _messageHandlers[message.GetType()].Invoke(this, new object[] { message });
+                LOGGER.Debug($"{typeof(TFrame)}: {message.GetType()} Caught !");
+                try
+                {
+                    _messageHandlers[message.GetType()].Invoke(this, new object[] { message });
+                }
+                catch (Exception e)
+                {
+                    throw new FrameDispatchException($"Exception during frame dispatch on {typeof(TFrame)}.", e);
+                }
             }
         }
 
         public abstract void OnAttached();
         public abstract void OnDettached();
+
+
+        [Serializable]
+        public class FrameDispatchException : Exception
+        {
+            public FrameDispatchException() { }
+            public FrameDispatchException(string message) : base(message) { }
+            public FrameDispatchException(string message, Exception inner) : base(message, inner) { }
+        }
     }
 }

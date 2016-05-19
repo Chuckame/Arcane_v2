@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{14CBD131-B777-49D0-8198-239BEA76CC06}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dofus.Files</RootNamespace>
+    <AssemblyName>Dofus.Files</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\..\..\Librairies\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dofus\Files\Common\AbstractDofusFile.cs" />
+    <Compile Include="Dofus\Files\Common\DofusFileTypeEnum.cs" />
+    <Compile Include="Dofus\Files\Common\DofusMinVersionAttribute.cs" />
+    <Compile Include="Dofus\Files\Common\DofusMinVersionUtils.cs" />
+    <Compile Include="Dofus\Files\Common\IDofusFile.cs" />
+    <Compile Include="Dofus\Files\Common\Language.cs" />
+    <Compile Include="Dofus\Files\Elements\ElementsFile.cs" />
+    <Compile Include="Dofus\Files\Elements\GraphicalElementData.cs" />
+    <Compile Include="Dofus\Files\Elements\GraphicalElementDataFactory.cs" />
+    <Compile Include="Dofus\Files\Elements\GraphicalElementTypesEnum.cs" />
+    <Compile Include="Dofus\Files\Elements\IElementsFile.cs" />
+    <Compile Include="Dofus\Files\Elements\SubTypes\AnimatedGraphicalElementData.cs" />
+    <Compile Include="Dofus\Files\Elements\SubTypes\BlendedGraphicalElementData.cs" />
+    <Compile Include="Dofus\Files\Elements\SubTypes\BoundingBoxGraphicalElementData.cs" />
+    <Compile Include="Dofus\Files\Elements\SubTypes\EntityGraphicalElementData.cs" />
+    <Compile Include="Dofus\Files\Elements\SubTypes\NormalGraphicalElementData.cs" />
+    <Compile Include="Dofus\Files\Elements\SubTypes\ParticlesGraphicalElementData.cs" />
+    <Compile Include="Dofus\Files\Exceptions\AlreadyExistsException.cs" />
+    <Compile Include="Dofus\Files\Exceptions\ConfigException.cs" />
+    <Compile Include="Dofus\Files\GameData\D2OClassAttribute.cs" />
+    <Compile Include="Dofus\Files\GameData\D2OClassDefinition.cs" />
+    <Compile Include="Dofus\Files\GameData\D2OFieldAttribute.cs" />
+    <Compile Include="Dofus\Files\GameData\D2oFieldDefinition.cs" />
+    <Compile Include="Dofus\Files\GameData\D2OFieldType.cs" />
+    <Compile Include="Dofus\Files\GameData\D2OIgnore.cs" />
+    <Compile Include="Dofus\Files\GameData\D2OReader.cs" />
+    <Compile Include="Dofus\Files\GameData\D2OWriter.cs" />
+    <Compile Include="Dofus\Files\GameData\IDataObject.cs" />
+    <Compile Include="Dofus\Files\Localization\AbstractI18nFile.cs" />
+    <Compile Include="Dofus\Files\Localization\ILocalizationFile.cs" />
+    <Compile Include="Dofus\Files\Localization\LocalizationFile.cs" />
+    <Compile Include="Dofus\Files\Localization\LocalizationFile2.cs" />
+    <Compile Include="Dofus\Files\Packed\IPackedFile.cs" />
+    <Compile Include="Dofus\Files\Packed\PackedFile.cs" />
+    <Compile Include="Dofus\Files\Utils\CellUtil.cs" />
+    <Compile Include="Dofus\Files\Utils\CryptHelper.cs" />
+    <Compile Include="Dofus\Files\Utils\DofusConfig.cs" />
+    <Compile Include="Dofus\Files\Utils\DofusFilesUtils.cs" />
+    <Compile Include="Dofus\Files\Utils\Tools.cs" />
+    <Compile Include="Dofus\Files\Utils\ZipHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dofus.Common\Dofus.Common.csproj">
+      <Project>{269d4c18-697c-4e68-9d10-ddc44b65e484}</Project>
+      <Name>Dofus.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dofus.IO\Dofus.IO.csproj">
+      <Project>{909eca69-52a6-47b5-9a86-99d17437f833}</Project>
+      <Name>Dofus.IO</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Dofus\Files\Maps\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
