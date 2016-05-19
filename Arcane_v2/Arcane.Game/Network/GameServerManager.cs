@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace Arcane.Game.Network
 {
-    public class GameServerManager
+    public class GameServerManager : AbstractServerManager<GameServer, GameClient, AbstractMessage>
     {
         #region Singleton
-        private static GameServerManager _instance = new GameServerManager();
+        private static readonly GameServerManager _instance = new GameServerManager();
 
         public static GameServerManager Instance
         {
@@ -22,74 +22,23 @@ namespace Arcane.Game.Network
                 return _instance;
             }
         }
-
-        private GameServer server;
-
-        private GameServerManager()
-        {
-        }
         #endregion
 
-        public void Initialize(IPAddress host, int port, int maxConnections)
+        private GameServerManager() : base(GameServerFactory.CreateGameServer(Config.GameServerHost, Config.GameServerPort, Config.GameServerMaxConnections))
         {
-            server = new GameServer(host, port, maxConnections);
-        }
-
-        public void Start()
-        {
-            if (server == null)
-                throw new NullReferenceException("This instance must be initialized before.");
-            server.Start();
-        }
-        public void Stop()
-        {
-            if (server == null)
-                throw new NullReferenceException("This instance must be initialized before.");
-            server.Stop();
         }
 
         public void DisconnectClientByAccount(Account account)
         {
-            if (server == null)
+            if (Server == null)
                 throw new NullReferenceException("This instance must be initialized before.");
             if (account == null)
                 throw new ArgumentNullException(nameof(account));
-            foreach (var client in server.Clients)
+            foreach (var client in Server.Clients)
             {
                 if (client.HasAccount && client.Account.Equals(account))
                     client.Disconnect();
             }
         }
     }
-    //public class GameServerManager : AbstractServerManager<GameServer, GameClient, AbstractMessage>
-    //{
-    //    #region Singleton
-    //    private static GameServerManager _instance = new GameServerManager();
-
-    //    public static GameServerManager Instance
-    //    {
-    //        get
-    //        {
-    //            return _instance;
-    //        }
-    //    }
-    //    #endregion
-
-    //    private GameServerManager() : base(LoginServerFactory.CreateLoginServer(Config.LoginServerHost, Config.LoginServerPort, Config.LoginMaxConnections))
-    //    {
-    //    }
-
-    //    public void DisconnectClientByAccount(Account account)
-    //    {
-    //        if (Server == null)
-    //            throw new NullReferenceException("This instance must be initialized before.");
-    //        if (account == null)
-    //            throw new ArgumentNullException(nameof(account));
-    //        foreach (var client in Server.Clients)
-    //        {
-    //            if (client.HasAccount && client.Account.Equals(account))
-    //                client.Disconnect();
-    //        }
-    //    }
-    //}
 }

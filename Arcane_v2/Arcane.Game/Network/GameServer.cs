@@ -13,24 +13,7 @@ namespace Arcane.Game.Network
 {
     public class GameServer : AbstractBaseServer<GameServer, GameClient, AbstractMessage>
     {
-        class LoginClientFactory : IClientFactory<GameClient, AbstractMessage>
-        {
-            private static LoginClientFactory _instance = new LoginClientFactory();
-
-            public static LoginClientFactory Instance
-            {
-                get
-                {
-                    return _instance;
-                }
-            }
-
-            public GameClient createClient(Socket socket)
-            {
-                return new GameClient(socket);
-            }
-        }
-        public GameServer(IPAddress host, int port, int maxConnections) : base(host, port, maxConnections, LoginClientFactory.Instance)
+        public GameServer(IPAddress host, int port, int maxConnections) : base(host, port, maxConnections, GameClientFactory.Instance)
         {
             OnClientAccepted += GameServer_OnClientAccepted;
             OnStarted += GameServer_OnStarted;

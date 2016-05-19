@@ -1,4 +1,6 @@
-﻿using Arcane.Base.Network.GameLink.Messages;
+﻿using Arcane.Base.Entities;
+using Arcane.Base.Network.GameLink.Messages;
+using Castle.ActiveRecord;
 using Chuckame.IO.TCP.Messages;
 using NLog;
 using System;
@@ -23,6 +25,44 @@ namespace Arcane.Login.Network.GameLink.Frames
 
         public override void OnDettached()
         {
+        }
+
+        [MessageHandler]
+        public void HelloMessage(HelloMessage msg)
+        {
+            if (Client.HasServerInformations)
+            {
+                Client.Disconnect();
+                LOGGER.Info("Received unexpected HelloMessage. Game server disconnected !");
+            }
+            else
+            {
+                var serverEntity = GameServerEntity.Find(msg.ServerId);
+                if (serverEntity == null)
+                {
+                    Client.Disconnect();
+                    LOGGER.Info("Received unknown/unauthorized server informations. Game server disconnected !");
+                }
+                else
+                {
+                    Client.ServerInformations = serverEntity;
+                    StatusMessage(msg);
+                }
+            }
+        }
+
+        [MessageHandler]
+        public void StatusMessage(StatusMessage msg)
+        {
+            if (!Client.HasServerInformations)
+            {
+                Client.Disconnect();
+                LOGGER.Info("Received unexpected StatusMessage. Game server disconnected !");
+            }
+            else
+            {
+                Client.UpdateStatus(msg.Status);
+            }
         }
     }
 }

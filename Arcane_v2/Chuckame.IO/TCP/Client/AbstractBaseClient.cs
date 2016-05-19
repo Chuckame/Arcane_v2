@@ -32,9 +32,7 @@ namespace Chuckame.IO.TCP.Client
             BufferSize = bufferSize;
             MessageFactory = messageFactory;
             _buffer = new byte[BufferSize];
-
-            //BeginReceive(new StateObject());
-            new Task(() => BeginReceive(new StateObject())).Start();
+            new Thread(() => BeginReceive(new StateObject())).Start();
         }
 
         public event Action<TClient> OnDisconnected;

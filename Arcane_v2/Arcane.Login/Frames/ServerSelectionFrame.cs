@@ -13,6 +13,7 @@ using NLog;
 using Arcane.Protocol.Enums;
 using Arcane.Base.Entities;
 using Arcane.Login.Helpers;
+using Arcane.Login.Network.GameLink;
 
 namespace Arcane.Login.Frames
 {
@@ -27,13 +28,20 @@ namespace Arcane.Login.Frames
         public override void OnAttached()
         {
             Client.CurrentContext = ContextEnum.ServerSelection;
+            GameLinkManager.Instance.OnStatusUpdated += Instance_OnStatusUpdated;
             Client.AddFrame(new PseudoSearchFrame(Client));
             Client.SendMessage(GameServerHelper.MakeServersListMessage(Client.Account));
         }
 
         public override void OnDettached()
         {
+            GameLinkManager.Instance.OnStatusUpdated -= Instance_OnStatusUpdated;
             Client.RemoveFrame(Client.GetFrame<PseudoSearchFrame>());
+        }
+
+        private void Instance_OnStatusUpdated(GameLinkClient server, ServerStatusEnum newStatus)
+        {
+            Client.SendMessage(new ServerStatusUpdateMessage(GameServerHelper.MakeGameServerInformations(Client.Account, server.ServerInformations)));
         }
 
         [MessageHandler]

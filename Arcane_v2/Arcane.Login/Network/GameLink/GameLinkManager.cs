@@ -1,4 +1,5 @@
-﻿using Arcane.Base.Network;
+﻿using Arcane.Base.Common;
+using Arcane.Base.Network;
 using Arcane.Base.Network.GameLink.Messages;
 using Arcane.Protocol.Enums;
 using Chuckame.IO.TCP.Messages;
@@ -23,9 +24,21 @@ namespace Arcane.Login.Network.GameLink
             }
         }
         #endregion
+        public event Action<GameLinkClient, ServerStatusEnum> OnStatusUpdated;
 
-        private GameLinkManager() : base(GameLinkHostFactory.CreateLoginServer(Config.GameLinkHost, Config.GameLinkPort, Config.GameLinkMaxConnections))
+        private GameLinkManager() : base(GameLinkHostFactory.CreateLoginServer(CommonConfig.GameLinkHost, CommonConfig.GameLinkPort, CommonConfig.GameLinkMaxConnections))
         {
+            Server.OnClientAccepted += Server_OnClientAccepted;
+        }
+
+        private void Server_OnClientAccepted(GameLinkHost server, GameLinkClient client)
+        {
+            client.OnStatusUpdated += Client_OnStatusUpdated;
+        }
+
+        private void Client_OnStatusUpdated(GameLinkClient server, Protocol.Enums.ServerStatusEnum client)
+        {
+            OnStatusUpdated?.Invoke(server, client);
         }
 
         public ServerStatusEnum GetStatus(ushort serverId)

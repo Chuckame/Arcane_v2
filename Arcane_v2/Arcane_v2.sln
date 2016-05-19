@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arcane", "Arcane\Arcane.csproj", "{FC0F3F09-F032-405B-9DF0-E0AA32C4487A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arcane.AdminConsole", "Arcane\Arcane.AdminConsole.csproj", "{FC0F3F09-F032-405B-9DF0-E0AA32C4487A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1D1C247C-8F0C-4A8F-9BB0-E54A4602CD72} = {1D1C247C-8F0C-4A8F-9BB0-E54A4602CD72}
 		{6A349DD8-96E1-4180-A6CF-87155E4D6055} = {6A349DD8-96E1-4180-A6CF-87155E4D6055}

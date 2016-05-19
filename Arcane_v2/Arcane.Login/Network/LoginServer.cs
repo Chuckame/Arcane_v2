@@ -10,11 +10,13 @@ using Arcane.Protocol;
 using System.Net.Sockets;
 using Arcane.Login.Frames;
 using Arcane.Login.Helpers;
+using NLog;
 
 namespace Arcane.Login.Network
 {
     public class LoginServer : AbstractBaseServer<LoginServer, LoginClient, AbstractMessage>
     {
+        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
         public LoginServer(IPAddress host, int port, int maxConnections) : base(host, port, maxConnections, LoginClientFactory.Instance)
         {
             OnClientAccepted += LoginServer_OnClientAccepted;
@@ -23,12 +25,12 @@ namespace Arcane.Login.Network
 
         private static void LoginServer_OnStarted(LoginServer obj)
         {
-            Console.WriteLine("Serveur lancé !");
+            LOGGER.Info("Server started !");
         }
 
         private static void LoginServer_OnClientAccepted(LoginServer me, LoginClient client)
         {
-            Console.WriteLine(client + " accepted !");
+            LOGGER.Info("New client !");
             client.AddFrame(new ConnectionFrame(client));
         }
     }

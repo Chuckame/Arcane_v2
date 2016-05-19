@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Arcane.Base.Entities
 {
-    [ActiveRecord("accounts", "arcane2_login")]
+    [ActiveRecord("accounts", "heart_emu_login")]
     public class Account : ActiveRecordLinqBase<Account>
     {
         [Property("account_creation_date", NotNull = true)]
@@ -21,7 +21,7 @@ namespace Arcane.Base.Entities
         [Property("community", NotNull = true)]
         public ServerCommunitiesEnum Community { get; set; }
 
-        [HasAndBelongsToMany(ColumnKey = "owner_id", ColumnRef = "friend_account_id", Table = "friends", Lazy = true, Cascade = ManyRelationCascadeEnum.SaveUpdate)]
+        [HasAndBelongsToMany(Schema = "heart_emu_login", ColumnKey = "owner_id", ColumnRef = "friend_account_id", Table = "friends", Lazy = true, Cascade = ManyRelationCascadeEnum.SaveUpdate)]
         public IList<Account> Friends { get; private set; }
 
         [PrimaryKey("account_id", Generator = PrimaryKeyType.Identity)]

@@ -16,10 +16,27 @@ namespace Arcane.Base.Network
         where TServer : AbstractBaseServer<TServer, TClient, TMessage>
     {
         public TServer Server { get; }
+        public event Action<TClient> OnClientConnected;
+        public event Action<TClient> OnClientDisconnected;
+        public event Action<TClient> OnClientMessageReceiving;
+        public event Action<TClient, TMessage> OnClientMessageReceived;
+        public event Action<TClient, TMessage> OnClientMessageSending;
+        public event Action<TClient, TMessage> OnClientMessageSent;
 
         protected AbstractServerManager(TServer server)
         {
             Server = server;
+            Server.OnClientAccepted += (serv, client) => OnClientConnected?.Invoke(client);
+            Server.OnClientAccepted += Server_OnClientAccepted;
+        }
+
+        private void Server_OnClientAccepted(TServer server, TClient client)
+        {
+            client.OnDisconnected += (c) => OnClientDisconnected?.Invoke(c);
+            client.OnMessageReceived += (c, m) => OnClientMessageReceived?.Invoke(c, m);
+            client.OnMessageReceiving += (c) => OnClientMessageReceiving?.Invoke(c);
+            client.OnMessageSending += (c, m) => OnClientMessageSending?.Invoke(c, m);
+            client.OnMessageSent += (c, m) => OnClientMessageSent?.Invoke(c, m);
         }
 
         public void Start()

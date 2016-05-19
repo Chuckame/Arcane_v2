@@ -1,5 +1,6 @@
 ﻿using Arcane.Base.Network.GameLink.Messages;
 using Arcane.Login.Network.GameLink.Frames;
+using Arcane.Protocol.Enums;
 using Chuckame.IO.TCP.Client;
 using Chuckame.IO.TCP.Messages;
 using Chuckame.IO.TCP.Server;

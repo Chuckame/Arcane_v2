@@ -2,7 +2,9 @@
 using Chuckame.IO.TCP.Messages;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,7 +22,7 @@ namespace Arcane.Base.Network.GameLink
                 return _instance;
             }
         }
-        
+
         private GameLinkMessageBuilder()
         {
         }
@@ -28,12 +30,31 @@ namespace Arcane.Base.Network.GameLink
 
         public byte[] SerializeMessage(IGameLinkMessage message)
         {
-            throw new NotImplementedException();
+            var formatter = new BinaryFormatter();
+            using (var stream = new MemoryStream())
+            {
+                formatter.Serialize(stream, message);
+                return stream.GetBuffer();
+            }
         }
 
         public bool TryBuildMessages(byte[] raw, out ICollection<IGameLinkMessage> builtMessages)
         {
-            throw new NotImplementedException();
+            try
+            {
+                builtMessages = new List<IGameLinkMessage>();
+                var formatter = new BinaryFormatter();
+                using (var stream = new MemoryStream(raw))
+                {
+                    builtMessages.Add((IGameLinkMessage)formatter.Deserialize(stream));
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                builtMessages = null;
+                return false;
+            }
         }
     }
 }

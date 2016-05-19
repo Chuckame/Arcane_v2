@@ -1,8 +1,7 @@
 ﻿using Arcane.Base.Common;
 using Arcane.Base.Encryption;
 using Arcane.Base.Entities;
-using Arcane.Login.Network;
-using Arcane.Login.Network.GameLink;
+using Arcane.Game.Network;
 using Arcane.Protocol.Messages;
 using NLog;
 using System;
@@ -11,37 +10,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arcane.Login
+namespace Arcane.Game
 {
     static class Program
     {
         static void Main(string[] args)
         {
             InitMain();
-            DatabaseInitializer.Initialize(typeof(Account).Assembly);
+            DatabaseInitializer.Initialize(typeof(Account).Assembly/*, typeof(Character).Assembly*/);
             LogConfigInitializer.Initialize(LogLevel.Trace);
             DofusMessageBuilderInitializer.Initialize();
             RSAProtocol.GenerateKey();
-            LoginServerManager.Instance.Start();
-            LoginServerManager.Instance.OnClientConnected += LoginServerClientConnected;
-            LoginServerManager.Instance.OnClientDisconnected += LoginServerClientDisconnected;
-            GameLinkManager.Instance.Start();
+            GameServerManager.Instance.Start();
+            GameServerManager.Instance.OnClientConnected += LoginServerClientConnected;
+            GameServerManager.Instance.OnClientDisconnected += LoginServerClientDisconnected;
+            //GameLinkManager.Instance.Start();
             Console.ReadLine();
         }
 
-        private static void LoginServerClientDisconnected(LoginClient obj)
+        private static void LoginServerClientDisconnected(GameClient obj)
         {
             UpdateConsoleTitle();
         }
 
-        private static void LoginServerClientConnected(LoginClient client)
+        private static void LoginServerClientConnected(GameClient client)
         {
             UpdateConsoleTitle();
         }
 
         private static void UpdateConsoleTitle()
         {
-            Console.Title = $"HeartEmu - LoginServer - Clients:{LoginServerManager.Instance.Server.Clients.Count}/{LoginServerManager.Instance.Server.MaxConnections}";
+            Console.Title = $"HeartEmu - GameServer - Clients:{GameServerManager.Instance.Server.Clients.Count}/{GameServerManager.Instance.Server.MaxConnections}";
         }
 
         static void InitMain()

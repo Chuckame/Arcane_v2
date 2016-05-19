@@ -9,11 +9,13 @@ using Chuckame.IO.TCP.Messages;
 using Arcane.Protocol;
 using Arcane.Protocol.Messages;
 using Arcane.Base.Entities;
+using NLog;
 
 namespace Arcane.Login.Network
 {
     public class LoginClient : AbstractBaseClient<LoginClient, AbstractMessage>
     {
+        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
         public const int BUFFER_SIZE = 8192;
         public Account Account { get; set; }
         public bool HasAccount { get { return Account != null; } }
@@ -24,9 +26,9 @@ namespace Arcane.Login.Network
             this.OnMessageReceived += LoginClient_OnMessageReceived;
         }
 
-        private void LoginClient_OnMessageReceived(LoginClient arg1, AbstractMessage arg2)
+        private void LoginClient_OnMessageReceived(LoginClient client, AbstractMessage msg)
         {
-            Console.WriteLine("LoginClient: msg received !");
+            LOGGER.Debug($"{client} has received message !");
         }
     }
 }

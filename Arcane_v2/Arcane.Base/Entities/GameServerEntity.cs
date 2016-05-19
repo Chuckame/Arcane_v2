@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Arcane.Base.Entities
 {
-    [ActiveRecord("servers", "arcane2_login")]
+    [ActiveRecord("servers", "heart_emu_login")]
     public class GameServerEntity : ActiveRecordLinqBase<GameServerEntity>
     {
-        [PrimaryKey("server_id")]
+        [PrimaryKey("server_id", Generator = PrimaryKeyType.Assigned)]
         public ushort Id { get; set; }
 
         [Property("status", NotNull = true)]

@@ -1,4 +1,5 @@
 ﻿using Arcane.Base.Entities;
+using Arcane.Login.Network.GameLink;
 using Arcane.Protocol.Enums;
 using Arcane.Protocol.Messages;
 using Arcane.Protocol.Types;
@@ -17,10 +18,17 @@ namespace Arcane.Login.Helpers
             var servers = new List<GameServerInformations>();
             foreach (var server in GameServerEntity.FindAll())
             {
-                sbyte charactersCount = 1;
-                servers.Add( new GameServerInformations(server.Id, server.Status.ToSByte(), server.Completion, server.Status.IsSelectable(), charactersCount, server.CreationDate.ToDofusTimestamp()));
+                servers.Add(MakeGameServerInformations(account, server));
             }
             return new ServersListMessage(servers.ToArray());
+        }
+        public static GameServerInformations MakeGameServerInformations(Account account, GameServerEntity server)
+        {
+            return new GameServerInformations(server.Id, server.Status.ToSByte(), server.Completion, server.Status.IsSelectable(), GetCharactersCount(account, server.Id), server.CreationDate.ToDofusTimestamp());
+        }
+        public static sbyte GetCharactersCount(Account account, ushort serverId)
+        {
+            return 0;
         }
         private static bool IsSelectable(this ServerStatusEnum status)
         {

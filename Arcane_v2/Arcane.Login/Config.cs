@@ -15,9 +15,6 @@ namespace Arcane.Login
         public static readonly IPAddress LoginServerHost = IPAddress.Parse("127.0.0.1");
         public static readonly int LoginServerPort = 444;
         public static readonly int LoginMaxConnections = 1000;
-        public static readonly IPAddress GameLinkHost = IPAddress.Parse("127.0.0.1");
-        public static readonly int GameLinkPort = 445;
-        public static readonly int GameLinkMaxConnections = 100;
         public static readonly char[] NicknameAcceptedChars = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '-' };
         public static readonly string[] NicknameRefusedWords = { "dofus" };
         public static readonly int NicknameMinLength = 5;
