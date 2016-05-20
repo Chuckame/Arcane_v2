@@ -8,10 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Arcane.Base.Entities;
 
 namespace Arcane.Login.Network.GameLink
 {
-    public class GameLinkManager : AbstractServerManager<GameLinkHost, GameLinkClient, IGameLinkMessage>
+    public class GameLinkManager : AbstractServerManager<GameLinkHost, GameLinkClient, AbstractGameLinkMessage>
     {
         #region Singleton
         private static GameLinkManager _instance = new GameLinkManager();
@@ -36,7 +37,7 @@ namespace Arcane.Login.Network.GameLink
             client.OnStatusUpdated += Client_OnStatusUpdated;
         }
 
-        private void Client_OnStatusUpdated(GameLinkClient server, Protocol.Enums.ServerStatusEnum client)
+        private void Client_OnStatusUpdated(GameLinkClient server, ServerStatusEnum client)
         {
             OnStatusUpdated?.Invoke(server, client);
         }
@@ -52,6 +53,15 @@ namespace Arcane.Login.Network.GameLink
         public GameLinkClient GetServer(ushort serverId)
         {
             return Server.Clients.FirstOrDefault(s => s.HasServerInformations && s.ServerInformations.Id.Equals(serverId));
+        }
+
+        public void DisconnectClientByAccount(Account account)
+        {
+            var serverClient = Server.Clients.Where(x => x.HasServerInformations).FirstOrDefault(x => x.IsAccountConnected(account));
+            if (serverClient != null)
+            {
+                serverClient.DisconnectAccount(account);
+            }
         }
     }
 }

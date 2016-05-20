@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Arcane.Base.Network.GameLink.Messages
 {
     [Serializable]
-    public class HelloMessage : StatusMessage, IGameLinkMessage, ISerializable
+    public class HelloMessage : StatusMessage, ISerializable
     {
         public ushort ServerId { get; set; }
         protected HelloMessage(SerializationInfo info, StreamingContext context) : base(info, context)

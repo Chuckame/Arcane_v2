@@ -14,6 +14,7 @@ using Arcane.Protocol.Enums;
 using Arcane.Base.Entities;
 using Arcane.Login.Helpers;
 using Castle.ActiveRecord;
+using Arcane.Login.Network.GameLink;
 
 namespace Arcane.Login.Frames
 {
@@ -99,7 +100,7 @@ namespace Arcane.Login.Frames
         private void ProcessLogin(Account account, IdentificationMessage msg)
         {
             LoginServerManager.Instance.DisconnectClientByAccount(account);
-            // TODO: Disconnect connected account from game server
+            GameLinkManager.Instance.DisconnectClientByAccount(account);
             Client.Account = account;
             account.LastConnectionDate = DateTime.Now;
             account.LastConnectionIp = Client.RemoteHost.ToString();

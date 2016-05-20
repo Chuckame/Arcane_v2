@@ -96,9 +96,10 @@
     <Compile Include="Frames\ConnectionFrame.cs" />
     <Compile Include="Helpers\ConnectionHelper.cs" />
     <Compile Include="Helpers\FrameHelper.cs" />
+    <Compile Include="Network\GameLink\Frames\LinkFrame.cs" />
     <Compile Include="Network\GameLink\GameLinkClient.cs" />
     <Compile Include="Network\GameLink\GameLinkClientFactory.cs" />
-    <Compile Include="Network\GameLink\Frames\GameLinkFrame.cs" />
+    <Compile Include="Network\GameLink\Frames\BeforeFrame.cs" />
     <Compile Include="Network\GameLink\GameLinkHost.cs" />
     <Compile Include="Network\GameLink\GameLinkHostFactory.cs" />
     <Compile Include="Network\GameLink\GameLinkManager.cs" />

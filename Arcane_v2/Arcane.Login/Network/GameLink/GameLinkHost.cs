@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Arcane.Login.Network.GameLink
 {
-    public class GameLinkHost : AbstractBaseServer<GameLinkHost, GameLinkClient, IGameLinkMessage>
+    public class GameLinkHost : AbstractBaseServer<GameLinkHost, GameLinkClient, AbstractGameLinkMessage>
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
         public GameLinkHost(IPAddress host, int port, int maxConnections) : base(host, port, maxConnections, GameLinkClientFactory.Instance)
@@ -32,7 +32,7 @@ namespace Arcane.Login.Network.GameLink
         private static void LoginServer_OnClientAccepted(GameLinkHost me, GameLinkClient client)
         {
             LOGGER.Debug("Client accepted !");
-            client.AddFrame(new GameLinkFrame(client));
+            client.AddFrame(new BeforeFrame(client));
         }
     }
 }

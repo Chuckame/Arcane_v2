@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Arcane.Base.Network.GameLink
 {
-    public class GameLinkMessageBuilder : IMessageFactory<IGameLinkMessage>
+    public class GameLinkMessageBuilder : IMessageFactory<AbstractGameLinkMessage>
     {
         #region Singleton
         private static GameLinkMessageBuilder _instance = new GameLinkMessageBuilder();
@@ -28,7 +28,7 @@ namespace Arcane.Base.Network.GameLink
         }
         #endregion
 
-        public byte[] SerializeMessage(IGameLinkMessage message)
+        public byte[] SerializeMessage(AbstractGameLinkMessage message)
         {
             var formatter = new BinaryFormatter();
             using (var stream = new MemoryStream())
@@ -38,15 +38,15 @@ namespace Arcane.Base.Network.GameLink
             }
         }
 
-        public bool TryBuildMessages(byte[] raw, out ICollection<IGameLinkMessage> builtMessages)
+        public bool TryBuildMessages(byte[] raw, out ICollection<AbstractGameLinkMessage> builtMessages)
         {
             try
             {
-                builtMessages = new List<IGameLinkMessage>();
+                builtMessages = new List<AbstractGameLinkMessage>();
                 var formatter = new BinaryFormatter();
                 using (var stream = new MemoryStream(raw))
                 {
-                    builtMessages.Add((IGameLinkMessage)formatter.Deserialize(stream));
+                    builtMessages.Add((AbstractGameLinkMessage)formatter.Deserialize(stream));
                     return true;
                 }
             }

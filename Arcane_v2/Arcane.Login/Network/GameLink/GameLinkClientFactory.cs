@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Arcane.Login.Network.GameLink
 {
-    public class GameLinkClientFactory : IClientFactory<GameLinkClient, IGameLinkMessage>
+    public class GameLinkClientFactory : IClientFactory<GameLinkClient, AbstractGameLinkMessage>
     {
         private static GameLinkClientFactory _instance = new GameLinkClientFactory();
 

@@ -103,10 +103,14 @@
     <Compile Include="Extentions\StringExtentions.cs" />
     <Compile Include="Extentions\CollectionExtentions.cs" />
     <Compile Include="Network\AbstractServerManager.cs" />
+    <Compile Include="Network\GameLink\LinkMessageHandle.cs" />
+    <Compile Include="Network\GameLink\Messages\ClientDisconnectedMessage.cs" />
+    <Compile Include="Network\GameLink\Messages\ClientConnectedMessage.cs" />
+    <Compile Include="Network\GameLink\Messages\RequestClientDisconnectionMessage.cs" />
     <Compile Include="Network\GameLink\GameLinkMessageBuilder.cs" />
     <Compile Include="Network\GameLink\Messages\StatusMessage.cs" />
     <Compile Include="Network\GameLink\Messages\HelloMessage.cs" />
-    <Compile Include="Network\GameLink\Messages\IGameLinkMessage.cs" />
+    <Compile Include="Network\GameLink\Messages\AbstractGameLinkMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Utils.cs" />
   </ItemGroup>

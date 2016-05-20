@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 namespace Arcane.Base.Network.GameLink.Messages
 {
     [Serializable]
-    public class StatusMessage : IGameLinkMessage, ISerializable
+    public class StatusMessage : AbstractGameLinkMessage, ISerializable
     {
         public ServerStatusEnum Status { get; set; }
 
-        protected StatusMessage(SerializationInfo info, StreamingContext context)
+        protected StatusMessage(SerializationInfo info, StreamingContext context) : base(info, context)
         {
             if (info == null)
                 throw new ArgumentNullException(nameof(info));
@@ -25,8 +25,9 @@ namespace Arcane.Base.Network.GameLink.Messages
         {
         }
 
-        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            base.GetObjectData(info, context);
             info.AddValue(nameof(Status), Status);
         }
     }

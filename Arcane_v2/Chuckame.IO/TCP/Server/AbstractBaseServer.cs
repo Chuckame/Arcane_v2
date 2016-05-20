@@ -31,6 +31,7 @@ namespace Chuckame.IO.TCP.Server
                 throw new ArgumentNullException(nameof(clientFactory));
             _startStopLock = new Mutex();
             _mClients = new Collection<TClient>();
+            Clients = new ReadOnlyCollection<TClient>(_mClients);
             Host = host;
             ClientFactory = clientFactory;
             Port = port;
@@ -47,16 +48,7 @@ namespace Chuckame.IO.TCP.Server
 
         public IClientFactory<TClient, TMessage> ClientFactory { get; }
 
-        public IReadOnlyCollection<TClient> Clients
-        {
-            get
-            {
-                lock (_mClients)
-                {
-                    return new ReadOnlyCollection<TClient>(_mClients);
-                }
-            }
-        }
+        public IReadOnlyCollection<TClient> Clients {  get; }
 
         public IPAddress Host { get; }
 
@@ -95,7 +87,7 @@ namespace Chuckame.IO.TCP.Server
                     throw new AlreadyStartedException();
                 OnStarting?.Invoke((TServer)this);
                 _listener.Start();
-                new Thread(BeginAccept).Start();
+                new Thread(BeginAccept) { Name=$"{typeof(TServer).Name}Thread" }.Start();
                 //BeginAccept();
                 IsStarted = true;
                 OnStarted?.Invoke((TServer)this);
