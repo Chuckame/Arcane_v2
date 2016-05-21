@@ -21,14 +21,25 @@ namespace Arcane.Login.Network
         public bool HasAccount { get { return Account != null; } }
         public ContextEnum CurrentContext { get; set; }
 
-        public LoginClient(Socket socket) : base(socket, BUFFER_SIZE, MessageBuilder.Instance)
+        public LoginClient(Socket socket, int iddleTimeoutDisconnection) : base(socket, BUFFER_SIZE, MessageBuilder.Instance, iddleTimeoutDisconnection)
         {
             this.OnMessageReceived += LoginClient_OnMessageReceived;
+            OnIddleTimeout += LoginClient_OnIddleTimeout;
+        }
+
+        private void LoginClient_OnIddleTimeout(LoginClient obj)
+        {
+            SendMessage(new SystemMessageDisplayMessage(true, 1, new string[0]));//Vous êtes resté inactif trop longtemps.
         }
 
         private void LoginClient_OnMessageReceived(LoginClient client, AbstractMessage msg)
         {
             LOGGER.Debug($"{client} has received message !");
+        }
+
+        public void DisplayMessage(string title, string content)
+        {
+            SendMessage(new SystemMessageDisplayMessage(true, 50, new[] { title, content }));
         }
     }
 }

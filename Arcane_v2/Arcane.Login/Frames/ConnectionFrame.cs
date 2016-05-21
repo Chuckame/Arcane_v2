@@ -15,6 +15,7 @@ using Arcane.Base.Entities;
 using Arcane.Login.Helpers;
 using Castle.ActiveRecord;
 using Arcane.Login.Network.GameLink;
+using Arcane.Base.Common;
 
 namespace Arcane.Login.Frames
 {
@@ -30,7 +31,7 @@ namespace Arcane.Login.Frames
         public override void OnAttached()
         {
             Client.CurrentContext = ContextEnum.Connection;
-            Client.SendMessage(new ProtocolRequired(Config.ProtocolRequiredVersion, Config.ProtocolCurrentVersion));
+            Client.SendMessage(new ProtocolRequired(CommonConfig.ProtocolRequiredVersion, CommonConfig.ProtocolCurrentVersion));
             Client.SendMessage(new HelloConnectMessage(Salt, RSAProtocol.PublicKey));
         }
 

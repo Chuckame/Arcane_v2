@@ -13,5 +13,7 @@ namespace Arcane.Base.Common
         public static readonly IPAddress GameLinkHost = IPAddress.Parse("127.0.0.1");
         public static readonly int GameLinkPort = 4445;
         public static readonly int GameLinkMaxConnections = 100;
+        public static readonly int ProtocolRequiredVersion = 1444;
+        public static readonly int ProtocolCurrentVersion = 1444;
     }
 }

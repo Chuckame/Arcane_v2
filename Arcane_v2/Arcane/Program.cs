@@ -83,8 +83,11 @@ namespace Arcane.AdminConsole
             server.Completion = sbyte.Parse(Console.ReadLine());
             Console.Write($"Status[{string.Join("|", Enum.GetNames(typeof(ServerStatusEnum)))}]: ");
             var temp = Console.ReadLine();
-            server.Status = string.IsNullOrWhiteSpace(temp) || Enum.IsDefined(typeof(ServerStatusEnum), temp) ? ServerStatusEnum.STATUS_UNKNOWN : (ServerStatusEnum)Enum.Parse(typeof(ServerStatusEnum), temp);
-            server.Create();
+            server.Status = string.IsNullOrWhiteSpace(temp) || !Enum.IsDefined(typeof(ServerStatusEnum), temp) ? ServerStatusEnum.STATUS_UNKNOWN : (ServerStatusEnum)Enum.Parse(typeof(ServerStatusEnum), temp);
+            if (GameServerEntity.TryFind(server.Id) != null)
+                server.Update();
+            else
+                server.Create();
             Console.WriteLine("Created !");
         }
     }

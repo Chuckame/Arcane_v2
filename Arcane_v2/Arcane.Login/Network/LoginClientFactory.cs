@@ -23,7 +23,7 @@ namespace Arcane.Login.Network
 
         public LoginClient createClient(Socket socket)
         {
-            return new LoginClient(socket);
+            return new LoginClient(socket, Config.LoginServerClientIddleTimeout);
         }
     }
 }

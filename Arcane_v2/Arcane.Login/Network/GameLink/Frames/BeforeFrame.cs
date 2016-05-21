@@ -30,7 +30,7 @@ namespace Arcane.Login.Network.GameLink.Frames
         [MessageHandler]
         public void HelloMessage(HelloMessage msg)
         {
-            var serverEntity = GameServerEntity.Find(msg.ServerId);
+            var serverEntity = GameServerEntity.TryFind(msg.ServerId);
             if (serverEntity == null)
             {
                 Client.Disconnect();

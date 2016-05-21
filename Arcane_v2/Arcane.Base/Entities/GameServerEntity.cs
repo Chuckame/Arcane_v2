@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace Arcane.Base.Entities
 {
@@ -29,5 +30,10 @@ namespace Arcane.Base.Entities
 
         [Property("port", NotNull = true)]
         public ushort Port { get; set; }
+
+        public override string ToString()
+        {
+            return $"GameServerEntity#{Id}";
+        }
     }
 }

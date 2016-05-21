@@ -17,14 +17,16 @@ namespace Chuckame.IO.TCP.Client
         where TMessage : IMessage
         where TClient : AbstractBaseClient<TClient, TMessage>
     {
-        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
+        private readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         private readonly byte[] _buffer;
         private readonly Queue<TMessage> _messagesQueue;
         private readonly Collection<IFrame<TClient, TMessage>> _mFrames;
         private readonly Socket _socket;
+        public bool HasIddleDisconnectionTimeout { get; }
+        private readonly Timer _iddleDisconnectionTimer;
 
-        protected AbstractBaseClient(Socket socket, int bufferSize, IMessageFactory<TMessage> messageFactory)
+        protected AbstractBaseClient(Socket socket, int bufferSize, IMessageFactory<TMessage> messageFactory, int? iddleTimeoutDisconnection = null)
         {
             _mFrames = new Collection<IFrame<TClient, TMessage>>();
             _messagesQueue = new Queue<TMessage>();
@@ -32,7 +34,15 @@ namespace Chuckame.IO.TCP.Client
             BufferSize = bufferSize;
             MessageFactory = messageFactory;
             _buffer = new byte[BufferSize];
-            new Thread(() => BeginReceive(new StateObject())) { Name= $"{typeof(TClient).Name}Thread" }.Start();
+            if (HasIddleDisconnectionTimeout = iddleTimeoutDisconnection.HasValue)
+            {
+                _iddleDisconnectionTimer = new Timer((state) => { OnIddleTimeout?.Invoke((TClient)this); Disconnect(); }, null, iddleTimeoutDisconnection.Value, Timeout.Infinite);
+                OnMessageReceived += (a1, a2) => SetIddleDisconnection(iddleTimeoutDisconnection.Value);
+                OnMessageReceiving += (a1) => SetIddleDisconnection(iddleTimeoutDisconnection.Value);
+                OnMessageSent += (a1, a2) => SetIddleDisconnection(iddleTimeoutDisconnection.Value);
+                OnMessageReceived += (a1, a2) => SetIddleDisconnection(iddleTimeoutDisconnection.Value);
+            }
+            new Thread(() => BeginReceive(new StateObject())) { Name = $"{typeof(TClient).Name}Thread" }.Start();
         }
 
         public event Action<TClient> OnDisconnected;
@@ -40,6 +50,7 @@ namespace Chuckame.IO.TCP.Client
         public event Action<TClient> OnMessageReceiving;
         public event Action<TClient, TMessage> OnMessageSending;
         public event Action<TClient, TMessage> OnMessageSent;
+        public event Action<TClient> OnIddleTimeout;
         private event Action<TMessage> _dispatchMessageEvent;
 
         public int BufferSize { get; }
@@ -78,6 +89,14 @@ namespace Chuckame.IO.TCP.Client
             }
         }
 
+        public void SetIddleDisconnection(int iddleDisconnection)
+        {
+            if (HasIddleDisconnectionTimeout)
+                _iddleDisconnectionTimer.Change(iddleDisconnection, Timeout.Infinite);
+            else
+                LOGGER.Error("There is no iddle disconnection.");
+        }
+
         public void AddFrame(IFrame<TClient, TMessage> frame)
         {
             LOGGER.Trace($"Adding frame '{frame}'...");
@@ -97,7 +116,7 @@ namespace Chuckame.IO.TCP.Client
             {
                 if (IsConnected)
                 {
-                    LOGGER.Trace($"Connected ! Disconnection...");
+                    LOGGER.Trace($"Disconnection...");
                     try
                     {
                         _socket.Disconnect(false);
@@ -105,12 +124,12 @@ namespace Chuckame.IO.TCP.Client
                     }
                     catch (SocketException)
                     {
-                        LOGGER.Trace($"Already disconnected !");
+                        LOGGER.Trace($"Unable to disconnect, already disconnected.");
                     }
                 }
                 else
                 {
-                    LOGGER.Trace($"Already disconnected ! Useless to disconnect.");
+                    LOGGER.Trace($"Already disconnected, useless to disconnect.");
                 }
             }
         }
@@ -122,6 +141,7 @@ namespace Chuckame.IO.TCP.Client
                 Disconnect();
             }
             _socket.Dispose();
+            _iddleDisconnectionTimer.Dispose();
         }
 
         public void RemoveFrame(IFrame<TClient, TMessage> frame)
@@ -180,7 +200,16 @@ namespace Chuckame.IO.TCP.Client
                 return;
             }
             var stateObject = (StateObject)ar.AsyncState;
-            var bytesRead = _socket.EndReceive(ar);
+            int bytesRead;
+            try
+            {
+                bytesRead = _socket.EndReceive(ar);
+            }
+            catch (SocketException)
+            {
+                Disconnect();
+                return;
+            }
 
             //encore des données à recevoir pour former le msg final
             if (bytesRead > 0)

@@ -1,4 +1,5 @@
 ﻿using Arcane.Protocol.Enums;
+using Dofus.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,27 +9,20 @@ using System.Threading.Tasks;
 
 namespace Arcane.Base.Network.GameLink.Messages
 {
-    [Serializable]
-    public class StatusMessage : AbstractGameLinkMessage, ISerializable
+    public class StatusMessage : AbstractGameLinkMessage
     {
         public ServerStatusEnum Status { get; set; }
 
-        protected StatusMessage(SerializationInfo info, StreamingContext context) : base(info, context)
+        public override void Serialize(IDataWriter writer)
         {
-            if (info == null)
-                throw new ArgumentNullException(nameof(info));
-
-            Status = info.GetValue<ServerStatusEnum>(nameof(Status));
+            base.Serialize(writer);
+            writer.WriteSByte((sbyte)Status);
         }
 
-        public StatusMessage()
+        public override void Deserialize(IDataReader reader)
         {
-        }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            info.AddValue(nameof(Status), Status);
+            base.Deserialize(reader);
+            Status = (ServerStatusEnum)reader.ReadSByte();
         }
     }
 }

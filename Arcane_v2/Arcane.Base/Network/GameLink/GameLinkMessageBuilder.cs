@@ -3,15 +3,19 @@ using Chuckame.IO.TCP.Messages;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Dofus.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
+using NLog;
 
 namespace Arcane.Base.Network.GameLink
 {
     public class GameLinkMessageBuilder : IMessageFactory<AbstractGameLinkMessage>
     {
+        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
         #region Singleton
         private static GameLinkMessageBuilder _instance = new GameLinkMessageBuilder();
 
@@ -30,11 +34,12 @@ namespace Arcane.Base.Network.GameLink
 
         public byte[] SerializeMessage(AbstractGameLinkMessage message)
         {
-            var formatter = new BinaryFormatter();
-            using (var stream = new MemoryStream())
+            using (var writer = DofusIOUtils.CreateBigEndianWriter())
             {
-                formatter.Serialize(stream, message);
-                return stream.GetBuffer();
+                writer.WriteUTF(message.GetType().Assembly.FullName);
+                writer.WriteUTF(message.GetType().FullName);
+                message.Serialize(writer);
+                return writer.Data;
             }
         }
 
@@ -43,16 +48,23 @@ namespace Arcane.Base.Network.GameLink
             try
             {
                 builtMessages = new List<AbstractGameLinkMessage>();
-                var formatter = new BinaryFormatter();
-                using (var stream = new MemoryStream(raw))
+                using (var reader = DofusIOUtils.CreateBigEndianReader(raw))
                 {
-                    builtMessages.Add((AbstractGameLinkMessage)formatter.Deserialize(stream));
+                    var assemblyName = reader.ReadUTF();
+                    var fullName = reader.ReadUTF();
+                    var instance = Activator.CreateInstance(assemblyName, fullName).Unwrap();
+                    if (!(instance is AbstractGameLinkMessage))
+                        throw new InvalidDataException("Received message invalid.");
+                    var msg = instance as AbstractGameLinkMessage;
+                    msg.Deserialize(reader);
+                    builtMessages.Add(msg);
                     return true;
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 builtMessages = null;
+                LOGGER.Error(e);
                 return false;
             }
         }

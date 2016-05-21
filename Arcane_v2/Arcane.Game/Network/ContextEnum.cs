@@ -2,5 +2,9 @@
 {
     public enum ContextEnum
     {
+        Connection,
+        CharacterSelection,
+        Roleplay,
+        Fighting
     }
 }

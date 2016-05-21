@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace Arcane.Login
 {
-    public static class Config
+    internal static class Config
     {
         public static readonly Protocol.Types.Version ExpectedVersion = new Protocol.Types.Version(2, 6, 2, 35100, 0, 0);
-        public static readonly int ProtocolRequiredVersion = 1444;
-        public static readonly int ProtocolCurrentVersion = 1444;
         public static readonly IPAddress LoginServerHost = IPAddress.Parse("127.0.0.1");
         public static readonly int LoginServerPort = 444;
         public static readonly int LoginMaxConnections = 1000;
@@ -19,5 +17,6 @@ namespace Arcane.Login
         public static readonly string[] NicknameRefusedWords = { "dofus" };
         public static readonly int NicknameMinLength = 5;
         public static readonly int NicknameMaxLength = 50;
+        public static readonly int LoginServerClientIddleTimeout = 60000;
     }
 }

@@ -14,6 +14,9 @@ using Arcane.Protocol.Enums;
 using Arcane.Base.Entities;
 using Arcane.Login.Helpers;
 using Arcane.Login.Network.GameLink;
+using Arcane.Base.Network.GameLink.Messages;
+using Arcane.Base.Network.GameLink;
+using static Arcane.Base.Network.GameLink.LinkMessageHandle;
 
 namespace Arcane.Login.Frames
 {
@@ -47,8 +50,39 @@ namespace Arcane.Login.Frames
         [MessageHandler]
         public void ServerSelectionMessage(ServerSelectionMessage msg)
         {
-            Client.SendMessage(new SelectedServerRefusedMessage(msg.serverId, ServerConnectionErrorEnum.SERVER_CONNECTION_ERROR_DUE_TO_STATUS.ToSByte(), ServerStatusEnum.OFFLINE.ToSByte()));
-            Client.SendMessage(GameServerHelper.MakeServersListMessage(Client.Account));
+            if (GameLinkManager.Instance.IsServerExists((ushort)msg.serverId))
+            {
+                var server = GameLinkManager.Instance.GetServer((ushort)msg.serverId);
+                if (server.ServerInformations.Status.IsSelectable())
+                {
+                    var token = Utils.RandomString(32);
+                    try
+                    {
+                        var result = server.SendMessageAndWaitResponse<ClientIncomingTokenResultMessage>(new ClientIncomingTokenMessage { AccountId = Client.Account.Id, Ticket = token }, 3000);
+                        if (result.Success)
+                        {
+                            Client.SendMessage(new SelectedServerDataMessage(msg.serverId, server.ServerInformations.Host, server.ServerInformations.Port, true/*GameServerHelper.CanCreateCharacter(Client.Account, msg.serverId)*/, token));
+                            Client.Disconnect();
+                        }
+                        else
+                        {
+                            Client.SendMessage(new SelectedServerRefusedMessage(msg.serverId, ServerConnectionErrorEnum.SERVER_CONNECTION_ERROR_NO_REASON.ToSByte(), server.ServerInformations.Status.ToSByte()));
+                        }
+                    }
+                    catch (HandleTimeoutException)
+                    {
+                        Client.SendMessage(new SelectedServerRefusedMessage(msg.serverId, ServerConnectionErrorEnum.SERVER_CONNECTION_ERROR_NO_REASON.ToSByte(), server.ServerInformations.Status.ToSByte()));
+                    }
+                }
+                else
+                {
+                    Client.SendMessage(new SelectedServerRefusedMessage(msg.serverId, ServerConnectionErrorEnum.SERVER_CONNECTION_ERROR_DUE_TO_STATUS.ToSByte(), server.ServerInformations.Status.ToSByte()));
+                }
+            }
+            else
+            {
+                Client.SendMessage(new SelectedServerRefusedMessage(msg.serverId, ServerConnectionErrorEnum.SERVER_CONNECTION_ERROR_DUE_TO_STATUS.ToSByte(), ServerStatusEnum.OFFLINE.ToSByte()));
+            }
         }
     }
 }

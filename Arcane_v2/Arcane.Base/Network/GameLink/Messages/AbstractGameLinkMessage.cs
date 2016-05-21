@@ -1,4 +1,5 @@
 ﻿using Chuckame.IO.TCP.Messages;
+using Dofus.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,30 +11,27 @@ namespace Arcane.Base.Network.GameLink.Messages
 {
     public abstract class AbstractGameLinkMessage : IMessage
     {
-        public Guid Token { get; set; }
-        public bool HasToken()
-        {
-            return Token != null;
-        }
-        protected AbstractGameLinkMessage(SerializationInfo info, StreamingContext context)
-        {
-            if (info == null)
-                throw new ArgumentNullException(nameof(info));
+        public Guid? Token { get; set; }
 
-            var hasToken = info.GetValue<bool>(nameof(HasToken));
+        public virtual void Serialize(IDataWriter writer)
+        {
+            writer.WriteBoolean(Token.HasValue);
+            if (Token.HasValue)
+            {
+                var bytes = Token.Value.ToByteArray();
+                writer.WriteUShort((ushort)bytes.Length);
+                writer.WriteBytes(bytes);
+            }
+        }
+
+        public virtual void Deserialize(IDataReader reader)
+        {
+            var hasToken = reader.ReadBoolean();
             if (hasToken)
-                Token = info.GetValue<Guid>(nameof(Token));
-        }
-
-        public AbstractGameLinkMessage()
-        {
-        }
-
-        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue(nameof(HasToken), HasToken());
-            if (HasToken())
-                info.AddValue(nameof(Token), Token);
+            {
+                var bytes = reader.ReadBytes(reader.ReadUShort());
+                Token = new Guid(bytes);
+            }
         }
     }
 }

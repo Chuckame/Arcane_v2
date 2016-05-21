@@ -116,6 +116,8 @@ namespace Dofus.IO
         public byte[] ReadBytes(int n)
         {
             var dst = new byte[n];
+            if (n == 0)
+                return dst;
             fixed (byte* pSrc = &buffer[position], pDst = dst)
             {
                 byte* ps = pSrc;

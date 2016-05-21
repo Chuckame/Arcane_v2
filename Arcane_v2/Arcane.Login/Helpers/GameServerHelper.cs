@@ -28,9 +28,11 @@ namespace Arcane.Login.Helpers
         }
         public static sbyte GetCharactersCount(Account account, ushort serverId)
         {
-            return 0;
+            if (GameLinkManager.Instance.IsServerExists(serverId))
+                return GameLinkManager.Instance.GetClientCharactersCount(account, serverId);
+            return 1;
         }
-        private static bool IsSelectable(this ServerStatusEnum status)
+        public static bool IsSelectable(this ServerStatusEnum status)
         {
             switch (status)
             {

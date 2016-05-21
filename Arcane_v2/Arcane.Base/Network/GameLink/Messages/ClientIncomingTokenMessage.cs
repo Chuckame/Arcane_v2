@@ -1,28 +1,27 @@
-﻿using Arcane.Protocol.Enums;
+﻿using Arcane.Base.Entities;
 using Dofus.IO;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Arcane.Base.Network.GameLink.Messages
 {
-    public class HelloMessage : StatusMessage
+    public class ClientIncomingTokenMessage : AbstractGameLinkMessage
     {
-        public ushort ServerId { get; set; }
+        public int AccountId { get; set; }
+        public string Ticket { get; set; }
 
         public override void Serialize(IDataWriter writer)
         {
             base.Serialize(writer);
-            writer.WriteUShort(ServerId);
+            writer.WriteInt(AccountId);
+            writer.WriteUTF(Ticket);
         }
 
         public override void Deserialize(IDataReader reader)
         {
             base.Deserialize(reader);
-            ServerId = reader.ReadUShort();
+            AccountId = reader.ReadInt();
+            Ticket = reader.ReadUTF();
         }
     }
 }

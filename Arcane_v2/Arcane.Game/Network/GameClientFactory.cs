@@ -18,7 +18,7 @@ namespace Arcane.Game.Network
 
         public GameClient createClient(Socket socket)
         {
-            return new GameClient(socket);
+            return new GameClient(socket, Config.GameServerClientIddleTimeout);
         }
     }
 }

@@ -21,6 +21,7 @@ namespace Arcane.Login.Network.GameLink.Frames
 
         public override void OnAttached()
         {
+            Client.SendMessage(new GameServerAcceptedMessage());
         }
 
         public override void OnDettached()
@@ -36,7 +37,7 @@ namespace Arcane.Login.Network.GameLink.Frames
         [MessageHandler]
         public void ClientConnectedMessage(ClientConnectedMessage msg)
         {
-            var account = Account.Find(msg.AccountId);
+            var account = Account.TryFind(msg.AccountId);
             if (account == null)
             {
                 LOGGER.Info("Unknown account has request connection, going to disconnect this fucking shit.");
@@ -51,7 +52,7 @@ namespace Arcane.Login.Network.GameLink.Frames
         [MessageHandler]
         public void ClientDisconnectedMessage(ClientDisconnectedMessage msg)
         {
-            var account = Account.Find(msg.AccountId);
+            var account = Account.TryFind(msg.AccountId);
             if (account == null)
             {
                 LOGGER.Info("Unknown account ! Aleert !");

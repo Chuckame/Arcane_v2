@@ -9,20 +9,16 @@ using System.Threading.Tasks;
 
 namespace Arcane.Base.Network.GameLink.Messages
 {
-    public class HelloMessage : StatusMessage
+    public class TestMessage : AbstractGameLinkMessage
     {
-        public ushort ServerId { get; set; }
-
         public override void Serialize(IDataWriter writer)
         {
             base.Serialize(writer);
-            writer.WriteUShort(ServerId);
         }
 
         public override void Deserialize(IDataReader reader)
         {
             base.Deserialize(reader);
-            ServerId = reader.ReadUShort();
         }
     }
 }

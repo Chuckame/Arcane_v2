@@ -2,6 +2,7 @@
 using Arcane.Base.Encryption;
 using Arcane.Base.Entities;
 using Arcane.Game.Network;
+using Arcane.Game.Network.GameLink;
 using Arcane.Protocol.Messages;
 using NLog;
 using System;
@@ -17,14 +18,16 @@ namespace Arcane.Game
         static void Main(string[] args)
         {
             InitMain();
-            DatabaseInitializer.Initialize(typeof(Account).Assembly/*, typeof(Character).Assembly*/);
             LogConfigInitializer.Initialize(LogLevel.Trace);
+            DatabaseInitializer.Initialize(typeof(Account).Assembly/*, typeof(Character).Assembly*/);
+            GameLinkConnectorManager.Instance.ServerStatus = Protocol.Enums.ServerStatusEnum.STARTING;
+            GameLinkConnectorManager.Instance.Connect();
             DofusMessageBuilderInitializer.Initialize();
             RSAProtocol.GenerateKey();
             GameServerManager.Instance.Start();
-            GameServerManager.Instance.OnClientConnected += LoginServerClientConnected;
-            GameServerManager.Instance.OnClientDisconnected += LoginServerClientDisconnected;
-            //GameLinkManager.Instance.Start();
+            GameLinkConnectorManager.Instance.ServerStatus = Protocol.Enums.ServerStatusEnum.ONLINE;
+            Console.ReadLine();
+            Console.ReadLine();
             Console.ReadLine();
         }
 
@@ -47,6 +50,8 @@ namespace Arcane.Game
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             Console.BufferHeight = 500;
+            GameServerManager.Instance.OnClientConnected += LoginServerClientConnected;
+            GameServerManager.Instance.OnClientDisconnected += LoginServerClientDisconnected;
             UpdateConsoleTitle();
         }
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

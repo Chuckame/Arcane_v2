@@ -89,9 +89,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
+    <Compile Include="Extentions.cs" />
     <Compile Include="Network\ContextEnum.cs" />
+    <Compile Include="Network\Frames\CharacterCreationFrame.cs" />
+    <Compile Include="Network\Frames\ApproachFrame.cs" />
     <Compile Include="Network\GameClient.cs" />
     <Compile Include="Network\GameClientFactory.cs" />
+    <Compile Include="Network\GameLink\Frames\BeforeFrame.cs" />
+    <Compile Include="Network\GameLink\Frames\LinkFrame.cs" />
+    <Compile Include="Network\GameLink\GameLinkConnectorManager.cs" />
+    <Compile Include="Network\GameLink\GameLinkConnector.cs" />
+    <Compile Include="Network\GameLink\TicketEntity.cs" />
+    <Compile Include="Network\GameLink\TicketManager.cs" />
     <Compile Include="Network\GameServer.cs" />
     <Compile Include="Network\GameServerFactory.cs" />
     <Compile Include="Network\GameServerManager.cs" />

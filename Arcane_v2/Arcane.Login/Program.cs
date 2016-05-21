@@ -15,17 +15,16 @@ namespace Arcane.Login
 {
     static class Program
     {
+        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
         static void Main(string[] args)
         {
             InitMain();
-            DatabaseInitializer.Initialize(typeof(Account).Assembly);
             LogConfigInitializer.Initialize(LogLevel.Trace);
+            GameLinkManager.Instance.Start();
+            DatabaseInitializer.Initialize(typeof(Account).Assembly);
             DofusMessageBuilderInitializer.Initialize();
             RSAProtocol.GenerateKey();
             LoginServerManager.Instance.Start();
-            LoginServerManager.Instance.OnClientConnected += LoginServerClientConnected;
-            LoginServerManager.Instance.OnClientDisconnected += LoginServerClientDisconnected;
-            GameLinkManager.Instance.Start();
             Console.ReadLine();
         }
 
@@ -48,11 +47,13 @@ namespace Arcane.Login
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             Console.BufferHeight = 500;
+            LoginServerManager.Instance.OnClientConnected += LoginServerClientConnected;
+            LoginServerManager.Instance.OnClientDisconnected += LoginServerClientDisconnected;
             UpdateConsoleTitle();
         }
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Console.WriteLine("Erreur : " + e.ExceptionObject);
+            LOGGER.Error("Erreur : " + e.ExceptionObject);
         }
     }
 }

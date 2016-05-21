@@ -1,6 +1,8 @@
-﻿using Arcane.Protocol;
+﻿using Arcane.Game.Network.Frames;
+using Arcane.Protocol;
 using Chuckame.IO.TCP.Client;
 using Chuckame.IO.TCP.Server;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,7 @@ namespace Arcane.Game.Network
 {
     public class GameServer : AbstractBaseServer<GameServer, GameClient, AbstractMessage>
     {
+        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
         public GameServer(IPAddress host, int port, int maxConnections) : base(host, port, maxConnections, GameClientFactory.Instance)
         {
             OnClientAccepted += GameServer_OnClientAccepted;
@@ -21,13 +24,13 @@ namespace Arcane.Game.Network
 
         private static void GameServer_OnStarted(GameServer obj)
         {
-            Console.WriteLine("Serveur lancé !");
+            LOGGER.Info("Server started !");
         }
 
         private static void GameServer_OnClientAccepted(GameServer me, GameClient client)
         {
-            Console.WriteLine(client + " accepted !");
-            //client.AddFrame(new ConnectionFrame(client));
+            LOGGER.Info($"Client accepted !");
+            client.AddFrame(new ApproachFrame(client));
         }
     }
 }

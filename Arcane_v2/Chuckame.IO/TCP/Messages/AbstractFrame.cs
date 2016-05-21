@@ -14,7 +14,7 @@ namespace Chuckame.IO.TCP.Messages
         where TMessage : IMessage
         where TClient : IClient<TClient, TMessage>
     {
-        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
+        private readonly Logger LOGGER = LogManager.GetCurrentClassLogger(typeof(TFrame));
         private readonly Dictionary<Type, MethodInfo> _messageHandlers = new Dictionary<Type, MethodInfo>();
         private void Init()
         {
