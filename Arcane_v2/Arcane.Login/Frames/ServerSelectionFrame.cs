@@ -28,18 +28,16 @@ namespace Arcane.Login.Frames
         {
         }
 
-        public override void OnAttached()
+        protected override void OnAttached()
         {
             Client.CurrentContext = ContextEnum.ServerSelection;
             GameLinkManager.Instance.OnStatusUpdated += Instance_OnStatusUpdated;
-            Client.AddFrame(new PseudoSearchFrame(Client));
             Client.SendMessage(GameServerHelper.MakeServersListMessage(Client.Account));
         }
 
-        public override void OnDettached()
+        protected override void OnDetached()
         {
             GameLinkManager.Instance.OnStatusUpdated -= Instance_OnStatusUpdated;
-            Client.RemoveFrame(Client.GetFrame<PseudoSearchFrame>());
         }
 
         private void Instance_OnStatusUpdated(GameLinkClient server, ServerStatusEnum newStatus)
@@ -62,6 +60,7 @@ namespace Arcane.Login.Frames
                         if (result.Success)
                         {
                             Client.SendMessage(new SelectedServerDataMessage(msg.serverId, server.ServerInformations.Host, server.ServerInformations.Port, true/*GameServerHelper.CanCreateCharacter(Client.Account, msg.serverId)*/, token));
+                            Client.RemoveFrame(this);
                             Client.Disconnect();
                         }
                         else

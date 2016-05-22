@@ -90,12 +90,15 @@
   <ItemGroup>
     <Compile Include="Config.cs" />
     <Compile Include="Extentions.cs" />
+    <Compile Include="Frames\ServerSelectionAdminPanelFrame.cs" />
+    <Compile Include="Frames\FrameFactory.cs" />
     <Compile Include="Frames\PseudoSearchFrame.cs" />
     <Compile Include="Frames\ServerSelectionFrame.cs" />
     <Compile Include="Frames\NicknameRegistrationFrame.cs" />
     <Compile Include="Frames\ConnectionFrame.cs" />
+    <Compile Include="Helpers\AccountHelper.cs" />
     <Compile Include="Helpers\ConnectionHelper.cs" />
-    <Compile Include="Helpers\FrameHelper.cs" />
+    <Compile Include="Frames\FrameOrchestrator.cs" />
     <Compile Include="Network\GameLink\Frames\LinkFrame.cs" />
     <Compile Include="Network\GameLink\GameLinkClient.cs" />
     <Compile Include="Network\GameLink\GameLinkClientFactory.cs" />
@@ -129,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="CodeMap1.dgml" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

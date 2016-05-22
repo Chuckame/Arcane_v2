@@ -41,9 +41,9 @@ namespace Arcane.Login.Network.GameLink
             client.OnDisconnected += Client_OnDisconnected;
         }
 
-        private void Client_OnDisconnected(GameLinkClient server)
+        private void Client_OnDisconnected(GameLinkClient client)
         {
-            OnStatusUpdated?.Invoke(server, ServerStatusEnum.OFFLINE);
+            client.UpdateStatus(ServerStatusEnum.OFFLINE);
         }
 
         private void Client_OnStatusUpdated(GameLinkClient server, ServerStatusEnum status)

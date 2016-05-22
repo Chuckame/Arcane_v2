@@ -92,7 +92,7 @@ namespace Dofus.Common.Extensions
         public static Task ToAsync(this Task task, AsyncCallback callback, object state)
         {
             if (task == null)
-                throw new ArgumentNullException("task");
+                throw new ArgumentNullException(nameof(task));
 
             var tcs = new TaskCompletionSource<object>(state);
             task.ContinueWith(_ =>
@@ -115,7 +115,7 @@ namespace Dofus.Common.Extensions
         public static Task<TResult> ToAsync<TResult>(this Task<TResult> task, AsyncCallback callback, object state)
         {
             if (task == null)
-                throw new ArgumentNullException("task");
+                throw new ArgumentNullException(nameof(task));
 
             var tcs = new TaskCompletionSource<TResult>(state);
             task.ContinueWith(_ =>
@@ -134,7 +134,7 @@ namespace Dofus.Common.Extensions
         /// <returns>The original Task.</returns>
         public static Task IgnoreExceptions(this Task task)
         {
-            return task.ContinueWith(t => { AggregateException ignored = t.Exception; },
+            return task.ContinueWith(t => { var ignored = t.Exception; },
                                      CancellationToken.None,
                                      TaskContinuationOptions.ExecuteSynchronously |
                                      TaskContinuationOptions.OnlyOnFaulted,
@@ -193,9 +193,9 @@ namespace Dofus.Common.Extensions
         public static void PropagateExceptions(this Task[] tasks)
         {
             if (tasks == null)
-                throw new ArgumentNullException("tasks");
+                throw new ArgumentNullException(nameof(tasks));
             if (tasks.Any(t => t == null))
-                throw new ArgumentException("tasks");
+                throw new ArgumentException(nameof(tasks));
             if (tasks.Any(t => !t.IsCompleted))
                 throw new InvalidOperationException("A task has not completed.");
             Task.WaitAll(tasks);
@@ -210,7 +210,7 @@ namespace Dofus.Common.Extensions
         public static void AttachToParent(this Task task)
         {
             if (task == null)
-                throw new ArgumentNullException("task");
+                throw new ArgumentNullException(nameof(task));
             task.ContinueWith(t => t.Wait(), CancellationToken.None,
                               TaskContinuationOptions.AttachedToParent |
                               TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
@@ -264,7 +264,7 @@ namespace Dofus.Common.Extensions
         public static IObservable<TResult> ToObservable<TResult>(this Task<TResult> task)
         {
             if (task == null)
-                throw new ArgumentNullException("task");
+                throw new ArgumentNullException(nameof(task));
             return new TaskObservable<TResult> { Task = task };
         }
 
@@ -279,7 +279,7 @@ namespace Dofus.Common.Extensions
         public static TaskStatus WaitForCompletionStatus(this Task task)
         {
             if (task == null)
-                throw new ArgumentNullException("task");
+                throw new ArgumentNullException(nameof(task));
             ((IAsyncResult)task).AsyncWaitHandle.WaitOne();
             return task.Status;
         }
@@ -321,7 +321,7 @@ namespace Dofus.Common.Extensions
             {
                 // Validate arguments
                 if (observer == null)
-                    throw new ArgumentNullException("observer");
+                    throw new ArgumentNullException(nameof(observer));
 
                 // Support cancelling the continuation if the observer is unsubscribed
                 var cts = new CancellationTokenSource();

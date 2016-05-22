@@ -18,12 +18,12 @@ namespace Arcane.Game.Network.GameLink.Frames
         {
         }
 
-        public override void OnAttached()
+        protected override void OnAttached()
         {
             Client.SendMessage(new HelloMessage { ServerId = Config.ServerId, Status = GameLinkConnectorManager.Instance.ServerStatus });
         }
 
-        public override void OnDettached()
+        protected override void OnDetached()
         {
         }
 

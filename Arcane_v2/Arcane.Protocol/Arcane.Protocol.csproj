@@ -63,7 +63,7 @@
     <Compile Include="Enums\ExchangeErrorEnum.cs" />
     <Compile Include="Enums\ExchangeReplayStopReasonEnum.cs" />
     <Compile Include="Enums\ExchangeTypeEnum.cs" />
-    <Compile Include="Enums\Extensions\DirectionsEnumExtensions.cs" />
+    <Compile Include="Enums\Extensions\EnumExtensions.cs" />
     <Compile Include="Enums\FightDispellableEnum.cs" />
     <Compile Include="Enums\FighterRefusedReasonEnum.cs" />
     <Compile Include="Enums\FightOptionsEnum.cs" />
@@ -103,6 +103,7 @@
     <Compile Include="Enums\SequenceTypeEnum.cs" />
     <Compile Include="Enums\ServerConnectionErrorEnum.cs" />
     <Compile Include="Enums\ServerStatusEnum.cs" />
+    <Compile Include="Enums\SexEnum.cs" />
     <Compile Include="Enums\ShortcutBarEnum.cs" />
     <Compile Include="Enums\SocialContactCategoryEnum.cs" />
     <Compile Include="Enums\SubareaUpdateEventEnum.cs" />

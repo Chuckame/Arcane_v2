@@ -1,4 +1,5 @@
-﻿using Arcane.Game.Network.Frames;
+﻿using Arcane.Game.Frames;
+using Arcane.Game.Helpers;
 using Arcane.Protocol;
 using Chuckame.IO.TCP.Client;
 using Chuckame.IO.TCP.Server;
@@ -30,7 +31,7 @@ namespace Arcane.Game.Network
         private static void GameServer_OnClientAccepted(GameServer me, GameClient client)
         {
             LOGGER.Info($"Client accepted !");
-            client.AddFrame(new ApproachFrame(client));
+            FrameOrchestrator.GoToApproach(client);
         }
     }
 }

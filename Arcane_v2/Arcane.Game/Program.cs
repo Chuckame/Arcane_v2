@@ -1,6 +1,7 @@
 ﻿using Arcane.Base.Common;
 using Arcane.Base.Encryption;
 using Arcane.Base.Entities;
+using Arcane.Game.Entities;
 using Arcane.Game.Network;
 using Arcane.Game.Network.GameLink;
 using Arcane.Protocol.Messages;
@@ -19,7 +20,7 @@ namespace Arcane.Game
         {
             InitMain();
             LogConfigInitializer.Initialize(LogLevel.Trace);
-            DatabaseInitializer.Initialize(typeof(Account).Assembly/*, typeof(Character).Assembly*/);
+            DatabaseInitializer.Initialize(typeof(Account).Assembly, typeof(CharacterEntity).Assembly);
             GameLinkConnectorManager.Instance.ServerStatus = Protocol.Enums.ServerStatusEnum.STARTING;
             GameLinkConnectorManager.Instance.Connect();
             DofusMessageBuilderInitializer.Initialize();

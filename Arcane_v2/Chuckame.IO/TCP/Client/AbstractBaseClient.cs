@@ -25,6 +25,7 @@ namespace Chuckame.IO.TCP.Client
         private readonly Socket _socket;
         public bool HasIddleDisconnectionTimeout { get; }
         private readonly Timer _iddleDisconnectionTimer;
+        private bool hasSentDisconnection = false;
 
         protected AbstractBaseClient(Socket socket, int bufferSize, IMessageFactory<TMessage> messageFactory, int? iddleTimeoutDisconnection = null)
         {
@@ -102,7 +103,7 @@ namespace Chuckame.IO.TCP.Client
             LOGGER.Trace($"Adding frame '{frame}'...");
             _mFrames.Add(frame);
             _dispatchMessageEvent += frame.Dispatch;
-            frame.OnAttached();
+            frame.NotifyAttachment();
         }
 
         public IFrame<TClient, TMessage> GetFrame<TFrame>() where TFrame : IFrame<TClient, TMessage>
@@ -114,13 +115,14 @@ namespace Chuckame.IO.TCP.Client
         {
             lock (_socket)
             {
-                if (IsConnected)
+                if (IsConnected || !hasSentDisconnection)
                 {
                     LOGGER.Trace($"Disconnection...");
                     try
                     {
                         _socket.Disconnect(false);
                         OnDisconnected?.Invoke((TClient)this);
+                        hasSentDisconnection = true;
                     }
                     catch (SocketException)
                     {
@@ -149,7 +151,7 @@ namespace Chuckame.IO.TCP.Client
             LOGGER.Trace($"Removing frame '{frame}'...");
             _mFrames.Remove(frame);
             _dispatchMessageEvent -= frame.Dispatch;
-            frame.OnDettached();
+            frame.NotifyDetachment();
         }
 
         public void SendMessage(TMessage message, bool async = false)
@@ -270,8 +272,7 @@ namespace Chuckame.IO.TCP.Client
             {
                 foreach (var msg in messages)
                 {
-                    OnMessageReceived?.Invoke((TClient)this, msg);
-                    _dispatchMessageEvent?.Invoke(msg);
+                    DispatchMessage(msg);
                 }
             }
             catch (Exception e)
@@ -282,6 +283,12 @@ namespace Chuckame.IO.TCP.Client
             {
                 BeginReceive(new StateObject());
             }
+        }
+
+        public void DispatchMessage(TMessage message)
+        {
+            OnMessageReceived?.Invoke((TClient)this, message);
+            _dispatchMessageEvent?.Invoke(message);
         }
 
         private void MessageSentCallback(IAsyncResult ar)

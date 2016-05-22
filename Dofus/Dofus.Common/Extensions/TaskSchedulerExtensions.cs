@@ -50,7 +50,7 @@ namespace Dofus.Common.Extensions
             internal TaskSchedulerSynchronizationContext(TaskScheduler scheduler)
             {
                 if (scheduler == null)
-                    throw new ArgumentNullException("scheduler");
+                    throw new ArgumentNullException(nameof(scheduler));
                 m_scheduler = scheduler;
             }
 

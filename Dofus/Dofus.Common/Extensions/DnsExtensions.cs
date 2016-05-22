@@ -27,12 +27,12 @@ namespace Dofus.Common.Extensions
             var addresses = Dns.GetHostAddresses(hostName);
             if (addresses.Length == 0)
             {
-                throw new ArgumentException("Unable to retrieve address from specified host name.", "hostName");
+                throw new ArgumentException("Unable to retrieve address from specified host name.", nameof(hostName));
             }
 
             if (throwIfMoreThanOneIP && addresses.Length > 1 && addresses.Distinct().Count() > 1)
             {
-                throw new ArgumentException("There is more that one IP address to the specified host.", "hostName");
+                throw new ArgumentException("There is more that one IP address to the specified host.", nameof(hostName));
             }
 
             return new IPEndPoint(addresses[0], port); // Port gets validated here.
@@ -43,12 +43,12 @@ namespace Dofus.Common.Extensions
             var addresses = Dns.GetHostAddresses(hostName).Where(entry => entry.AddressFamily == addressFamily).ToArray();
             if (addresses.Length == 0)
             {
-                throw new ArgumentException("Unable to retrieve address from specified host name.", "hostName");
+                throw new ArgumentException("Unable to retrieve address from specified host name.", nameof(hostName));
             }
 
             if (throwIfMoreThanOneIP && addresses.Length > 1 && addresses.Distinct().Count() > 1)
             {
-                throw new ArgumentException("There is more that one IP address to the specified host.", "hostName");
+                throw new ArgumentException("There is more that one IP address to the specified host.", nameof(hostName));
             }
 
             return new IPEndPoint(addresses[0], port); // Port gets validated here.

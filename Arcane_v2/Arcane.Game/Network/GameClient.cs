@@ -1,4 +1,5 @@
 ﻿using Arcane.Base.Entities;
+using Arcane.Game.Wrappers;
 using Arcane.Protocol;
 using Arcane.Protocol.Messages;
 using Chuckame.IO.TCP.Client;
@@ -19,11 +20,18 @@ namespace Arcane.Game.Network
         public string ClientKey { get; set; }
         public Account Account { get; set; }
         public bool HasAccount { get { return Account != null; } }
-        public ContextEnum CurrentContext { get; set; }
+        public CharacterWrapper Character { get; set; }
+        public bool HasCharacter { get { return Character != null; } }
 
         public GameClient(Socket socket, int iddleTimeoutDisconnection) : base(socket, BUFFER_SIZE, MessageBuilder.Instance, iddleTimeoutDisconnection)
         {
             this.OnMessageReceived += GameClient_OnMessageReceived;
+            OnIddleTimeout += GameClient_OnIddleTimeout;
+        }
+
+        private void GameClient_OnIddleTimeout(GameClient obj)
+        {
+            SendMessage(new SystemMessageDisplayMessage(true, 1, new string[0]));//Vous êtes resté inactif trop longtemps.
         }
 
         private void GameClient_OnMessageReceived(GameClient arg1, AbstractMessage arg2)

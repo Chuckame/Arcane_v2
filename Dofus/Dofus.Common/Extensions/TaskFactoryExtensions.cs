@@ -55,7 +55,7 @@ namespace Dofus.Common.Extensions
         public static TaskScheduler GetTargetScheduler(this TaskFactory factory)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return factory.Scheduler ?? TaskScheduler.Current;
         }
 
@@ -65,7 +65,7 @@ namespace Dofus.Common.Extensions
         public static TaskScheduler GetTargetScheduler<TResult>(this TaskFactory<TResult> factory)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return factory.Scheduler ?? TaskScheduler.Current;
         }
 
@@ -156,7 +156,7 @@ namespace Dofus.Common.Extensions
             IEnumerable<object> source, object state)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return Iterate(factory, source, state, factory.CancellationToken, factory.CreationOptions,
                            factory.GetTargetScheduler());
         }
@@ -175,7 +175,7 @@ namespace Dofus.Common.Extensions
             CancellationToken cancellationToken)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return Iterate(factory, source, state, cancellationToken, factory.CreationOptions,
                            factory.GetTargetScheduler());
         }
@@ -194,7 +194,7 @@ namespace Dofus.Common.Extensions
             TaskCreationOptions creationOptions)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return Iterate(factory, source, state, factory.CancellationToken, creationOptions,
                            factory.GetTargetScheduler());
         }
@@ -213,7 +213,7 @@ namespace Dofus.Common.Extensions
             TaskScheduler scheduler)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return Iterate(factory, source, state, factory.CancellationToken, factory.CreationOptions, scheduler);
         }
 
@@ -234,14 +234,14 @@ namespace Dofus.Common.Extensions
         {
             // Validate/update parameters
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             if (source == null)
                 throw new ArgumentNullException("asyncIterator");
             if (scheduler == null)
-                throw new ArgumentNullException("scheduler");
+                throw new ArgumentNullException(nameof(scheduler));
 
             // Get an enumerator from the enumerable
-            IEnumerator<object> enumerator = source.GetEnumerator();
+            var enumerator = source.GetEnumerator();
             if (enumerator == null)
                 throw new InvalidOperationException("Invalid enumerable - GetEnumerator returned null");
 
@@ -253,7 +253,7 @@ namespace Dofus.Common.Extensions
 
             // This will be called every time more work can be done.
             Action<Task> recursiveBody = null;
-            Action<Task> body = recursiveBody;
+            var body = recursiveBody;
             recursiveBody = antecedent =>
             {
                 try
@@ -264,7 +264,7 @@ namespace Dofus.Common.Extensions
                     // from the enumerator) is complete.
                     if (enumerator.MoveNext())
                     {
-                        object nextItem = enumerator.Current;
+                        var nextItem = enumerator.Current;
 
                         // If we got a Task, continue from it to continue iterating
                         if (nextItem is Task)
@@ -325,7 +325,7 @@ namespace Dofus.Common.Extensions
             IEnumerable<object> source)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return Iterate(factory, source, null, factory.CancellationToken, factory.CreationOptions,
                            factory.GetTargetScheduler());
         }
@@ -343,7 +343,7 @@ namespace Dofus.Common.Extensions
             CancellationToken cancellationToken)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return Iterate(factory, source, null, cancellationToken, factory.CreationOptions,
                            factory.GetTargetScheduler());
         }
@@ -361,7 +361,7 @@ namespace Dofus.Common.Extensions
             TaskCreationOptions creationOptions)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return Iterate(factory, source, null, factory.CancellationToken, creationOptions,
                            factory.GetTargetScheduler());
         }
@@ -379,7 +379,7 @@ namespace Dofus.Common.Extensions
             TaskScheduler scheduler)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return Iterate(factory, source, null, factory.CancellationToken, factory.CreationOptions, scheduler);
         }
 
@@ -408,11 +408,11 @@ namespace Dofus.Common.Extensions
         public static Task FromAsync(WaitHandle waitHandle)
         {
             var tcs = new TaskCompletionSource<object>();
-            RegisteredWaitHandle rwh = ThreadPool.RegisterWaitForSingleObject(waitHandle,
+            var rwh = ThreadPool.RegisterWaitForSingleObject(waitHandle,
                                                                               delegate
                                                                               { tcs.TrySetResult(null); }, null,
                                                                               -1, true);
-            Task<object> t = tcs.Task;
+            var t = tcs.Task;
             t.ContinueWith(_ => rwh.Unregister(null), TaskContinuationOptions.ExecuteSynchronously);
             return t;
         }
@@ -509,9 +509,9 @@ namespace Dofus.Common.Extensions
         {
             // Validate arguments
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             if (millisecondsDelay < 0)
-                throw new ArgumentOutOfRangeException("millisecondsDelay");
+                throw new ArgumentOutOfRangeException(nameof(millisecondsDelay));
 
             // Create the timed task
             var tcs = new TaskCompletionSource<object>(factory.CreationOptions);
@@ -556,7 +556,7 @@ namespace Dofus.Common.Extensions
             int millisecondsDelay, Action action)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return StartNewDelayed(factory, millisecondsDelay, action, factory.CancellationToken,
                                    factory.CreationOptions, factory.GetTargetScheduler());
         }
@@ -575,7 +575,7 @@ namespace Dofus.Common.Extensions
             TaskCreationOptions creationOptions)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return StartNewDelayed(factory, millisecondsDelay, action, factory.CancellationToken, creationOptions,
                                    factory.GetTargetScheduler());
         }
@@ -594,7 +594,7 @@ namespace Dofus.Common.Extensions
             CancellationToken cancellationToken)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return StartNewDelayed(factory, millisecondsDelay, action, cancellationToken, factory.CreationOptions,
                                    factory.GetTargetScheduler());
         }
@@ -615,13 +615,13 @@ namespace Dofus.Common.Extensions
             CancellationToken cancellationToken, TaskCreationOptions creationOptions, TaskScheduler scheduler)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             if (millisecondsDelay < 0)
-                throw new ArgumentOutOfRangeException("millisecondsDelay");
+                throw new ArgumentOutOfRangeException(nameof(millisecondsDelay));
             if (action == null)
-                throw new ArgumentNullException("action");
+                throw new ArgumentNullException(nameof(action));
             if (scheduler == null)
-                throw new ArgumentNullException("scheduler");
+                throw new ArgumentNullException(nameof(scheduler));
 
             return factory
                 .StartNewDelayed(millisecondsDelay, cancellationToken)
@@ -641,7 +641,7 @@ namespace Dofus.Common.Extensions
             int millisecondsDelay, Action<object> action, object state)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return StartNewDelayed(factory, millisecondsDelay, action, state, factory.CancellationToken,
                                    factory.CreationOptions, factory.GetTargetScheduler());
         }
@@ -661,7 +661,7 @@ namespace Dofus.Common.Extensions
             TaskCreationOptions creationOptions)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return StartNewDelayed(factory, millisecondsDelay, action, state, factory.CancellationToken, creationOptions,
                                    factory.GetTargetScheduler());
         }
@@ -681,7 +681,7 @@ namespace Dofus.Common.Extensions
             CancellationToken cancellationToken)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return StartNewDelayed(factory, millisecondsDelay, action, state, cancellationToken, factory.CreationOptions,
                                    factory.GetTargetScheduler());
         }
@@ -703,13 +703,13 @@ namespace Dofus.Common.Extensions
             CancellationToken cancellationToken, TaskCreationOptions creationOptions, TaskScheduler scheduler)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             if (millisecondsDelay < 0)
-                throw new ArgumentOutOfRangeException("millisecondsDelay");
+                throw new ArgumentOutOfRangeException(nameof(millisecondsDelay));
             if (action == null)
-                throw new ArgumentNullException("action");
+                throw new ArgumentNullException(nameof(action));
             if (scheduler == null)
-                throw new ArgumentNullException("scheduler");
+                throw new ArgumentNullException(nameof(scheduler));
 
             // Create the task that will be returned; workaround for no ContinueWith(..., state) overload.
             var result = new TaskCompletionSource<object>(state);
@@ -751,7 +751,7 @@ namespace Dofus.Common.Extensions
             int millisecondsDelay, Func<TResult> function)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return StartNewDelayed(factory, millisecondsDelay, function, factory.CancellationToken,
                                    factory.CreationOptions, factory.GetTargetScheduler());
         }
@@ -770,7 +770,7 @@ namespace Dofus.Common.Extensions
             TaskCreationOptions creationOptions)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return StartNewDelayed(factory, millisecondsDelay, function, factory.CancellationToken, creationOptions,
                                    factory.GetTargetScheduler());
         }
@@ -789,7 +789,7 @@ namespace Dofus.Common.Extensions
             CancellationToken cancellationToken)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return StartNewDelayed(factory, millisecondsDelay, function, cancellationToken, factory.CreationOptions,
                                    factory.GetTargetScheduler());
         }
@@ -810,13 +810,13 @@ namespace Dofus.Common.Extensions
             CancellationToken cancellationToken, TaskCreationOptions creationOptions, TaskScheduler scheduler)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             if (millisecondsDelay < 0)
-                throw new ArgumentOutOfRangeException("millisecondsDelay");
+                throw new ArgumentOutOfRangeException(nameof(millisecondsDelay));
             if (function == null)
-                throw new ArgumentNullException("function");
+                throw new ArgumentNullException(nameof(function));
             if (scheduler == null)
-                throw new ArgumentNullException("scheduler");
+                throw new ArgumentNullException(nameof(scheduler));
 
             // Create the trigger and the timer to start it
             var tcs = new TaskCompletionSource<object>();
@@ -844,7 +844,7 @@ namespace Dofus.Common.Extensions
             int millisecondsDelay, Func<object, TResult> function, object state)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return StartNewDelayed(factory, millisecondsDelay, function, state, factory.CancellationToken,
                                    factory.CreationOptions, factory.GetTargetScheduler());
         }
@@ -864,7 +864,7 @@ namespace Dofus.Common.Extensions
             CancellationToken cancellationToken)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return StartNewDelayed(factory, millisecondsDelay, function, state, cancellationToken,
                                    factory.CreationOptions, factory.GetTargetScheduler());
         }
@@ -884,7 +884,7 @@ namespace Dofus.Common.Extensions
             TaskCreationOptions creationOptions)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return StartNewDelayed(factory, millisecondsDelay, function, state, factory.CancellationToken,
                                    creationOptions, factory.GetTargetScheduler());
         }
@@ -906,13 +906,13 @@ namespace Dofus.Common.Extensions
             CancellationToken cancellationToken, TaskCreationOptions creationOptions, TaskScheduler scheduler)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             if (millisecondsDelay < 0)
-                throw new ArgumentOutOfRangeException("millisecondsDelay");
+                throw new ArgumentOutOfRangeException(nameof(millisecondsDelay));
             if (function == null)
                 throw new ArgumentNullException("action");
             if (scheduler == null)
-                throw new ArgumentNullException("scheduler");
+                throw new ArgumentNullException(nameof(scheduler));
 
             // Create the task that will be returned
             var result = new TaskCompletionSource<TResult>(state);
@@ -948,7 +948,7 @@ namespace Dofus.Common.Extensions
             this TaskFactory factory, Action action)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return new Task(action, factory.CancellationToken, factory.CreationOptions);
         }
 
@@ -976,7 +976,7 @@ namespace Dofus.Common.Extensions
             this TaskFactory factory, Action<Object> action, object state)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return new Task(action, state, factory.CancellationToken, factory.CreationOptions);
         }
 
@@ -1004,7 +1004,7 @@ namespace Dofus.Common.Extensions
             this TaskFactory factory, Func<TResult> function)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return new Task<TResult>(function, factory.CancellationToken, factory.CreationOptions);
         }
 
@@ -1032,7 +1032,7 @@ namespace Dofus.Common.Extensions
             this TaskFactory factory, Func<Object, TResult> function, object state)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return new Task<TResult>(function, state, factory.CancellationToken, factory.CreationOptions);
         }
 
@@ -1060,7 +1060,7 @@ namespace Dofus.Common.Extensions
             this TaskFactory<TResult> factory, Func<TResult> function)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return new Task<TResult>(function, factory.CancellationToken, factory.CreationOptions);
         }
 
@@ -1088,7 +1088,7 @@ namespace Dofus.Common.Extensions
             this TaskFactory<TResult> factory, Func<Object, TResult> function, object state)
         {
             if (factory == null)
-                throw new ArgumentNullException("factory");
+                throw new ArgumentNullException(nameof(factory));
             return new Task<TResult>(function, state, factory.CancellationToken, factory.CreationOptions);
         }
 

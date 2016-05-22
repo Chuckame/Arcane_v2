@@ -20,11 +20,11 @@ namespace Arcane.Login.Frames
         {
         }
 
-        public override void OnAttached()
+        protected override void OnAttached()
         {
         }
 
-        public override void OnDettached()
+        protected override void OnDetached()
         {
         }
 

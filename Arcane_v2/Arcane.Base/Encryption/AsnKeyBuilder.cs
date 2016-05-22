@@ -218,16 +218,16 @@ namespace Arcane.Base.Encryption
                 if (IsEmpty(values))
                     return new byte[] { };
 
-                int length = 0;
+                var length = 0;
                 foreach (byte[] b in values)
                 {
                     if (null != b)
                         length += b.Length;
                 }
 
-                byte[] cated = new byte[length];
+                var cated = new byte[length];
 
-                int current = 0;
+                var current = 0;
                 foreach (byte[] b in values)
                 {
                     if (null != b)
@@ -272,26 +272,26 @@ namespace Arcane.Base.Encryption
             * */
 
             // DSA Parameters
-            AsnType p = CreateIntegerPos(publicKey.P);
-            AsnType q = CreateIntegerPos(publicKey.Q);
-            AsnType g = CreateIntegerPos(publicKey.G);
+            var p = CreateIntegerPos(publicKey.P);
+            var q = CreateIntegerPos(publicKey.Q);
+            var g = CreateIntegerPos(publicKey.G);
 
             // Sequence - DSA-Params
-            AsnType dssParams = CreateSequence(new AsnType[] { p, q, g });
+            var dssParams = CreateSequence(new AsnType[] { p, q, g });
 
             // OID - packed 1.2.840.10040.4.1
             //   { 0x2A, 0x86, 0x48, 0xCE, 0x38, 0x04, 0x01 }
-            AsnType oid = CreateOid("1.2.840.10040.4.1");
+            var oid = CreateOid("1.2.840.10040.4.1");
 
             // Sequence
-            AsnType algorithmID = CreateSequence(new AsnType[] { oid, dssParams });
+            var algorithmID = CreateSequence(new AsnType[] { oid, dssParams });
 
             // Public Key Y
-            AsnType y = CreateIntegerPos(publicKey.Y);
-            AsnType key = CreateBitString(y);
+            var y = CreateIntegerPos(publicKey.Y);
+            var key = CreateBitString(y);
 
             // Sequence 'A'
-            AsnType publicKeyInfo =
+            var publicKeyInfo =
               CreateSequence(new AsnType[] { algorithmID, key });
 
             return new AsnMessage(publicKeyInfo.GetBytes(), "X.509");
@@ -325,17 +325,17 @@ namespace Arcane.Base.Encryption
 
             // OID - packed 1.2.840.113549.1.1.1
             //   { 0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x01, 0x01, 0x01 }
-            AsnType oid = CreateOid("1.2.840.113549.1.1.1");
-            AsnType algorithmID =
+            var oid = CreateOid("1.2.840.113549.1.1.1");
+            var algorithmID =
               CreateSequence(new AsnType[] { oid, CreateNull() });
 
-            AsnType n = CreateIntegerPos(publicKey.Modulus);
-            AsnType e = CreateIntegerPos(publicKey.Exponent);
-            AsnType key = CreateBitString(
+            var n = CreateIntegerPos(publicKey.Modulus);
+            var e = CreateIntegerPos(publicKey.Exponent);
+            var key = CreateBitString(
               CreateSequence(new AsnType[] { n, e })
             );
 
-            AsnType publicKeyInfo =
+            var publicKeyInfo =
               CreateSequence(new AsnType[] { algorithmID, key });
 
             return new AsnMessage(publicKeyInfo.GetBytes(), "X.509");
@@ -372,28 +372,28 @@ namespace Arcane.Base.Encryption
             * */
 
             // Version - 0 (v1998)
-            AsnType version = CreateInteger(ZERO);
+            var version = CreateInteger(ZERO);
 
             // Domain Parameters
-            AsnType p = CreateIntegerPos(privateKey.P);
-            AsnType q = CreateIntegerPos(privateKey.Q);
-            AsnType g = CreateIntegerPos(privateKey.G);
+            var p = CreateIntegerPos(privateKey.P);
+            var q = CreateIntegerPos(privateKey.Q);
+            var g = CreateIntegerPos(privateKey.G);
 
-            AsnType dssParams = CreateSequence(new AsnType[] { p, q, g });
+            var dssParams = CreateSequence(new AsnType[] { p, q, g });
 
             // OID - packed 1.2.840.10040.4.1
             //   { 0x2A, 0x86, 0x48, 0xCE, 0x38, 0x04, 0x01 }
-            AsnType oid = CreateOid("1.2.840.10040.4.1");
+            var oid = CreateOid("1.2.840.10040.4.1");
 
             // AlgorithmIdentifier
-            AsnType algorithmID = CreateSequence(new AsnType[] { oid, dssParams });
+            var algorithmID = CreateSequence(new AsnType[] { oid, dssParams });
 
             // Private Key X
-            AsnType x = CreateIntegerPos(privateKey.X);
-            AsnType key = CreateOctetString(x);
+            var x = CreateIntegerPos(privateKey.X);
+            var key = CreateOctetString(x);
 
             // Sequence
-            AsnType privateKeyInfo =
+            var privateKeyInfo =
               CreateSequence(new AsnType[] { version, algorithmID, key });
 
             return new AsnMessage(privateKeyInfo.GetBytes(), "PKCS#8");
@@ -435,30 +435,30 @@ namespace Arcane.Base.Encryption
             *       +- INTEGER(Inv Q)
             * */
 
-            AsnType n = CreateIntegerPos(privateKey.Modulus);
-            AsnType e = CreateIntegerPos(privateKey.Exponent);
-            AsnType d = CreateIntegerPos(privateKey.D);
-            AsnType p = CreateIntegerPos(privateKey.P);
-            AsnType q = CreateIntegerPos(privateKey.Q);
-            AsnType dp = CreateIntegerPos(privateKey.DP);
-            AsnType dq = CreateIntegerPos(privateKey.DQ);
-            AsnType iq = CreateIntegerPos(privateKey.InverseQ);
+            var n = CreateIntegerPos(privateKey.Modulus);
+            var e = CreateIntegerPos(privateKey.Exponent);
+            var d = CreateIntegerPos(privateKey.D);
+            var p = CreateIntegerPos(privateKey.P);
+            var q = CreateIntegerPos(privateKey.Q);
+            var dp = CreateIntegerPos(privateKey.DP);
+            var dq = CreateIntegerPos(privateKey.DQ);
+            var iq = CreateIntegerPos(privateKey.InverseQ);
 
             // Version - 0 (v1998)
-            AsnType version = CreateInteger(new byte[] { 0 });
+            var version = CreateInteger(new byte[] { 0 });
 
             // octstring = OCTETSTRING(SEQUENCE(INTEGER(0)INTEGER(N)...))
-            AsnType key = CreateOctetString(
+            var key = CreateOctetString(
               CreateSequence(new AsnType[] { version, n, e, d, p, q, dp, dq, iq })
             );
 
             // OID - packed 1.2.840.113549.1.1.1
             //   { 0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x01, 0x01, 0x01 }
-            AsnType algorithmID = CreateSequence(new AsnType[] { CreateOid("1.2.840.113549.1.1.1"), CreateNull() }
+            var algorithmID = CreateSequence(new AsnType[] { CreateOid("1.2.840.113549.1.1.1"), CreateNull() }
             );
 
             // PrivateKeyInfo
-            AsnType privateKeyInfo =
+            var privateKeyInfo =
               CreateSequence(new AsnType[] { version, algorithmID, key });
 
             return new AsnMessage(privateKeyInfo.GetBytes(), "PKCS#8");
@@ -640,7 +640,7 @@ namespace Arcane.Base.Encryption
             if (!(unusedBits < 8))
             { throw new ArgumentException("Unused bits must be less than 8."); }
 
-            byte[] b = Concatenate(new byte[] { (byte)unusedBits }, octets);
+            var b = Concatenate(new byte[] { (byte)unusedBits }, octets);
             // BitString: Tag 0x03 (3, Universal, Primitive)
             return new AsnType(0x03, b);
         }
@@ -724,8 +724,8 @@ namespace Arcane.Base.Encryption
             { return CreateBitString(EMPTY); }
 
             // Any unused bits?
-            int lstrlen = value.Length;
-            int unusedBits = 8 - (lstrlen % 8);
+            var lstrlen = value.Length;
+            var unusedBits = 8 - (lstrlen % 8);
             if (8 == unusedBits)
             { unusedBits = 0; }
 
@@ -733,12 +733,12 @@ namespace Arcane.Base.Encryption
             { value += "0"; }
 
             // Determine number of octets
-            int loctlen = (lstrlen + 7) / 8;
+            var loctlen = (lstrlen + 7) / 8;
 
-            List<byte> octets = new List<byte>();
+            var octets = new List<byte>();
             for (int i = 0; i < loctlen; i++)
             {
-                String s = value.Substring(i * 8, 8);
+                var s = value.Substring(i * 8, 8);
                 byte b = 0x00;
 
                 try
@@ -864,12 +864,12 @@ namespace Arcane.Base.Encryption
             { return CreateOctetString(EMPTY); }
 
             // Determine number of octets
-            int len = (value.Length + 255) / 256;
+            var len = (value.Length + 255) / 256;
 
-            List<byte> octets = new List<byte>();
+            var octets = new List<byte>();
             for (int i = 0; i < len; i++)
             {
-                String s = value.Substring(i * 2, 2);
+                var s = value.Substring(i * 2, 2);
                 byte b = 0x00;
 
                 try
@@ -1033,7 +1033,7 @@ namespace Arcane.Base.Encryption
 
             // No need to Duplicate - Compliment2s
             // performs the action
-            byte[] c = Compliment2s(value);
+            var c = Compliment2s(value);
 
             return CreateInteger(c);
         }
@@ -1059,10 +1059,10 @@ namespace Arcane.Base.Encryption
             if (IsEmpty(octets) || IsZero(octets))
             { return new byte[] { }; }
 
-            byte[] d = Duplicate(octets);
+            var d = Duplicate(octets);
 
             // Position of the first non-zero value
-            int pos = 0;
+            var pos = 0;
             foreach (byte b in d)
             {
                 if (0 != b)
@@ -1075,7 +1075,7 @@ namespace Arcane.Base.Encryption
             { return octets; }
 
             // Allocate trimmed array
-            byte[] t = new byte[d.Length - pos];
+            var t = new byte[d.Length - pos];
 
             // Copy
             Array.Copy(d, pos, t, 0, t.Length);
@@ -1094,7 +1094,7 @@ namespace Arcane.Base.Encryption
             if (IsEmpty(octets) || IsZero(octets))
             { return EMPTY; }
 
-            byte[] d = Duplicate(octets);
+            var d = Duplicate(octets);
 
             Array.Reverse(d);
 
@@ -1126,7 +1126,7 @@ namespace Arcane.Base.Encryption
             if (IsEmpty(value))
                 return null;
 
-            String[] tokens = value.Split(new Char[] { ' ', '.' });
+            var tokens = value.Split(new Char[] { ' ', '.' });
 
             // Punt?
             if (IsEmpty(tokens))
@@ -1136,7 +1136,7 @@ namespace Arcane.Base.Encryption
             UInt64 a = 0;
 
             // One or more strings are available
-            List<UInt64> arcs = new List<UInt64>();
+            var arcs = new List<UInt64>();
 
             foreach (String t in tokens)
             {
@@ -1157,7 +1157,7 @@ namespace Arcane.Base.Encryption
                 return null;
 
             // Octets to be returned to caller
-            List<byte> octets = new List<byte>();
+            var octets = new List<byte>();
 
             // Guard the case of a small list
             // The list has at least 1 item...    
@@ -1171,10 +1171,10 @@ namespace Arcane.Base.Encryption
             for (int i = 2; i < arcs.Count; i++)
             {
                 // Scratch list builder for this arc
-                List<byte> temp = new List<byte>();
+                var temp = new List<byte>();
 
                 // The current arc (subidentifier)
-                UInt64 arc = arcs[i];
+                var arc = arcs[i];
 
                 // Build the arc (subidentifier) byte array
                 // The array is built in reverse (LSB to MSB).
@@ -1189,7 +1189,7 @@ namespace Arcane.Base.Encryption
 
                 // Grab resulting array. Because of the do/while,
                 // there is at least one value in the array.
-                byte[] t = temp.ToArray();
+                var t = temp.ToArray();
 
                 // Unset high bit of byte t[0]
                 // t[0] will be LSB after the array is reversed.
@@ -1239,7 +1239,7 @@ namespace Arcane.Base.Encryption
             { return EMPTY; }
 
             // Make a copy of octet array
-            byte[] c = Duplicate(value);
+            var c = Duplicate(value);
 
             for (int i = c.Length - 1; i >= 0; i--)
             {
@@ -1260,16 +1260,16 @@ namespace Arcane.Base.Encryption
             { return Duplicate(value); }
 
             // Make a copy of octet array
-            byte[] d = Duplicate(value);
+            var d = Duplicate(value);
 
-            int carry = 1;
+            var carry = 1;
             for (int i = d.Length - 1; i >= 0; i--)
             {
                 // Compliment
                 d[i] = (byte)~d[i];
 
                 // Add
-                int j = d[i] + carry;
+                var j = d[i] + carry;
 
                 // Write Back
                 d[i] = (byte)(j & 0xFF);
@@ -1306,21 +1306,21 @@ namespace Arcane.Base.Encryption
             if (IsEmpty(values))
                 return new byte[] { };
 
-            int length = 0;
+            var length = 0;
             foreach (AsnType t in values)
             {
                 if (null != t)
                 { length += t.GetBytes().Length; }
             }
 
-            byte[] cated = new byte[length];
+            var cated = new byte[length];
 
-            int current = 0;
+            var current = 0;
             foreach (AsnType t in values)
             {
                 if (null != t)
                 {
-                    byte[] b = t.GetBytes();
+                    var b = t.GetBytes();
 
                     Array.Copy(b, 0, cated, current, b.Length);
                     current += b.Length;
@@ -1341,16 +1341,16 @@ namespace Arcane.Base.Encryption
             if (IsEmpty(values))
                 return new byte[] { };
 
-            int length = 0;
+            var length = 0;
             foreach (byte[] b in values)
             {
                 if (null != b)
                 { length += b.Length; }
             }
 
-            byte[] cated = new byte[length];
+            var cated = new byte[length];
 
-            int current = 0;
+            var current = 0;
             foreach (byte[] b in values)
             {
                 if (null != b)
@@ -1368,7 +1368,7 @@ namespace Arcane.Base.Encryption
             if (IsEmpty(b))
             { return EMPTY; }
 
-            byte[] d = new byte[b.Length];
+            var d = new byte[b.Length];
             Array.Copy(b, d, b.Length);
 
             return d;
@@ -1379,7 +1379,7 @@ namespace Arcane.Base.Encryption
             if (IsEmpty(octets))
             { return false; }
 
-            bool allZeros = true;
+            var allZeros = true;
             for (int i = 0; i < octets.Length; i++)
             {
                 if (0 != octets[i])

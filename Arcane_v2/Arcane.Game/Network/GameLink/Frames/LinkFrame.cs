@@ -1,5 +1,7 @@
 ﻿using Arcane.Base.Entities;
 using Arcane.Base.Network.GameLink.Messages;
+using Arcane.Game.Entities;
+using Castle.ActiveRecord;
 using Chuckame.IO.TCP.Messages;
 using NLog;
 using System;
@@ -18,12 +20,12 @@ namespace Arcane.Game.Network.GameLink.Frames
         {
         }
 
-        public override void OnAttached()
+        protected override void OnAttached()
         {
             Client.SendMessage(new StatusMessage { Status = GameLinkConnectorManager.Instance.ServerStatus });
         }
 
-        public override void OnDettached()
+        protected override void OnDetached()
         {
         }
 
@@ -39,6 +41,23 @@ namespace Arcane.Game.Network.GameLink.Frames
             else
             {
                 Client.SendMessage(new ClientIncomingTokenResultMessage { AccountId = msg.AccountId, Success = false, Token = msg.Token });
+            }
+        }
+
+        [MessageHandler]
+        public void CharactersCountMessage(RequestCharactersCountMessage msg)
+        {
+            var account = Account.TryFind(msg.AccountId);
+            if (account != null)
+            {
+                using (new SessionScope())
+                {
+                    Client.SendMessage(new CharactersCountMessage { AccountId = msg.AccountId, CharactersCount = (sbyte)CharacterEntity.Queryable.Count(c => c.Owner.Id == msg.AccountId), Token = msg.Token });
+                }
+            }
+            else
+            {
+                Client.SendMessage(new CharactersCountMessage { AccountId = msg.AccountId, CharactersCount = 0, Token = msg.Token });
             }
         }
     }

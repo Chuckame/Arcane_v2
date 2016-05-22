@@ -25,13 +25,13 @@ namespace Arcane.Login.Frames
         {
         }
 
-        public override void OnAttached()
+        protected override void OnAttached()
         {
             Client.CurrentContext = ContextEnum.NicknameRegistration;
             Client.SendMessage(new NicknameRegistrationMessage());
         }
 
-        public override void OnDettached()
+        protected override void OnDetached()
         {
         }
 
@@ -44,12 +44,8 @@ namespace Arcane.Login.Frames
                 TestNickInvalid(newNickname);
                 TestNickSameAsLogin(newNickname);
                 TestNickTooSimilarToLogin(newNickname);
-                using (new SessionScope())
-                {
-                    TestNickAlreadyUsed(newNickname);
-                    ProcessNicknameRegistration(newNickname);
-                }
-
+                TestNickAlreadyUsed(newNickname);
+                ProcessNicknameRegistration(newNickname);
             }
             catch (NickameRefusedException e)
             {
@@ -83,7 +79,7 @@ namespace Arcane.Login.Frames
 
         private void TestNickAlreadyUsed(string newNickname)
         {
-            if (Account.Queryable.Any(a => a.Nickname != null && newNickname.ToUpperInvariant().Equals(a.Nickname.ToUpperInvariant())))
+            if (AccountHelper.NicknameAlreadyExists(newNickname))
                 throw new NickameRefusedException(NicknameErrorEnum.ALREADY_USED);
         }
 
@@ -94,12 +90,11 @@ namespace Arcane.Login.Frames
 
         private void ProcessNicknameRegistration(string newNickname)
         {
-            Client.Account.Nickname = newNickname;
-            Client.Account.Update();
+            Client.Account.UpdateNickname(newNickname);
             Client.SendMessage(new NicknameAcceptedMessage());
             Client.SendMessage(ConnectionHelper.MakeIdentificationSuccessMessage(Client.Account, false));
             Client.RemoveFrame(this);
-            FrameHelper.GoToServerSelection(Client);
+            FrameOrchestrator.GoToServerSelection(Client);
         }
 
         [Serializable]

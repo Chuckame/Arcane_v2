@@ -12,6 +12,7 @@ namespace Chuckame.IO.TCP.Messages
 {
     public abstract class AbstractFrame<TFrame, TClient, TMessage> : IFrame<TClient, TMessage>
         where TMessage : IMessage
+        where TFrame : AbstractFrame<TFrame, TClient, TMessage>
         where TClient : IClient<TClient, TMessage>
     {
         private readonly Logger LOGGER = LogManager.GetCurrentClassLogger(typeof(TFrame));
@@ -42,8 +43,22 @@ namespace Chuckame.IO.TCP.Messages
                 throw new ArgumentNullException(nameof(client));
             Client = client;
             Init();
+            OnFrameAttached += AbstractFrame_OnFrameAttached;
+            OnFrameDetached += AbstractFrame_OnFrameDetached;
         }
 
+        private void AbstractFrame_OnFrameDetached()
+        {
+            OnDetached();
+        }
+
+        private void AbstractFrame_OnFrameAttached()
+        {
+            OnAttached();
+        }
+
+        public event Action OnFrameAttached;
+        public event Action OnFrameDetached;
         public TClient Client { get; }
 
         public void Dispatch(TMessage message)
@@ -64,9 +79,32 @@ namespace Chuckame.IO.TCP.Messages
             }
         }
 
-        public abstract void OnAttached();
-        public abstract void OnDettached();
+        protected abstract void OnAttached();
+        protected abstract void OnDetached();
 
+        public void NotifyAttachment()
+        {
+            OnFrameAttached?.Invoke();
+        }
+        public void NotifyDetachment()
+        {
+            OnFrameDetached?.Invoke();
+        }
+
+        public void AddDependencies(params IFrame<TClient, TMessage>[] frames)
+        {
+            foreach (var frame in frames)
+            {
+                OnFrameAttached += () =>
+                {
+                    Client.AddFrame(frame);
+                };
+                OnFrameDetached += () =>
+                {
+                    Client.RemoveFrame(frame);
+                };
+            }
+        }
 
         [Serializable]
         public class FrameDispatchException : Exception

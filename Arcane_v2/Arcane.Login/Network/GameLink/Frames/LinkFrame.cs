@@ -19,12 +19,12 @@ namespace Arcane.Login.Network.GameLink.Frames
         {
         }
 
-        public override void OnAttached()
+        protected override void OnAttached()
         {
             Client.SendMessage(new GameServerAcceptedMessage());
         }
 
-        public override void OnDettached()
+        protected override void OnDetached()
         {
         }
 

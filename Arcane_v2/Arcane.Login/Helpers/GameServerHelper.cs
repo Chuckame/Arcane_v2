@@ -30,7 +30,7 @@ namespace Arcane.Login.Helpers
         {
             if (GameLinkManager.Instance.IsServerExists(serverId))
                 return GameLinkManager.Instance.GetClientCharactersCount(account, serverId);
-            return 1;
+            return 0;
         }
         public static bool IsSelectable(this ServerStatusEnum status)
         {

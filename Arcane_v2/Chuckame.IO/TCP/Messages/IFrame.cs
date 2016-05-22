@@ -23,8 +23,16 @@ namespace Chuckame.IO.TCP.Messages
         /// <param name="message"></param>
         void Dispatch(TMessage message);
 
-        void OnAttached();
+        event Action OnFrameAttached;
+        event Action OnFrameDetached;
 
-        void OnDettached();
+        void NotifyAttachment();
+        void NotifyDetachment();
+
+        /// <summary>
+        /// Ajoute des frames dépendantes de cette instance. Lors d'un OnFrameAttached ou OnFrameDetached, ces frames seront elles aussi attachées ou détachées.
+        /// </summary>
+        /// <param name="frames"></param>
+        void AddDependencies(params IFrame<TClient, TMessage>[] frames);
     }
 }

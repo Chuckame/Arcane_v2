@@ -31,7 +31,7 @@ namespace Arcane.Login.Network
         private static void LoginServer_OnClientAccepted(LoginServer me, LoginClient client)
         {
             LOGGER.Info("New client !");
-            client.AddFrame(new ConnectionFrame(client));
+            FrameOrchestrator.GoToConnection(client);
         }
     }
 }

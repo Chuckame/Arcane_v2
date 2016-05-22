@@ -28,14 +28,14 @@ namespace Arcane.Login.Frames
         {
         }
 
-        public override void OnAttached()
+        protected override void OnAttached()
         {
             Client.CurrentContext = ContextEnum.Connection;
             Client.SendMessage(new ProtocolRequired(CommonConfig.ProtocolRequiredVersion, CommonConfig.ProtocolCurrentVersion));
             Client.SendMessage(new HelloConnectMessage(Salt, RSAProtocol.PublicKey));
         }
 
-        public override void OnDettached()
+        protected override void OnDetached()
         {
         }
 
@@ -45,14 +45,11 @@ namespace Arcane.Login.Frames
             try
             {
                 TestVersion(msg.version);
-                using (new SessionScope())
-                {
-                    var account = Account.Queryable.FirstOrDefault(x => x.Login.Equals(msg.login));
-                    TestAccount(account);
-                    TestPassword(account, msg.credentials);
-                    TestBanned(account);
-                    ProcessLogin(account, msg);
-                }
+                var account = AccountHelper.GetAccountByLogin(msg.login);
+                TestAccount(account);
+                TestPassword(account, msg.credentials);
+                TestBanned(account);
+                ProcessLogin(account, msg);
             }
             catch (IdentificationFailException e)
             {
@@ -103,26 +100,24 @@ namespace Arcane.Login.Frames
             LoginServerManager.Instance.DisconnectClientByAccount(account);
             GameLinkManager.Instance.DisconnectClientByAccount(account);
             Client.Account = account;
-            account.LastConnectionDate = DateTime.Now;
-            account.LastConnectionIp = Client.RemoteHost.ToString();
-            account.Update();
+            account.UpdateLastConnection(Client.RemoteHost, DateTime.Now);
             Client.SendMessage(new CredentialsAcknowledgementMessage());
             Client.RemoveFrame(this);
             if (Client.Account.HasNickname())
             {
                 Client.SendMessage(ConnectionHelper.MakeIdentificationSuccessMessage(account, false));
-                if (msg.autoconnect)
+                if (msg.autoconnect && GameLinkManager.Instance.IsServerExists((ushort)msg.serverId))
                 {
-                    FrameHelper.AutoSelectServer(Client, msg.serverId);
+                    FrameOrchestrator.AutoSelectServer(Client, msg.serverId);
                 }
                 else
                 {
-                    FrameHelper.GoToServerSelection(Client);
+                    FrameOrchestrator.GoToServerSelection(Client);
                 }
             }
             else
             {
-                FrameHelper.GoToNicknameRegistration(Client);
+                FrameOrchestrator.GoToNicknameRegistration(Client);
             }
         }
 

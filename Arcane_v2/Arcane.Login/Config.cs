@@ -17,6 +17,6 @@ namespace Arcane.Login
         public static readonly string[] NicknameRefusedWords = { "dofus" };
         public static readonly int NicknameMinLength = 5;
         public static readonly int NicknameMaxLength = 50;
-        public static readonly int LoginServerClientIddleTimeout = 60000;
+        public static readonly int LoginServerClientIddleTimeout = 60000 * 2;//2 minutes avant déconnexion
     }
 }

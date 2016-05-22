@@ -22,5 +22,14 @@ namespace Arcane.Game
         {
             return datetime.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
         }
+        public static T[] ParseToArray<T>(this string str, char separator)
+        {
+            return str.Split(separator).Select(x => (T)Convert.ChangeType(x, typeof(T))).ToArray();
+        }
+
+        public static string Dump<T>(this IEnumerable<T> collection, char separator)
+        {
+            return string.Join(separator.ToString(), collection);
+        }
     }
 }

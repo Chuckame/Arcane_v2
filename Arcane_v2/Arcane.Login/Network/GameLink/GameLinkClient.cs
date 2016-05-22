@@ -21,7 +21,6 @@ namespace Arcane.Login.Network.GameLink
     {
         private Collection<Account> _mConnectedAccounts;
         public IReadOnlyCollection<Account> ConnectedAccounts { get; }
-        private Dictionary<Guid, LinkMessageHandle> _handles;
 
         public event Action<GameLinkClient, ServerStatusEnum> OnStatusUpdated;
         public event Action<GameLinkClient, Account> OnAccountConnected;
@@ -31,7 +30,6 @@ namespace Arcane.Login.Network.GameLink
         {
             _mConnectedAccounts = new Collection<Account>();
             ConnectedAccounts = new ReadOnlyCollection<Account>(_mConnectedAccounts);
-            _handles = new Dictionary<Guid, LinkMessageHandle>();
         }
 
         public void UpdateStatus(ServerStatusEnum newStatus)
