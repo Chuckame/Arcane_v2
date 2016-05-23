@@ -98,6 +98,7 @@
     <Compile Include="Encryption\AsnKeyBuilder.cs" />
     <Compile Include="Encryption\RSAProtocol.cs" />
     <Compile Include="Entities\Account.cs" />
+    <Compile Include="Entities\Cell.cs" />
     <Compile Include="Entities\GameServerEntity.cs" />
     <Compile Include="Enums\ServerCommunitiesEnum.cs" />
     <Compile Include="Extentions\SerializationExt.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Network\GameLink\GameLinkMessageBuilder.cs" />
     <Compile Include="Network\GameLink\Messages\SearchCharacterOwnerResultMessage.cs" />
     <Compile Include="Network\GameLink\Messages\SearchCharacterOwnerMessage.cs" />
+    <Compile Include="Network\GameLink\Messages\TestResponseMessage.cs" />
     <Compile Include="Network\GameLink\Messages\TestMessage.cs" />
     <Compile Include="Network\GameLink\Messages\StatusMessage.cs" />
     <Compile Include="Network\GameLink\Messages\HelloMessage.cs" />

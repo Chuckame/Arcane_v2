@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Arcane.Base.Network.GameLink.Messages
 {
-    public class TestMessage : AbstractGameLinkMessage
+    public class TestResponseMessage : AbstractGameLinkMessage
     {
         public string TestStr { get; set; }
         public override void Serialize(IDataWriter writer)

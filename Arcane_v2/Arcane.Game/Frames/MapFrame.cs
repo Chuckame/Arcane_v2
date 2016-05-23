@@ -31,7 +31,7 @@ namespace Arcane.Game.Frames
 
         protected override void OnAttached()
         {
-            Client.DispatchMessage(new MapInformationsRequestMessage(0));
+            Client.DispatchMessage(new ChangeMapMessage(0));
         }
 
         protected override void OnDetached()
@@ -41,7 +41,13 @@ namespace Arcane.Game.Frames
         [MessageHandler]
         public void MapInformationsRequestMessage(MapInformationsRequestMessage msg)
         {
-            Client.SendMessage(new MapComplementaryInformationsDataMessage(1, msg.mapId, 0, new HouseInformations[0], new GameRolePlayActorInformations[0], new InteractiveElement[0], new StatedElement[0], new MapObstacle[0], new FightCommonInformations[0]));
+            Client.SendMessage(new MapComplementaryInformationsDataMessage(1, msg.mapId, 0, new HouseInformations[0], new GameRolePlayActorInformations[] { Client.Character.ToGameRolePlayActorInformations() }, new InteractiveElement[0], new StatedElement[0], new MapObstacle[0], new FightCommonInformations[0]));
+        }
+
+        [MessageHandler]
+        public void ChangeMapMessage(ChangeMapMessage msg)
+        {
+            Client.SendMessage(new CurrentMapMessage(msg.mapId, Config.MapKey));
         }
     }
 }

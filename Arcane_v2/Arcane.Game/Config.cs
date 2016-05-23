@@ -16,6 +16,7 @@ namespace Arcane.Game
         internal static readonly IPAddress GameServerHost = IPAddress.Parse("127.0.0.1");
         internal static readonly int GameServerMaxConnections = 1000;
         internal static readonly int GameServerPort = 5555;
+        internal static readonly string MapKey= "649ae451ca33ec53bbcbcc33becf15f4";
         internal static readonly ushort ServerId = 37;
         internal static readonly TimeSpan TicketExpirationTime = new TimeSpan(0, 0, 0, 30, 0);
     }

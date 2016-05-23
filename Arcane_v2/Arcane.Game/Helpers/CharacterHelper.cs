@@ -18,15 +18,14 @@ namespace Arcane.Game.Helpers
     {
         public static CharacterBaseInformations ToCharacterBaseInformations(this CharacterWrapper characterWrapper)
         {
-            var character = characterWrapper.Character;
             return new CharacterBaseInformations
             {
-                id = character.Id,
-                breed = character.Breed.ToSByte(),
+                id = characterWrapper.Id,
+                breed = characterWrapper.Breed.ToSByte(),
                 entityLook = characterWrapper.EntityLook,
-                level = characterWrapper.GetLevel(),
-                name = character.Name,
-                sex = character.Sex.ToBoolean()
+                level = characterWrapper.Level,
+                name = characterWrapper.Name,
+                sex = characterWrapper.Sex.ToBoolean()
             };
         }
 
@@ -44,12 +43,12 @@ namespace Arcane.Game.Helpers
             return charsInfos;
         }
 
-        internal static void UpdateLastSelection(this CharacterEntity character, DateTime lastSelect)
+        public static void UpdateLastSelectionDate(this CharacterWrapper character, DateTime lastSelect)
         {
             using (new SessionScope())
             {
-                character.LastSelection = lastSelect;
-                character.Update();
+                character.LastSelectionDate = lastSelect;
+                character.Save();
             }
         }
 
@@ -62,7 +61,7 @@ namespace Arcane.Game.Helpers
             }
         }
 
-        public static Breed GetTemplateBreed(this CharacterEntity character)
+        public static Breed GetTemplateBreed(this CharacterWrapper character)
         {
             return GameDataManager.Instance.GetObject<Breed>((int)character.Breed);
         }
@@ -72,11 +71,41 @@ namespace Arcane.Game.Helpers
             return GameDataManager.Instance.GetObject<Breed>((int)breed);
         }
 
-        public static short[] GetTemplateSkins(this CharacterEntity character)
+        public static short[] GetTemplateSkins(this CharacterWrapper character)
         {
             var breed = GetTemplateBreed(character);
             var templateLook = (character.Sex == SexEnum.Female ? breed.femaleLook : breed.maleLook).ToEntityLook();
             return templateLook.skins;
+        }
+
+        public static GameRolePlayActorInformations ToGameRolePlayActorInformations(this CharacterWrapper characterWrapper)
+        {
+            return new GameRolePlayCharacterInformations(characterWrapper.Id, characterWrapper.EntityLook, characterWrapper.ToEntityDispositionInformations(), characterWrapper.Name, characterWrapper.ToHumanInformations(), characterWrapper.ToActorAlignmentInformations());
+        }
+
+        public static EntityDispositionInformations ToEntityDispositionInformations(this CharacterWrapper wrapper)
+        {
+            return new IdentifiedEntityDispositionInformations(wrapper.Disposition.CellId, wrapper.Disposition.Direction.ToSByte(), wrapper.Id);
+        }
+
+        public static HumanInformations ToHumanInformations(this CharacterWrapper wrapper)
+        {
+            return new HumanInformations(new EntityLook[0], 0, 0, wrapper.Restrictions, wrapper.Title.Id, wrapper.Title.Params);
+        }
+
+        public static ActorAlignmentInformations ToActorAlignmentInformations(this CharacterWrapper wrapper)
+        {
+            return new ActorAlignmentInformations(wrapper.Alignment.Side.ToSByte(), wrapper.Alignment.Value, wrapper.Alignment.Grade, wrapper.Alignment.Dishonor, wrapper.Alignment.CharacterPower);
+        }
+
+        public static int[] SerializeColors(IList<int> colors)
+        {
+            var list = new List<int>();
+
+            for (int i = 0; i < colors.Count; i++)
+                list.Insert(i, colors[i] | (i + 1) * 0x1000000);
+
+            return list.ToArray();
         }
     }
 }

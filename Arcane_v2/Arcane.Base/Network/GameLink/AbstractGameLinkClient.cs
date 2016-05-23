@@ -26,20 +26,27 @@ namespace Arcane.Base.Network.GameLink
         public const int BUFFER_SIZE = 8192;
         public GameServerEntity ServerInformations { get; set; }
         public bool HasServerInformations { get { return ServerInformations != null; } }
-        private Dictionary<Guid, LinkMessageHandle> _handles;
+        //private Dictionary<Guid, LinkMessageHandle> _handles;
+        private ICollection<LinkMessageHandle> _handles;
 
         protected AbstractGameLinkClient(Socket socket) : base(socket, BUFFER_SIZE, GameLinkMessageBuilder.Instance)
         {
-            _handles = new Dictionary<Guid, LinkMessageHandle>();
+            //_handles = new Dictionary<Guid, LinkMessageHandle>();
+            _handles = new LinkedList< LinkMessageHandle>();
             OnMessageReceived += GameLinkClient_OnMessageReceived;
         }
 
         public T SendMessageAndWaitResponse<T>(AbstractGameLinkMessage message, int? timeout = null) where T : AbstractGameLinkMessage
         {
             var id = Guid.NewGuid();
-            var handle = new LinkMessageHandle();
-            _handles.Add(id, handle);
             message.Token = id;
+            return SendMessageAndWaitResponse<T>(message, (m) => m.Token.HasValue && m.Token.Value.Equals(id), timeout);
+        }
+
+        public T SendMessageAndWaitResponse<T>(AbstractGameLinkMessage message, Predicate<T> messagePredicate, int? timeout = null) where T : AbstractGameLinkMessage
+        {
+            var handle = new LinkMessageHandle((m)=> messagePredicate((T)m));
+            _handles.Add(handle);
             try
             {
                 SendMessage(message);
@@ -49,17 +56,21 @@ namespace Arcane.Base.Network.GameLink
             }
             finally
             {
-                _handles.Remove(id);
+                _handles.Remove(handle);
             }
             return (T)handle.Message;
         }
 
         private void GameLinkClient_OnMessageReceived(TClient client, AbstractGameLinkMessage message)
         {
-            if (message.Token.HasValue && _handles.ContainsKey(message.Token.Value))
+            var handle = _handles.FirstOrDefault(h => h.IsExpectedMessage(message));
+            if (handle != null)
             {
-                LOGGER.Debug($"Response for message token '{message.Token}'.");
-                _handles[message.Token.Value].Set(message);
+                if (message.Token.HasValue)
+                    LOGGER.Debug($"Response for message token '{message.Token}'.");
+                else
+                    LOGGER.Debug($"Response for message.");
+                handle.Set(message);
             }
         }
 

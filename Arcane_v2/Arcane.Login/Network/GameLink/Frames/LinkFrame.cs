@@ -22,6 +22,7 @@ namespace Arcane.Login.Network.GameLink.Frames
         protected override void OnAttached()
         {
             Client.SendMessage(new GameServerAcceptedMessage());
+            //var result = Client.SendMessageAndWaitResponse<TestResponseMessage>(new TestMessage { TestStr = "LAWL" }, (m) => m.TestStr.Equals("LAWL"));
         }
 
         protected override void OnDetached()

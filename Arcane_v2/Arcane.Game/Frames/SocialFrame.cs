@@ -27,16 +27,10 @@ namespace Arcane.Game.Frames
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
         public SocialFrame(GameClient client) : base(client)
         {
-            client.Character.OnFriendAdded += Character_OnFriendAdded;
             //TODO: FriendSetWarnOnConnectionMessage
             //TODO:  FriendDeleteRequestMessage
         }
-
-        private void Character_OnFriendAdded(CharacterWrapper character, Account targetAccount)
-        {
-            Client.SendMessage(new FriendAddedMessage(targetAccount.ToFriendInformations()));
-        }
-
+        
         protected override void OnAttached()
         {
         }
@@ -64,6 +58,7 @@ namespace Arcane.Game.Frames
             {
                 var targetAccount = AccountHelper.GetAccountByNickname(msg.name);
                 Client.Character.AddFriend(targetAccount);
+                Client.SendMessage(new FriendAddedMessage(targetAccount.ToFriendInformations()));
             }
         }
     }

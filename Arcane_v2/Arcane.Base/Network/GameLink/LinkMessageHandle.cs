@@ -11,12 +11,14 @@ namespace Arcane.Base.Network.GameLink
     public class LinkMessageHandle
     {
         public AbstractGameLinkMessage Message { get; private set; }
+        public Predicate<AbstractGameLinkMessage> ExpectedMessagePredicate { get; private set; }
         private AutoResetEvent AutoResetEvent;
         private bool IsReset = false;
 
-        public LinkMessageHandle()
+        public LinkMessageHandle(Predicate<AbstractGameLinkMessage> expectedMessagePredicate)
         {
             AutoResetEvent = new AutoResetEvent(false);
+            ExpectedMessagePredicate = expectedMessagePredicate;
         }
 
         public bool Set(AbstractGameLinkMessage message)
@@ -32,6 +34,11 @@ namespace Arcane.Base.Network.GameLink
                 IsReset = true;
                 AutoResetEvent.Set();
             }
+        }
+
+        public bool IsExpectedMessage(AbstractGameLinkMessage message)
+        {
+            return ExpectedMessagePredicate(message);
         }
         
         public AbstractGameLinkMessage WaitMessage(int? millisecondsTimeout = null)

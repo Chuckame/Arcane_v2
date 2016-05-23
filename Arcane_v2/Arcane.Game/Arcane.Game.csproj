@@ -97,7 +97,7 @@
     <Compile Include="Frames\QuestFrame.cs" />
     <Compile Include="Frames\ContextFrame.cs" />
     <Compile Include="Frames\SocialFrame.cs" />
-    <Compile Include="Frames\CharacterChoiceAdminPanelFrame.cs" />
+    <Compile Include="Frames\Approach\CharacterChoiceAdminPanelFrame.cs" />
     <Compile Include="Frames\FrameFactory.cs" />
     <Compile Include="Helpers\AccountHelper.cs" />
     <Compile Include="Helpers\CharacterHelper.cs" />
@@ -105,9 +105,9 @@
     <Compile Include="Frames\FrameOrchestrator.cs" />
     <Compile Include="Helpers\SocialHelper.cs" />
     <Compile Include="Network\ContextEnum.cs" />
-    <Compile Include="Frames\CharacterChoiceFrame.cs" />
-    <Compile Include="Frames\CharacterCreationFrame.cs" />
-    <Compile Include="Frames\ApproachFrame.cs" />
+    <Compile Include="Frames\Approach\CharacterChoiceFrame.cs" />
+    <Compile Include="Frames\Approach\CharacterCreationFrame.cs" />
+    <Compile Include="Frames\Approach\ApproachFrame.cs" />
     <Compile Include="Network\GameClient.cs" />
     <Compile Include="Network\GameClientFactory.cs" />
     <Compile Include="Network\GameLink\Frames\BeforeFrame.cs" />
@@ -122,6 +122,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Wrappers\CharacterWrapper.cs" />
+    <Compile Include="Wrappers\Character\Types\Alignment.cs" />
+    <Compile Include="Wrappers\Character\Types\Disposition.cs" />
+    <Compile Include="Wrappers\Character\Types\Title.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Dofus\Dofus.Common\Dofus.Common.csproj">
@@ -157,6 +160,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Frames\Game\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

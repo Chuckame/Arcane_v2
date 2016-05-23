@@ -74,5 +74,20 @@ namespace Arcane.Game.Network.GameLink.Frames
                 Client.SendMessage(new SearchCharacterOwnerResultMessage { Success = false, Token = msg.Token });
             }
         }
+
+        [MessageHandler]
+        public void SearchPseudoMessage(RequestClientDisconnectionMessage msg)
+        {
+            if (Account.Exists(msg.AccountId))
+            {
+                GameServerManager.Instance.DisconnectClientByAccount(Account.Find(msg.AccountId));
+            }
+        }
+
+        [MessageHandler]
+        public void SearchPseudoMessage(TestMessage msg)
+        {
+            Client.SendMessage(new TestResponseMessage{ TestStr="LAWL" });
+        }
     }
 }

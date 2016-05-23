@@ -24,7 +24,6 @@ namespace Arcane.Game.Helpers
         {
             using (new SessionScope())
             {
-                return new FriendsListMessage(new FriendInformations[0]);
                 var msg = new FriendsListMessage(new FriendInformations[account.Friends.Count]);
                 int i = 0;
                 foreach (var friend in account.Friends)
@@ -36,6 +35,7 @@ namespace Arcane.Game.Helpers
         }
         public static FriendInformations ToFriendInformations(this Account account)
         {
+            int lastConnection = account.LastConnectionDate.HasValue ? (int)new TimeSpan(account.LastConnectionDate.Value.Ticks).TotalHours : 0;
             if (GameServerManager.Instance.IsAccountConnected(account))
             {
                 var client = GameServerManager.Instance.GetClientByAccount(account);
@@ -57,10 +57,10 @@ namespace Arcane.Game.Helpers
                     }
                     sbyte moodSmileyId = 0;
                     BasicGuildInformations guildInfo = new BasicGuildInformations(1, "L'enfer");
-                    return new FriendOnlineInformations(account.Id, account.Nickname, state.ToSByte(), (int)new TimeSpan(account.LastConnectionDate.Value.Ticks).TotalHours, character.Character.Name, character.GetLevel(), AlignmentSideEnum.ALIGNMENT_WITHOUT.ToSByte(), character.Character.Breed.ToSByte(), character.Character.Sex.ToBoolean(), guildInfo, moodSmileyId);
+                    return new FriendOnlineInformations(account.Id, account.Nickname, state.ToSByte(), lastConnection, character.Name, character.Level, AlignmentSideEnum.ALIGNMENT_WITHOUT.ToSByte(), character.Breed.ToSByte(), character.Sex.ToBoolean(), guildInfo, moodSmileyId);
                 }
             }
-            return new FriendInformations(account.Id, account.Nickname, PlayerStateEnum.NOT_CONNECTED.ToSByte(), (int)new TimeSpan(account.LastConnectionDate.Value.Ticks).TotalHours);
+            return new FriendInformations(account.Id, account.Nickname, PlayerStateEnum.NOT_CONNECTED.ToSByte(), lastConnection);
         }
     }
 }

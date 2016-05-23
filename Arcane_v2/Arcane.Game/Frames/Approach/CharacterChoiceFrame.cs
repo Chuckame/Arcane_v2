@@ -50,10 +50,10 @@ namespace Arcane.Game.Frames
         [MessageHandler]
         public void CharacterSelectionMessage(CharacterSelectionMessage msg)
         {
-            if (CharacterWrappers.Any(c => c.Character.Id == msg.id))
+            if (CharacterWrappers.Any(c => c.Id == msg.id))
             {
-                var selectedCharacter = CharacterWrappers.First(c => c.Character.Id == msg.id);
-                selectedCharacter.Character.UpdateLastSelection(DateTime.Now);
+                var selectedCharacter = CharacterWrappers.First(c => c.Id == msg.id);
+                selectedCharacter.UpdateLastSelectionDate(DateTime.Now);
                 Client.Character = selectedCharacter;
                 Client.RemoveFrame(this);
                 FrameOrchestrator.GoToGame(Client);
@@ -68,12 +68,12 @@ namespace Arcane.Game.Frames
         [MessageHandler]
         public void CharacterDeletionRequestMessage(CharacterDeletionRequestMessage msg)
         {
-            if (CharacterWrappers.Any(c => c.Character.Id == msg.characterId))
+            if (CharacterWrappers.Any(c => c.Id == msg.characterId))
             {
-                var selectedCharacter = CharacterWrappers.First(c => c.Character.Id == msg.characterId);
+                var selectedCharacter = CharacterWrappers.First(c => c.Id == msg.characterId);
                 //var h2 = msg.secretAnswerHash;// ??????
                 //var h = Cryptography.GetMD5Hash(msg.characterId + "~" + Client.Account.SecretResponse);
-                selectedCharacter.Character.Delete();
+                selectedCharacter.Delete();
                 Client.DispatchMessage(new CharactersListRequestMessage());
             }
             else
