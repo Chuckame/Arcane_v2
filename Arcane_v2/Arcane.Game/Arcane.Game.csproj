@@ -104,6 +104,7 @@
     <Compile Include="Helpers\ExperienceStepHelper.cs" />
     <Compile Include="Frames\FrameOrchestrator.cs" />
     <Compile Include="Helpers\SocialHelper.cs" />
+    <Compile Include="Managers\MapManager.cs" />
     <Compile Include="Network\ContextEnum.cs" />
     <Compile Include="Frames\Approach\CharacterChoiceFrame.cs" />
     <Compile Include="Frames\Approach\CharacterCreationFrame.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Wrappers\Character\Types\Alignment.cs" />
     <Compile Include="Wrappers\Character\Types\Disposition.cs" />
     <Compile Include="Wrappers\Character\Types\Title.cs" />
+    <Compile Include="Wrappers\MapWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Dofus\Dofus.Common\Dofus.Common.csproj">
