@@ -91,12 +91,19 @@
     <Compile Include="Config.cs" />
     <Compile Include="Entities\CharacterEntity.cs" />
     <Compile Include="Entities\ExperienceStepEntity.cs" />
+    <Compile Include="EntityLookExtension.cs" />
     <Compile Include="Extentions.cs" />
+    <Compile Include="Frames\MapFrame.cs" />
+    <Compile Include="Frames\QuestFrame.cs" />
+    <Compile Include="Frames\ContextFrame.cs" />
+    <Compile Include="Frames\SocialFrame.cs" />
     <Compile Include="Frames\CharacterChoiceAdminPanelFrame.cs" />
     <Compile Include="Frames\FrameFactory.cs" />
+    <Compile Include="Helpers\AccountHelper.cs" />
     <Compile Include="Helpers\CharacterHelper.cs" />
     <Compile Include="Helpers\ExperienceStepHelper.cs" />
     <Compile Include="Frames\FrameOrchestrator.cs" />
+    <Compile Include="Helpers\SocialHelper.cs" />
     <Compile Include="Network\ContextEnum.cs" />
     <Compile Include="Frames\CharacterChoiceFrame.cs" />
     <Compile Include="Frames\CharacterCreationFrame.cs" />
@@ -117,6 +124,18 @@
     <Compile Include="Wrappers\CharacterWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Dofus\Dofus.Common\Dofus.Common.csproj">
+      <Project>{269d4c18-697c-4e68-9d10-ddc44b65e484}</Project>
+      <Name>Dofus.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Dofus\Dofus.Files\Dofus.Files.csproj">
+      <Project>{14cbd131-b777-49d0-8198-239bea76cc06}</Project>
+      <Name>Dofus.Files</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Dofus\Dofus.IO\Dofus.IO.csproj">
+      <Project>{909eca69-52a6-47b5-9a86-99d17437f833}</Project>
+      <Name>Dofus.IO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arcane.Base\Arcane.Base.csproj">
       <Project>{2d442ffc-e435-473f-bc62-7e3552173c69}</Project>
       <Name>Arcane.Base</Name>

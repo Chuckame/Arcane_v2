@@ -15,6 +15,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static Arcane.Base.Network.GameLink.LinkMessageHandle;
 
 namespace Arcane.Base.Network.GameLink
 {

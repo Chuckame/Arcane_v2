@@ -65,11 +65,5 @@ namespace Arcane.Game.Frames
                 Client.SendMessage(new AuthenticationTicketRefusedMessage());
             }
         }
-
-        [MessageHandler]
-        public void ClientKeyMessage(ClientKeyMessage msg)
-        {
-            Client.ClientKey = msg.key;
-        }
     }
 }

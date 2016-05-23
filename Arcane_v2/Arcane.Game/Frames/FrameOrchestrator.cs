@@ -17,5 +17,11 @@ namespace Arcane.Game.Frames
         {
             client.AddFrame(FrameFactory.CreateCharacterChoiceFrame(client));
         }
+        public static void GoToGame(GameClient client)
+        {
+            client.AddFrame(FrameFactory.ContextFrame(client));
+            client.AddFrame(FrameFactory.QuestFrame(client));
+            client.AddFrame(FrameFactory.SocialFrame(client));
+        }
     }
 }

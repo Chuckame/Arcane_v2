@@ -61,12 +61,35 @@ namespace Arcane.Login.Network.GameLink
 
         public GameLinkClient GetServer(ushort serverId)
         {
-            return Server.Clients.FirstOrDefault(s => s.HasServerInformations && s.ServerInformations.Id.Equals(serverId));
+            return GetValidServers().FirstOrDefault(s => s.ServerInformations.Id.Equals(serverId));
+        }
+
+        public void ForEachValidServer(Action<GameLinkClient> action)
+        {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+            foreach (var server in GetValidServers())
+            {
+                action(server);
+            }
+        }
+
+        public GameLinkClient[] GetValidServers()
+        {
+            GameLinkClient[] servers;
+            lock (this)
+            {
+                servers = Server.Clients.Where(x => x.HasServerInformations).ToArray();
+            }
+            return servers;
         }
 
         public bool IsServerExists(ushort serverId)
         {
-            return Server.Clients.Any(s => s.HasServerInformations && s.ServerInformations.Id.Equals(serverId));
+            lock (this)
+            {
+                return GetValidServers().Any(s => s.ServerInformations.Id.Equals(serverId));
+            }
         }
 
         public void DisconnectClientByAccount(Account account)
@@ -80,26 +103,10 @@ namespace Arcane.Login.Network.GameLink
 
         public GameLinkClient GetServerByAccount(Account account)
         {
-            return Server.Clients.Where(x => x.HasServerInformations).FirstOrDefault(x => x.IsAccountConnected(account));
-        }
-
-        public sbyte GetClientCharactersCount(Account account, ushort serverId)
-        {
-            var server = GetServer(serverId);
-            if (server == null)
-                throw new NullReferenceException($"Server with id '{serverId}' was not found.");
-            try
+            lock (this)
             {
-                var result = server.SendMessageAndWaitResponse<CharactersCountMessage>(new RequestCharactersCountMessage { AccountId = account.Id }, 1000);
-                if (result.AccountId == account.Id)
-                    return result.CharactersCount;
-                LOGGER.Error($"Result of 'RequestCharactersCountMessage' for '{account}' was not corresponding to requested account id.");
+                return GetValidServers().FirstOrDefault(x => x.IsAccountConnected(account));
             }
-            catch (HandleTimeoutException)
-            {
-                LOGGER.Error($"Result of 'RequestCharactersCountMessage' time out.");
-            }
-            return 0;
         }
     }
 }

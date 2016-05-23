@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\CommonConfig.cs" />
+    <Compile Include="Common\Cryptography.cs" />
     <Compile Include="Common\DatabaseInitializer.cs" />
     <Compile Include="Common\DofusMessageBuilderInitializer.cs" />
     <Compile Include="Common\LogConfigInitializer.cs" />
@@ -114,6 +115,8 @@
     <Compile Include="Network\GameLink\Messages\RequestCharactersCountMessage.cs" />
     <Compile Include="Network\GameLink\Messages\RequestClientDisconnectionMessage.cs" />
     <Compile Include="Network\GameLink\GameLinkMessageBuilder.cs" />
+    <Compile Include="Network\GameLink\Messages\SearchCharacterOwnerResultMessage.cs" />
+    <Compile Include="Network\GameLink\Messages\SearchCharacterOwnerMessage.cs" />
     <Compile Include="Network\GameLink\Messages\TestMessage.cs" />
     <Compile Include="Network\GameLink\Messages\StatusMessage.cs" />
     <Compile Include="Network\GameLink\Messages\HelloMessage.cs" />

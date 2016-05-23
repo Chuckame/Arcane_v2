@@ -34,10 +34,29 @@ namespace Arcane.Game.Network
                 throw new NullReferenceException("This instance must be initialized before.");
             if (account == null)
                 throw new ArgumentNullException(nameof(account));
-            foreach (var client in Server.Clients)
+            lock (Server.Clients)
             {
-                if (client.HasAccount && client.Account.Equals(account))
-                    client.Disconnect();
+                foreach (var client in Server.Clients)
+                {
+                    if (client.HasAccount && client.Account.Equals(account))
+                        client.Disconnect();
+                }
+            }
+        }
+
+        public bool IsAccountConnected(Account account)
+        {
+            lock (Server.Clients)
+            {
+                return Server.Clients.Any(a => a.Account.Equals(account));
+            }
+        }
+
+        public GameClient GetClientByAccount(Account account)
+        {
+            lock (Server.Clients)
+            {
+                return Server.Clients.FirstOrDefault(a => a.Account.Equals(account));
             }
         }
     }

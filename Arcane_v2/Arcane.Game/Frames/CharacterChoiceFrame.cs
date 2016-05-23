@@ -17,6 +17,8 @@ using Arcane.Game.Helpers;
 using Arcane.Game.Wrappers;
 using Arcane.Protocol.Types;
 using Arcane.Game.Network;
+using System.Security.Cryptography;
+using Arcane.Protocol.Enums;
 
 namespace Arcane.Game.Frames
 {
@@ -26,6 +28,7 @@ namespace Arcane.Game.Frames
         private LinkedList<CharacterWrapper> CharacterWrappers;
         public CharacterChoiceFrame(GameClient client) : base(client)
         {
+            CharacterWrappers = new LinkedList<CharacterWrapper>();
         }
 
         protected override void OnAttached()
@@ -47,20 +50,35 @@ namespace Arcane.Game.Frames
         [MessageHandler]
         public void CharacterSelectionMessage(CharacterSelectionMessage msg)
         {
-            if (CharacterWrappers == null)
-            {
-                Client.SendMessage(new CharacterSelectedErrorMessage());
-            }
-            else if (CharacterWrappers.Any(c => c.Character.Id == msg.id))
+            if (CharacterWrappers.Any(c => c.Character.Id == msg.id))
             {
                 var selectedCharacter = CharacterWrappers.First(c => c.Character.Id == msg.id);
                 selectedCharacter.Character.UpdateLastSelection(DateTime.Now);
                 Client.Character = selectedCharacter;
+                Client.RemoveFrame(this);
+                FrameOrchestrator.GoToGame(Client);
                 Client.SendMessage(new CharacterSelectedSuccessMessage(Client.Character.ToCharacterBaseInformations()));
             }
             else
             {
                 Client.SendMessage(new CharacterSelectedErrorMessage());
+            }
+        }
+
+        [MessageHandler]
+        public void CharacterDeletionRequestMessage(CharacterDeletionRequestMessage msg)
+        {
+            if (CharacterWrappers.Any(c => c.Character.Id == msg.characterId))
+            {
+                var selectedCharacter = CharacterWrappers.First(c => c.Character.Id == msg.characterId);
+                //var h2 = msg.secretAnswerHash;// ??????
+                //var h = Cryptography.GetMD5Hash(msg.characterId + "~" + Client.Account.SecretResponse);
+                selectedCharacter.Character.Delete();
+                Client.DispatchMessage(new CharactersListRequestMessage());
+            }
+            else
+            {
+                Client.SendMessage(new CharacterDeletionErrorMessage(CharacterDeletionErrorEnum.DEL_ERR_NO_REASON.ToSByte()));
             }
         }
     }

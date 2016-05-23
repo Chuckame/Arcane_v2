@@ -15,6 +15,10 @@ using System.Text;
 using System.Threading.Tasks;
 using static Arcane.Game.Network.GameLink.TicketManager;
 using Arcane.Game.Entities;
+using Dofus.Files.GameData;
+using Arcane.Protocol.Datacenter;
+using Arcane.Protocol.Types;
+using Arcane.Game.Helpers;
 
 namespace Arcane.Game.Frames
 {
@@ -44,26 +48,53 @@ namespace Arcane.Game.Frames
         {
             try
             {
-                var createdCharacter = new CharacterEntity
+                var breed = CharacterHelper.GetTemplateBreed((PlayableBreedEnum)msg.breed);
+                if (breed == null)
                 {
-                    Breed = (PlayableBreedEnum)msg.breed,
-                    Colors = msg.colors.Take(5).ToArray(),
-                    Name = msg.name,
-                    Sex = msg.sex ? SexEnum.Female : SexEnum.Male,
-                    Owner = Client.Account,
-                    Scale = 140,
-                    BonesId = 38,
-                    LastSelection = DateTime.Now
-                };
-                createdCharacter.Create();
-                Client.SendMessage(new CharacterCreationResultMessage(CharacterCreationResultEnum.OK.ToSByte()));
-                Client.DispatchMessage(new CharactersListRequestMessage());
+                    throw new NullReferenceException($"Unable to find breed id#{msg.breed}.");
+                }
+                else
+                {
+                    var templateLook = (msg.sex ? breed.femaleLook : breed.maleLook).ToEntityLook();
+                    var createdCharacter = new CharacterEntity
+                    {
+                        Breed = (PlayableBreedEnum)msg.breed,
+                        Colors = FinalizeColors(breed, msg.sex, msg.colors),
+                        Name = msg.name,
+                        Sex = msg.sex ? SexEnum.Female : SexEnum.Male,
+                        Owner = Client.Account,
+                        Scale = templateLook.scales[0],
+                        BonesId = (short)breed.creatureBonesId,
+                        LastSelection = DateTime.Now
+                    };
+                    createdCharacter.Create();
+                    Client.SendMessage(new CharacterCreationResultMessage(CharacterCreationResultEnum.OK.ToSByte()));
+                    Client.DispatchMessage(new CharactersListRequestMessage());
+                }
             }
             catch (Exception e)
             {
                 Client.SendMessage(new CharacterCreationResultMessage(CharacterCreationResultEnum.ERR_NO_REASON.ToSByte()));
                 LOGGER.Error(e);
             }
+        }
+
+        private int[] FinalizeColors(Breed breed, bool sex, int[] receivedColors)
+        {
+            var templateColors = (sex ? breed.femaleColors : breed.maleColors).Select(x => (int)x).ToArray();
+            var finalColors = receivedColors.Take(templateColors.Length).ToArray();
+            for (int i = 0; i < finalColors.Length; i++)
+            {
+                if (finalColors[i] == -1)
+                {
+                    finalColors[i] = templateColors[i];
+                }
+                else
+                {
+                    finalColors[i] = finalColors[i] & 16777215;
+                }
+            }
+            return finalColors;
         }
     }
 }

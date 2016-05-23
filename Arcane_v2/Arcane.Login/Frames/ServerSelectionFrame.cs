@@ -23,6 +23,7 @@ namespace Arcane.Login.Frames
     public class ServerSelectionFrame : AbstractFrame<ServerSelectionFrame, LoginClient, AbstractMessage>
     {
         private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
+        public bool AutoConnect = false;
 
         public ServerSelectionFrame(LoginClient client) : base(client)
         {
@@ -32,7 +33,8 @@ namespace Arcane.Login.Frames
         {
             Client.CurrentContext = ContextEnum.ServerSelection;
             GameLinkManager.Instance.OnStatusUpdated += Instance_OnStatusUpdated;
-            Client.SendMessage(GameServerHelper.MakeServersListMessage(Client.Account));
+            if (!AutoConnect)
+                Client.SendMessage(GameServerHelper.MakeServersListMessage(Client.Account));
         }
 
         protected override void OnDetached()
@@ -66,21 +68,30 @@ namespace Arcane.Login.Frames
                         else
                         {
                             Client.SendMessage(new SelectedServerRefusedMessage(msg.serverId, ServerConnectionErrorEnum.SERVER_CONNECTION_ERROR_NO_REASON.ToSByte(), server.ServerInformations.Status.ToSByte()));
+                            if (AutoConnect)
+                                Client.SendMessage(GameServerHelper.MakeServersListMessage(Client.Account));
+
                         }
                     }
                     catch (HandleTimeoutException)
                     {
                         Client.SendMessage(new SelectedServerRefusedMessage(msg.serverId, ServerConnectionErrorEnum.SERVER_CONNECTION_ERROR_NO_REASON.ToSByte(), server.ServerInformations.Status.ToSByte()));
+                        if (AutoConnect)
+                            Client.SendMessage(GameServerHelper.MakeServersListMessage(Client.Account));
                     }
                 }
                 else
                 {
                     Client.SendMessage(new SelectedServerRefusedMessage(msg.serverId, ServerConnectionErrorEnum.SERVER_CONNECTION_ERROR_DUE_TO_STATUS.ToSByte(), server.ServerInformations.Status.ToSByte()));
+                    if (AutoConnect)
+                        Client.SendMessage(GameServerHelper.MakeServersListMessage(Client.Account));
                 }
             }
             else
             {
                 Client.SendMessage(new SelectedServerRefusedMessage(msg.serverId, ServerConnectionErrorEnum.SERVER_CONNECTION_ERROR_DUE_TO_STATUS.ToSByte(), ServerStatusEnum.OFFLINE.ToSByte()));
+                if (AutoConnect)
+                    Client.SendMessage(GameServerHelper.MakeServersListMessage(Client.Account));
             }
         }
     }

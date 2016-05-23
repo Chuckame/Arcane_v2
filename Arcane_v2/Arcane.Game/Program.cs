@@ -4,7 +4,9 @@ using Arcane.Base.Entities;
 using Arcane.Game.Entities;
 using Arcane.Game.Network;
 using Arcane.Game.Network.GameLink;
+using Arcane.Protocol.Datacenter;
 using Arcane.Protocol.Messages;
+using Dofus.Files.GameData;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -25,6 +27,8 @@ namespace Arcane.Game
             GameLinkConnectorManager.Instance.Connect();
             DofusMessageBuilderInitializer.Initialize();
             RSAProtocol.GenerateKey();
+            GameDataManager.Instance.AddContainerAssembly(typeof(Breed).Assembly);
+            GameDataManager.Instance.Load(@"C:\Users\Antoine\Desktop\prog\csharp\ArpEmu\Dofus 2.6.2\data\common\Breeds.d2o");
             GameServerManager.Instance.Start();
             GameLinkConnectorManager.Instance.ServerStatus = Protocol.Enums.ServerStatusEnum.ONLINE;
             Console.ReadLine();

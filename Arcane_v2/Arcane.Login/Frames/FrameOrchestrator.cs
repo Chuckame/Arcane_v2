@@ -29,7 +29,9 @@ namespace Arcane.Login.Frames
             var status = GameLinkManager.Instance.GetLiveStatus((ushort)serverId);
             if (status == Protocol.Enums.ServerStatusEnum.ONLINE)
             {
-                client.AddFrame(FrameFactory.CreateServerSelectionFrame(client));
+                var frame = FrameFactory.CreateServerSelectionFrame(client);
+                frame.AutoConnect = true;
+                client.AddFrame(frame);
                 client.DispatchMessage(new ServerSelectionMessage(serverId));
             }
             else

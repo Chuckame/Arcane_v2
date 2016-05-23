@@ -1,8 +1,11 @@
-﻿using Arcane.Game.Entities;
+﻿using Arcane.Base.Entities;
+using Arcane.Game.Entities;
 using Arcane.Game.Wrappers;
+using Arcane.Protocol.Datacenter;
 using Arcane.Protocol.Enums;
 using Arcane.Protocol.Types;
 using Castle.ActiveRecord;
+using Dofus.Files.GameData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +24,7 @@ namespace Arcane.Game.Helpers
                 id = character.Id,
                 breed = character.Breed.ToSByte(),
                 entityLook = characterWrapper.EntityLook,
-                level = ExperienceStepHelper.GetCharacterLevelByExp(character.Experience),
+                level = characterWrapper.GetLevel(),
                 name = character.Name,
                 sex = character.Sex.ToBoolean()
             };
@@ -48,6 +51,32 @@ namespace Arcane.Game.Helpers
                 character.LastSelection = lastSelect;
                 character.Update();
             }
+        }
+
+        public static bool IsCharacterOwnerNicknameExists(string name)
+        {
+            using (new SessionScope())
+            {
+                var sName = name.ToLowerInvariant();
+                return CharacterEntity.Queryable.Any(c => c.Owner.Nickname.ToLowerInvariant().Equals(sName));
+            }
+        }
+
+        public static Breed GetTemplateBreed(this CharacterEntity character)
+        {
+            return GameDataManager.Instance.GetObject<Breed>((int)character.Breed);
+        }
+
+        public static Breed GetTemplateBreed(this PlayableBreedEnum breed)
+        {
+            return GameDataManager.Instance.GetObject<Breed>((int)breed);
+        }
+
+        public static short[] GetTemplateSkins(this CharacterEntity character)
+        {
+            var breed = GetTemplateBreed(character);
+            var templateLook = (character.Sex == SexEnum.Female ? breed.femaleLook : breed.maleLook).ToEntityLook();
+            return templateLook.skins;
         }
     }
 }

@@ -29,5 +29,17 @@ namespace Arcane.Game.Frames
         {
             return new CharacterChoiceAdminPanelFrame(client);
         }
+        public static SocialFrame SocialFrame(GameClient client)
+        {
+            return new SocialFrame(client);
+        }
+        public static QuestFrame QuestFrame(GameClient client)
+        {
+            return new QuestFrame(client);
+        }
+        public static ContextFrame ContextFrame(GameClient client)
+        {
+            return new ContextFrame(client);
+        }
     }
 }

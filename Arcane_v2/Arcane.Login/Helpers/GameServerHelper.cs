@@ -1,18 +1,23 @@
 ﻿using Arcane.Base.Entities;
+using Arcane.Base.Network.GameLink.Messages;
 using Arcane.Login.Network.GameLink;
 using Arcane.Protocol.Enums;
 using Arcane.Protocol.Messages;
 using Arcane.Protocol.Types;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Arcane.Base.Network.GameLink.LinkMessageHandle;
 
 namespace Arcane.Login.Helpers
 {
     public static class GameServerHelper
     {
+        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
+
         public static ServersListMessage MakeServersListMessage(Account account)
         {
             var servers = new List<GameServerInformations>();
@@ -29,7 +34,20 @@ namespace Arcane.Login.Helpers
         public static sbyte GetCharactersCount(Account account, ushort serverId)
         {
             if (GameLinkManager.Instance.IsServerExists(serverId))
-                return GameLinkManager.Instance.GetClientCharactersCount(account, serverId);
+            {
+                var server = GameLinkManager.Instance.GetServer(serverId);
+                try
+                {
+                    var result = server.SendMessageAndWaitResponse<CharactersCountMessage>(new RequestCharactersCountMessage { AccountId = account.Id }, 1000);
+                    if (result.AccountId == account.Id)
+                        return result.CharactersCount;
+                    LOGGER.Error($"Result of 'RequestCharactersCountMessage' for '{account}' was not corresponding to requested account id.");
+                }
+                catch (HandleTimeoutException)
+                {
+                    LOGGER.Error($"Result of 'RequestCharactersCountMessage' time out.");
+                }
+            }
             return 0;
         }
         public static bool IsSelectable(this ServerStatusEnum status)

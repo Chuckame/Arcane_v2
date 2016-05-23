@@ -1,6 +1,7 @@
 ﻿using Arcane.Base.Entities;
 using Arcane.Base.Network.GameLink.Messages;
 using Arcane.Game.Entities;
+using Arcane.Game.Helpers;
 using Castle.ActiveRecord;
 using Chuckame.IO.TCP.Messages;
 using NLog;
@@ -45,7 +46,7 @@ namespace Arcane.Game.Network.GameLink.Frames
         }
 
         [MessageHandler]
-        public void CharactersCountMessage(RequestCharactersCountMessage msg)
+        public void RequestCharactersCountMessage(RequestCharactersCountMessage msg)
         {
             var account = Account.TryFind(msg.AccountId);
             if (account != null)
@@ -58,6 +59,19 @@ namespace Arcane.Game.Network.GameLink.Frames
             else
             {
                 Client.SendMessage(new CharactersCountMessage { AccountId = msg.AccountId, CharactersCount = 0, Token = msg.Token });
+            }
+        }
+
+        [MessageHandler]
+        public void SearchPseudoMessage(SearchCharacterOwnerMessage msg)
+        {
+            if (CharacterHelper.IsCharacterOwnerNicknameExists(msg.Pseudo))
+            {
+                Client.SendMessage(new SearchCharacterOwnerResultMessage { Success = true, Token = msg.Token });
+            }
+            else
+            {
+                Client.SendMessage(new SearchCharacterOwnerResultMessage { Success = false, Token = msg.Token });
             }
         }
     }

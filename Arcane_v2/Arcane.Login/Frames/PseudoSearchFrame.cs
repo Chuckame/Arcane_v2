@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Arcane.Login.Network.GameLink;
+using Arcane.Base.Network.GameLink.Messages;
+using static Arcane.Base.Network.GameLink.LinkMessageHandle;
 
 namespace Arcane.Login.Frames
 {
@@ -31,7 +34,30 @@ namespace Arcane.Login.Frames
         [MessageHandler]
         public void AcquaintanceSearchMessage(AcquaintanceSearchMessage msg)
         {
-            Client.SendMessage(new AcquaintanceSearchErrorMessage(AcquaintanceErrorEnum.NO_RESULT.ToSByte()));
+            var foundServers = new LinkedList<short>();
+            foreach (var server in GameLinkManager.Instance.GetValidServers())
+            {
+                SearchCharacterOwnerResultMessage result;
+                try
+                {
+                    result = server.SendMessageAndWaitResponse<SearchCharacterOwnerResultMessage>(new SearchCharacterOwnerMessage { Pseudo = msg.nickname }, 1000);
+                }
+                catch (HandleTimeoutException)
+                {
+                    result = null;
+                }
+                if (result != null && result.Success)
+                {
+                    foundServers.AddLast((short)server.ServerInformations.Id);
+                }
+            }
+            if (foundServers.Count > 0)
+                Client.SendMessage(new AcquaintanceServerListMessage(foundServers.ToArray()));
+            else
+            {
+                Client.SendMessage(new AcquaintanceSearchErrorMessage(AcquaintanceErrorEnum.NO_RESULT.ToSByte()));
+                Client.SendMessage(new AcquaintanceServerListMessage(new short[0]));
+            }
         }
     }
 }
