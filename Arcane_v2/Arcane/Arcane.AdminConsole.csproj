@@ -98,6 +98,18 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Dofus\Dofus.Common\Dofus.Common.csproj">
+      <Project>{269d4c18-697c-4e68-9d10-ddc44b65e484}</Project>
+      <Name>Dofus.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Dofus\Dofus.Files\Dofus.Files.csproj">
+      <Project>{14cbd131-b777-49d0-8198-239bea76cc06}</Project>
+      <Name>Dofus.Files</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Dofus\Dofus.IO\Dofus.IO.csproj">
+      <Project>{909eca69-52a6-47b5-9a86-99d17437f833}</Project>
+      <Name>Dofus.IO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arcane.Base\Arcane.Base.csproj">
       <Project>{2d442ffc-e435-473f-bc62-7e3552173c69}</Project>
       <Name>Arcane.Base</Name>

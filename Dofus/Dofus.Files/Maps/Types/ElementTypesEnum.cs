@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arcane.Game.Wrappers
+namespace Dofus.Files.Dofus.Files.Maps.Types
 {
-    public class MapWrapper
+    public enum ElementTypesEnum
     {
-        //public Map TemplateMap { get; }
+        GRAPHICAL = 2,
+        SOUND = 33
     }
 }

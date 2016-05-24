@@ -27,7 +27,7 @@ namespace Dofus.Files.GameData
             _modules = new Dictionary<Type, Dictionary<int, IDataObject>>();
         }
 
-        public void AddContainerAssembly(params Assembly[] asms)
+        public static void AddContainerAssembly(params Assembly[] asms)
         {
             foreach (var asm in asms)
             {

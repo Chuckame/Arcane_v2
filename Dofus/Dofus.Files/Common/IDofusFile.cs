@@ -18,6 +18,7 @@ namespace Dofus.IO
         /// </summary>
         /// <param name="path">Le chemin d'accès du fichier.</param>
         /// <exception cref="FileNotFoundException">Si le fichier n'existe pas.</exception>
+        /// <exception cref="FileLoadException">Si un problème est déclaré lors du chargement.</exception>
         void Load(string path);
 
         /// <summary>

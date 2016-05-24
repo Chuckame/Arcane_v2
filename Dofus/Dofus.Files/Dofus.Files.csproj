@@ -46,52 +46,70 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dofus\Files\Common\AbstractDofusFile.cs" />
-    <Compile Include="Dofus\Files\Common\DofusFileTypeEnum.cs" />
-    <Compile Include="Dofus\Files\Common\DofusMinVersionAttribute.cs" />
-    <Compile Include="Dofus\Files\Common\DofusMinVersionUtils.cs" />
-    <Compile Include="Dofus\Files\Common\IDofusFile.cs" />
-    <Compile Include="Dofus\Files\Common\Language.cs" />
-    <Compile Include="Dofus\Files\Elements\ElementsFile.cs" />
-    <Compile Include="Dofus\Files\Elements\GraphicalElementData.cs" />
-    <Compile Include="Dofus\Files\Elements\GraphicalElementDataFactory.cs" />
-    <Compile Include="Dofus\Files\Elements\GraphicalElementTypesEnum.cs" />
-    <Compile Include="Dofus\Files\Elements\IElementsFile.cs" />
-    <Compile Include="Dofus\Files\Elements\SubTypes\AnimatedGraphicalElementData.cs" />
-    <Compile Include="Dofus\Files\Elements\SubTypes\BlendedGraphicalElementData.cs" />
-    <Compile Include="Dofus\Files\Elements\SubTypes\BoundingBoxGraphicalElementData.cs" />
-    <Compile Include="Dofus\Files\Elements\SubTypes\EntityGraphicalElementData.cs" />
-    <Compile Include="Dofus\Files\Elements\SubTypes\NormalGraphicalElementData.cs" />
-    <Compile Include="Dofus\Files\Elements\SubTypes\ParticlesGraphicalElementData.cs" />
-    <Compile Include="Dofus\Files\Exceptions\AlreadyExistsException.cs" />
-    <Compile Include="Dofus\Files\Exceptions\ConfigException.cs" />
-    <Compile Include="Dofus\Files\GameData\D2OClassAttribute.cs" />
-    <Compile Include="Dofus\Files\GameData\D2OClassDefinition.cs" />
-    <Compile Include="Dofus\Files\GameData\D2OFieldAttribute.cs" />
-    <Compile Include="Dofus\Files\GameData\D2oFieldDefinition.cs" />
-    <Compile Include="Dofus\Files\GameData\D2OFieldType.cs" />
-    <Compile Include="Dofus\Files\GameData\D2OIgnore.cs" />
-    <Compile Include="Dofus\Files\GameData\D2OReader.cs" />
-    <Compile Include="Dofus\Files\GameData\D2OWriter.cs" />
-    <Compile Include="Dofus\Files\GameData\GameDataManager.cs" />
-    <Compile Include="Dofus\Files\GameData\IDataObject.cs" />
-    <Compile Include="Dofus\Files\GameData\ItemCriterion\Criterion.cs" />
-    <Compile Include="Dofus\Files\GameData\ItemCriterion\CriterionComparatorEnum.cs" />
-    <Compile Include="Dofus\Files\GameData\ItemCriterion\CriterionEnum.cs" />
-    <Compile Include="Dofus\Files\GameData\ItemCriterion\CriterionReader.cs" />
-    <Compile Include="Dofus\Files\GameData\ItemCriterion\CriterionRealName.cs" />
-    <Compile Include="Dofus\Files\Localization\AbstractI18nFile.cs" />
-    <Compile Include="Dofus\Files\Localization\ILocalizationFile.cs" />
-    <Compile Include="Dofus\Files\Localization\LocalizationFile.cs" />
-    <Compile Include="Dofus\Files\Localization\LocalizationFile2.cs" />
-    <Compile Include="Dofus\Files\Packed\IPackedFile.cs" />
-    <Compile Include="Dofus\Files\Packed\PackedFile.cs" />
-    <Compile Include="Dofus\Files\Utils\CellUtil.cs" />
-    <Compile Include="Dofus\Files\Utils\CryptHelper.cs" />
-    <Compile Include="Dofus\Files\Utils\DofusConfig.cs" />
-    <Compile Include="Dofus\Files\Utils\DofusFilesUtils.cs" />
-    <Compile Include="Dofus\Files\Utils\Tools.cs" />
-    <Compile Include="Dofus\Files\Utils\ZipHelper.cs" />
+    <Compile Include="Common\AbstractDofusFile.cs" />
+    <Compile Include="Common\AtouinConstants.cs" />
+    <Compile Include="Common\DofusFileTypeEnum.cs" />
+    <Compile Include="Common\IDofusFile.cs" />
+    <Compile Include="Common\IDumpable.cs" />
+    <Compile Include="Common\IReadable.cs" />
+    <Compile Include="Common\IWritable.cs" />
+    <Compile Include="Common\IXmlSerializable.cs" />
+    <Compile Include="Common\Language.cs" />
+    <Compile Include="Elements\ElementsFile.cs" />
+    <Compile Include="Elements\GraphicalElementData.cs" />
+    <Compile Include="Elements\GraphicalElementDataFactory.cs" />
+    <Compile Include="Elements\GraphicalElementTypesEnum.cs" />
+    <Compile Include="Elements\IElementsFile.cs" />
+    <Compile Include="Elements\SubTypes\AnimatedGraphicalElementData.cs" />
+    <Compile Include="Elements\SubTypes\BlendedGraphicalElementData.cs" />
+    <Compile Include="Elements\SubTypes\BoundingBoxGraphicalElementData.cs" />
+    <Compile Include="Elements\SubTypes\EntityGraphicalElementData.cs" />
+    <Compile Include="Elements\SubTypes\NormalGraphicalElementData.cs" />
+    <Compile Include="Elements\SubTypes\ParticlesGraphicalElementData.cs" />
+    <Compile Include="Exceptions\AlreadyExistsException.cs" />
+    <Compile Include="Exceptions\ConfigException.cs" />
+    <Compile Include="GameData\D2OClassAttribute.cs" />
+    <Compile Include="GameData\D2OClassDefinition.cs" />
+    <Compile Include="GameData\D2OFieldAttribute.cs" />
+    <Compile Include="GameData\D2oFieldDefinition.cs" />
+    <Compile Include="GameData\D2OFieldType.cs" />
+    <Compile Include="GameData\D2OIgnore.cs" />
+    <Compile Include="GameData\D2OReader.cs" />
+    <Compile Include="GameData\D2OWriter.cs" />
+    <Compile Include="GameData\GameDataManager.cs" />
+    <Compile Include="GameData\IDataObject.cs" />
+    <Compile Include="GameData\ItemCriterion\Criterion.cs" />
+    <Compile Include="GameData\ItemCriterion\CriterionComparatorEnum.cs" />
+    <Compile Include="GameData\ItemCriterion\CriterionEnum.cs" />
+    <Compile Include="GameData\ItemCriterion\CriterionReader.cs" />
+    <Compile Include="GameData\ItemCriterion\CriterionRealName.cs" />
+    <Compile Include="Localization\ILocalizationFile.cs" />
+    <Compile Include="Localization\LocalizationFile.cs" />
+    <Compile Include="Maps\IMapFile.cs" />
+    <Compile Include="Maps\Types\ColorMultiplicator.cs" />
+    <Compile Include="Maps\Types\ElementTypesEnum.cs" />
+    <Compile Include="Maps\Elements\MapElementFactory.cs" />
+    <Compile Include="Maps\Elements\GraphicalMapElement.cs" />
+    <Compile Include="Maps\Elements\IMapElement.cs" />
+    <Compile Include="Maps\Elements\SoundMapElement.cs" />
+    <Compile Include="Maps\Types\LayerTypeEnum.cs" />
+    <Compile Include="Maps\MapCell.cs" />
+    <Compile Include="Maps\MapCellData.cs" />
+    <Compile Include="Maps\Types\MapChangeDataEnum.cs" />
+    <Compile Include="Maps\MapFile.cs" />
+    <Compile Include="Maps\MapFixture.cs" />
+    <Compile Include="Maps\MapLayer.cs" />
+    <Compile Include="Maps\Types\MapLosMovEnum.cs" />
+    <Compile Include="Maps\Types\MapTypeEnum.cs" />
+    <Compile Include="Packed\IPackedFile.cs" />
+    <Compile Include="Packed\PackedFile.cs" />
+    <Compile Include="Utils\CellUtil.cs" />
+    <Compile Include="Utils\CryptHelper.cs" />
+    <Compile Include="Utils\DofusConfig.cs" />
+    <Compile Include="Common\DofusFilesFactory.cs" />
+    <Compile Include="Utils\EnumFlagsExtensions.cs" />
+    <Compile Include="Utils\Tools.cs" />
+    <Compile Include="Utils\ZipHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -104,9 +122,7 @@
       <Name>Dofus.IO</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Dofus\Files\Maps\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

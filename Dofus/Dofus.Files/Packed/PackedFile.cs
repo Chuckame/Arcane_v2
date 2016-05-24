@@ -20,16 +20,11 @@ namespace Dofus.Files.Packed
         }
         public PackedFile()
         {
+            Files = new ReadOnlyDictionary<string, byte[]>(_mFiles);
         }
 
         private readonly IDictionary<string, byte[]> _mFiles = new Dictionary<string, byte[]>();
-        public IReadOnlyDictionary<string, byte[]> Files
-        {
-            get
-            {
-                return new ReadOnlyDictionary<string, byte[]>(_mFiles);
-            }
-        }
+        public IReadOnlyDictionary<string, byte[]> Files { get; }
         public byte[] this[string fileName]
         {
             get { return GetFile(fileName); }
@@ -183,15 +178,15 @@ namespace Dofus.Files.Packed
                 writer.WriteBytes(filesInfosWriter.Data);
 
                 generalWriter.WriteUInt((uint)writer.Position);//propertiesPosition
-                if (!string.IsNullOrEmpty(LinkedFileName))
+                if (string.IsNullOrWhiteSpace(LinkedFileName))
+                {
+                    generalWriter.WriteUInt(0);//propertiesCount
+                }
+                else
                 {
                     generalWriter.WriteUInt(1);//propertiesCount
                     writer.WriteUTF("link");
                     writer.WriteUTF(LinkedFileName);
-                }
-                else
-                {
-                    generalWriter.WriteUInt(0);//propertiesCount
                 }
 
                 writer.WriteBytes(generalWriter.Data);

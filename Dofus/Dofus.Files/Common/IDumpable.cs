@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arcane.Game.Wrappers
+namespace Dofus.Files.Dofus.Files.Common
 {
-    public class MapWrapper
+    public interface IDumpable
     {
-        //public Map TemplateMap { get; }
+        string Dump();
     }
 }

@@ -13,7 +13,6 @@ namespace Arcane.Game.Managers
         public static MapManager Instance { get { return _instance; } }
         #endregion
 
-        public
 
         private MapManager()
         {

@@ -2,6 +2,7 @@
 using Arcane.Base.Entities;
 using Arcane.Protocol.Enums;
 using System;
+using System.Linq;
 
 namespace Arcane.AdminConsole
 {
@@ -14,7 +15,13 @@ namespace Arcane.AdminConsole
             while (true)
             {
                 Console.Write($"{System.Security.Principal.WindowsIdentity.GetCurrent().Name} #> ");
-                var commandLine = Console.ReadLine().Split(' ');
+                var firstChar = Console.ReadKey().KeyChar;
+                switch (firstChar)
+                {
+                    case '\u0004'://^D
+                        return;
+                }
+                var commandLine = (firstChar + Console.ReadLine()).Split(' ');
                 switch (commandLine[0])
                 {
                     case "add":

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
-namespace Arcane.Game.Wrappers
+namespace Dofus.Files.Dofus.Files.Common
 {
-    public class MapWrapper
+    public interface IXmlSerializable
     {
-        //public Map TemplateMap { get; }
+        XElement ToXml();
     }
 }

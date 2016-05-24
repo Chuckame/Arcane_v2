@@ -9,7 +9,6 @@ using Dofus.Files.Common;
 
 namespace Dofus.Files.Elements
 {
-    [DofusMinVersion("2.0")]
     internal class ElementsFile : AbstractDofusFile, IElementsFile
     {
         public static readonly byte Header = 69;

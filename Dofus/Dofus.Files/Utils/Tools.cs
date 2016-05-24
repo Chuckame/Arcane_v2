@@ -21,12 +21,12 @@ namespace Dofus.Files.Utils
             return new Point((int)_x, (int)_y);
         }
 
-        public static int getWorldFromMapId(uint _mapId)
+        public static int GetWorldFromMapId(uint _mapId)
         {
             return (int)(_mapId & 1073479680) >> 18;
         }
 
-        public static int getMapIdFromCoord(int world, int x, int y)
+        public static int GetMapIdFromCoord(int world, int x, int y)
         {
             var _loc4_ = 2 << 12;
             var _loc5_ = 2 << 8;
