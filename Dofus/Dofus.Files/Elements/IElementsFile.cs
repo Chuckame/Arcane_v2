@@ -1,24 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Dofus.Files.Elements.ElementTypes;
 using Dofus.IO;
+using System.Collections.Generic;
 
 namespace Dofus.Files.Elements
 {
-    public interface IElementsFile : IDofusFile
+    public interface IElementsFile : ICollection<GraphicalElementData>, IDofusFile
     {
-        byte FileVersion { get; }
-        bool Parsed { get; }
         GraphicalElementData this[int elementId] { get; }
-        int GetNextElementId();
+
+        byte FileVersion { get; set; }
+
+        bool ElementExists(int elementId);
         GraphicalElementData GetElementData(int elementId);
-        IList<GraphicalElementData> GetElementsList();
-        IDictionary<int, GraphicalElementData> GetElements();
         bool IsJpg(int gfxId);
-        void Add(GraphicalElementData element);
-        int Count();
-        bool Contains(int elementId);
+        void SetIsJpg(int gfxId, bool isJpg = true);
     }
 }

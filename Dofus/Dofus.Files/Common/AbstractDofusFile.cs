@@ -66,5 +66,10 @@ namespace Dofus.Files.Common
         public abstract void FromRaw(IDataReader reader);
 
         public abstract void ToRaw(IDataWriter writer);
+
+        public override string ToString()
+        {
+            return $"{this.GetType().Name}";
+        }
     }
 }

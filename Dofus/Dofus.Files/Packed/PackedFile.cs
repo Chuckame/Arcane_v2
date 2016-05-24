@@ -5,12 +5,15 @@ using System.IO;
 using Dofus.Files.Exceptions;
 using Dofus.IO;
 using Dofus.Files.Common;
+using System.Collections;
 
 namespace Dofus.Files.Packed
 {
     internal class PackedFile : AbstractDofusFile, IPackedFile
     {
         private static readonly byte[] HEADER = { 2, 1 };
+        private readonly Dictionary<string, PackedContainer> _mFiles;
+
         public override DofusFileTypeEnum DofusFileType
         {
             get
@@ -18,91 +21,23 @@ namespace Dofus.Files.Packed
                 return DofusFileTypeEnum.Container;
             }
         }
+        public string LinkedFileName { get; set; }
+
         public PackedFile()
         {
-            Files = new ReadOnlyDictionary<string, byte[]>(_mFiles);
+            _mFiles = new Dictionary<string, PackedContainer>();
         }
 
-        private readonly IDictionary<string, byte[]> _mFiles = new Dictionary<string, byte[]>();
-        public IReadOnlyDictionary<string, byte[]> Files { get; }
-        public byte[] this[string fileName]
+        public PackedContainer this[string fileName]
         {
-            get { return GetFile(fileName); }
-            set { SetFile(fileName, value); }
-        }
-
-        public string LinkedFileName
-        { get; set; }
-
-        public void AddFile(string fileName, byte[] data)
-        {
-            if (fileName == null)
-                throw new ArgumentNullException(nameof(fileName));
-            var filePath = fileName.Replace('\\', '/');
-            if (!IsValidFileName(filePath))
-                throw new ArgumentException("Not valid", nameof(fileName));
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-            if (Contains(filePath))
-                throw new AlreadyExistsException(string.Format("'{0}' already exists.", filePath));
-            _mFiles.Add(filePath, data);
-        }
-
-        public void AddFile(string fileName, string srcFilePath)
-        {
-            if (srcFilePath == null)
-                throw new ArgumentNullException(nameof(srcFilePath));
-            if (!File.Exists(srcFilePath))
-                throw new FileNotFoundException(null, srcFilePath);
-            AddFile(fileName, File.ReadAllBytes(srcFilePath));
-        }
-
-        public void AddFile(string fileName, Stream stream)
-        {
-            if (stream == null)
-                throw new ArgumentNullException(nameof(stream));
-            stream.Seek(0, SeekOrigin.Begin);
-            var buff = new byte[stream.Length];
-            stream.Read(buff, 0, buff.Length);
-            AddFile(fileName, buff);
-        }
-
-        public void AddFile(string fileName, IDataReader reader)
-        {
-            if (reader == null)
-                throw new ArgumentNullException(nameof(reader));
-            AddFile(fileName, reader.Data);
-        }
-
-        public void SetFile(string fileName, byte[] data)
-        {
-            if (fileName == null)
-                throw new ArgumentNullException(nameof(fileName));
-            var filePath = fileName.Replace('\\', '/');
-            if (!Contains(filePath))
-                throw new FileNotFoundException(null, fileName);
-            if (data == null)
-                throw new ArgumentNullException(nameof(data));
-            _mFiles[filePath] = data;
-        }
-
-        public byte[] GetFile(string fileName)
-        {
-            if (fileName == null)
-                throw new ArgumentNullException(nameof(fileName));
-            var filePath = fileName.Replace('\\', '/');
-            if (!Contains(filePath))
-                throw new FileNotFoundException(null, fileName);
-            return _mFiles[filePath];
-        }
-
-        public bool Remove(string fileName)
-        {
-            if (Contains(fileName))
+            get
             {
-                return _mFiles.Remove(fileName);
+                return _mFiles[fileName];
             }
-            return false;
+            set
+            {
+                _mFiles[fileName] = value;
+            }
         }
 
         public bool Contains(string fileName)
@@ -119,7 +54,7 @@ namespace Dofus.Files.Packed
             _mFiles.Clear();
             var header = new byte[] { reader.ReadByte(), reader.ReadByte() };
             if (header[0] != HEADER[0] || header[1] != HEADER[1])
-                throw new Exception("Malformated d2p file.");
+                throw new FileLoadException("Malformated d2p file.");
             reader.SetPosition(reader.Length - 24);
             var offSet = reader.ReadUInt();
             var unused = reader.ReadUInt();
@@ -149,7 +84,7 @@ namespace Dofus.Files.Packed
             foreach (var item in dic)
             {
                 reader.SetPosition(item.Value.Item1);
-                AddFile(item.Key, reader.ReadBytes(item.Value.Item2));
+                Add(new PackedContainer { Name = item.Key, Raw = reader.ReadBytes(item.Value.Item2) });
             }
         }
 
@@ -163,12 +98,12 @@ namespace Dofus.Files.Packed
 
                 generalWriter.WriteUInt((uint)HEADER.Length);//offset
 
-                foreach (var fileItem in this._mFiles)
+                foreach (var fileItem in this._mFiles.Values)
                 {
-                    filesInfosWriter.WriteUTF(fileItem.Key);
+                    filesInfosWriter.WriteUTF(fileItem.Name);
                     filesInfosWriter.WriteInt((int)(writer.Position - HEADER.Length));
-                    filesInfosWriter.WriteInt(fileItem.Value.Length);
-                    writer.WriteBytes(fileItem.Value);
+                    filesInfosWriter.WriteInt(fileItem.Raw.Length);
+                    writer.WriteBytes(fileItem.Raw);
                 }
 
                 generalWriter.WriteUInt((uint)(writer.Position - HEADER.Length));//filesInfoPosition-2
@@ -193,12 +128,60 @@ namespace Dofus.Files.Packed
             }
         }
 
-        public static bool IsValidFileName(string fileName)
+        public int Count
         {
-            if (fileName == null)
-                throw new ArgumentNullException(nameof(fileName));
-            var filePath = fileName.Replace('\\', '/');
-            return filePath.Length > 0 && filePath[0] != '/';
+            get
+            {
+                return _mFiles.Count;
+            }
+        }
+
+        public bool IsReadOnly
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public void Add(PackedContainer item)
+        {
+            _mFiles.Add(item.Name, item);
+        }
+
+        public void Clear()
+        {
+            _mFiles.Clear();
+        }
+
+        public bool Contains(PackedContainer item)
+        {
+            return _mFiles.ContainsKey(item.Name);
+        }
+
+        public void CopyTo(PackedContainer[] array, int arrayIndex)
+        {
+            _mFiles.Values.CopyTo(array, arrayIndex);
+        }
+
+        public bool Remove(PackedContainer item)
+        {
+            return _mFiles.Remove(item.Name);
+        }
+
+        public IEnumerator<PackedContainer> GetEnumerator()
+        {
+            return _mFiles.Values.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _mFiles.Values.GetEnumerator();
+        }
+
+        public override string ToString()
+        {
+            return $"PackedFile(Count:{Count})";
         }
     }
 }

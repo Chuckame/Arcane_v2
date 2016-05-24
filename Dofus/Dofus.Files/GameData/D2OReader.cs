@@ -26,7 +26,7 @@ using Dofus.IO;
 
 namespace Dofus.Files.GameData
 {
-    public class D2OReader
+    public class D2OReader : IDisposable
     {
         private const int NullIdentifier = unchecked((int)0xAAAAAAAA);
 
@@ -578,6 +578,11 @@ namespace Dofus.Files.GameData
             return
                 (Func<object[], object>)
                 method.CreateDelegate(Expression.GetFuncType(new[] { typeof(object[]), typeof(object) }.ToArray()));
+        }
+
+        public void Dispose()
+        {
+            this.m_reader.Dispose();
         }
     }
 }

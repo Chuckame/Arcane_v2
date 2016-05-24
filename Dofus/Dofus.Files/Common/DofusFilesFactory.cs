@@ -8,6 +8,7 @@ using Dofus.Files.Elements;
 using Dofus.Files.Localization;
 using Dofus.Files.Packed;
 using Dofus.Files.Dofus.Files.Maps;
+using Dofus.Files.GameData;
 
 namespace Dofus.Files.Common
 {
@@ -28,6 +29,14 @@ namespace Dofus.Files.Common
         public static IMapFile CreateMapFile()
         {
             return new MapFile();
+        }
+        public static D2OReader CreateGameDataReader(string path)
+        {
+            return new D2OReader(path);
+        }
+        public static D2OWriter CreateGameDataWriter(string path)
+        {
+            return new D2OWriter(path);
         }
     }
 }

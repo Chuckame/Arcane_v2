@@ -11,6 +11,13 @@ namespace Arcane.AdminConsole
         static void Main(string[] args)
         {
             Console.Title = "HeartEmu - Admin console";
+
+            var d2p = Dofus.Files.Common.DofusFilesUtils.CreatePakedFile();
+            d2p.Load(@"C:\Users\Antoine\Desktop\prog\csharp\ArpEmu\Dofus 2.6.2\content\maps\maps0.d2p");
+
+            var ele = Dofus.Files.Common.DofusFilesUtils.CreateElementsFile();
+            ele.Load(@"C:\Users\Antoine\Desktop\prog\csharp\ArpEmu\Dofus 2.6.2\content\maps\elements.ele");
+
             DatabaseInitializer.Initialize(typeof(Account).Assembly);
             while (true)
             {

@@ -1,6 +1,6 @@
 ﻿using Dofus.IO;
 
-namespace Dofus.Files.Elements.SubTypes
+namespace Dofus.Files.Elements.ElementTypes
 {
     public class ParticlesGraphicalElementData : GraphicalElementData
     {
@@ -12,23 +12,19 @@ namespace Dofus.Files.Elements.SubTypes
             }
         }
 
-        public short ScriptId
-        { get; set; }
+        public short ScriptId { get; set; }
 
-        internal ParticlesGraphicalElementData()
-        {
-        }
-        internal ParticlesGraphicalElementData(int elementId)
-            : base(elementId)
+        public ParticlesGraphicalElementData(int elementId, IElementsFile elementsFile)
+            : base(elementId, elementsFile)
         {
         }
 
-        public override void FromRaw(IDataReader reader, int fileVersion)
+        public override void ReadFrom(IDataReader reader)
         {
             this.ScriptId = reader.ReadShort();
         }
 
-        public override void ToRaw(IDataWriter writer, int fileVersion)
+        public override void WriteTo(IDataWriter writer)
         {
             writer.WriteShort(this.ScriptId);
         }

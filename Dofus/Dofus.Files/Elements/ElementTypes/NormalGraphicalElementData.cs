@@ -1,7 +1,7 @@
 ﻿using Dofus.IO;
 using System.Drawing;
 
-namespace Dofus.Files.Elements.SubTypes
+namespace Dofus.Files.Elements.ElementTypes
 {
     public class NormalGraphicalElementData : GraphicalElementData
     {
@@ -9,26 +9,18 @@ namespace Dofus.Files.Elements.SubTypes
         {
             get { return GraphicalElementTypesEnum.Normal; }
         }
-        public int GfxId
-        { get; set; }
-        public byte Height
-        { get; set; }
-        public bool HorizontalSymmetry
-        { get; set; }
-        public Point Origin
-        { get; set; }
-        public Point Size
-        { get; set; }
+        public int GfxId { get; set; }
+        public byte Height { get; set; }
+        public bool HorizontalSymmetry { get; set; }
+        public Point Origin { get; set; }
+        public Point Size { get; set; }
 
-        internal NormalGraphicalElementData()
-        {
-        }
-        internal NormalGraphicalElementData(int elementId)
-            : base(elementId)
+        public NormalGraphicalElementData(int elementId, IElementsFile elementsFile)
+            : base(elementId, elementsFile)
         {
         }
 
-        public override void FromRaw(IDataReader reader, int fileVersion)
+        public override void ReadFrom(IDataReader reader)
         {
             this.GfxId = reader.ReadInt();
             this.Height = reader.ReadByte();
@@ -37,7 +29,7 @@ namespace Dofus.Files.Elements.SubTypes
             this.Size = new Point(reader.ReadShort(), reader.ReadShort());
         }
 
-        public override void ToRaw(IDataWriter writer, int fileVersion)
+        public override void WriteTo(IDataWriter writer)
         {
             writer.WriteInt(this.GfxId);
             writer.WriteByte(this.Height);
@@ -46,6 +38,10 @@ namespace Dofus.Files.Elements.SubTypes
             writer.WriteShort((short)this.Origin.Y);
             writer.WriteShort((short)this.Size.X);
             writer.WriteShort((short)this.Size.Y);
+        }
+        public override string ToString()
+        {
+            return $"{base.ToString()}(gfx:{GfxId})";
         }
     }
 }

@@ -93,9 +93,8 @@ namespace Dofus.Files.GameData
 
         private void OpenWrite()
         {
-            m_writer = DofusIOUtils.CreateBigEndianWriter(File.OpenWrite(Filename));
-
             ResetMembersByReading();
+            m_writer = DofusIOUtils.CreateBigEndianWriter(File.OpenWrite(Filename));
         }
 
         private void ResetMembersByReading()

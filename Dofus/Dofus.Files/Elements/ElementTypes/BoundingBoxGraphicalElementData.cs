@@ -1,4 +1,4 @@
-﻿namespace Dofus.Files.Elements.SubTypes
+﻿namespace Dofus.Files.Elements.ElementTypes
 {
     public class BoundingBoxGraphicalElementData : NormalGraphicalElementData
     {
@@ -10,11 +10,8 @@
             }
         }
 
-        internal BoundingBoxGraphicalElementData()
-        {
-        }
-        internal BoundingBoxGraphicalElementData(int elementId)
-            : base(elementId)
+        public BoundingBoxGraphicalElementData(int elementId, IElementsFile elementsFile)
+            : base(elementId, elementsFile)
         {
         }
     }

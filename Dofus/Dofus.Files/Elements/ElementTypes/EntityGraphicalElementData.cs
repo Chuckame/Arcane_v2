@@ -1,6 +1,6 @@
 ﻿using Dofus.IO;
 
-namespace Dofus.Files.Elements.SubTypes
+namespace Dofus.Files.Elements.ElementTypes
 {
     public class EntityGraphicalElementData : GraphicalElementData
     {
@@ -11,60 +11,51 @@ namespace Dofus.Files.Elements.SubTypes
                 return GraphicalElementTypesEnum.Entity;
             }
         }
-        public string EntityLook
-        { get; set; }
-        public bool HorizontalSymmetry
-        { get; set; }
-        public bool PlayAnimation
-        { get; set; }
-        public bool PlayAnimStatic
-        { get; set; }
-        public int MinDelay
-        { get; set; }
-        public int MaxDelay
-        { get; set; }
+        public string EntityLook { get; set; }
+        public bool HorizontalSymmetry { get; set; }
+        public bool PlayAnimation { get; set; }
+        public bool PlayAnimStatic { get; set; }
+        public int MinDelay { get; set; }
+        public int MaxDelay { get; set; }
 
-        internal EntityGraphicalElementData()
-        {
-        }
-        internal EntityGraphicalElementData(int elementId)
-            : base(elementId)
+        public EntityGraphicalElementData(int elementId, IElementsFile elementsFile)
+            : base(elementId, elementsFile)
         {
         }
 
-        public override void FromRaw(IDataReader reader, int fileVersion)
+        public override void ReadFrom(IDataReader reader)
         {
             this.EntityLook = reader.ReadUTFBytes((ushort)reader.ReadInt());
             this.HorizontalSymmetry = reader.ReadBoolean();
-            if (fileVersion >= 7)
+            if (ElementsFile.FileVersion >= 7)
             {
                 this.PlayAnimation = reader.ReadBoolean();
             }
-            if (fileVersion >= 6)
+            if (ElementsFile.FileVersion >= 6)
             {
                 this.PlayAnimStatic = reader.ReadBoolean();
             }
-            if (fileVersion >= 5)
+            if (ElementsFile.FileVersion >= 5)
             {
                 this.MinDelay = reader.ReadInt();
                 this.MaxDelay = reader.ReadInt();
             }
         }
 
-        public override void ToRaw(IDataWriter writer, int fileVersion)
+        public override void WriteTo(IDataWriter writer)
         {
             writer.WriteInt(this.EntityLook.Length);
             writer.WriteUTF(this.EntityLook);
             writer.WriteBoolean(this.HorizontalSymmetry);
-            if (fileVersion >= 7)
+            if (ElementsFile.FileVersion >= 7)
             {
                 writer.WriteBoolean(this.PlayAnimation);
             }
-            if (fileVersion >= 6)
+            if (ElementsFile.FileVersion >= 6)
             {
                 writer.WriteBoolean(this.PlayAnimStatic);
             }
-            if (fileVersion >= 5)
+            if (ElementsFile.FileVersion >= 5)
             {
                 writer.WriteInt(this.MinDelay);
                 writer.WriteInt(this.MaxDelay);
