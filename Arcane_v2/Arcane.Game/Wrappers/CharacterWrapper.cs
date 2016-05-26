@@ -38,8 +38,8 @@ namespace Arcane.Game.Wrappers
             Character = character;
 
             Restrictions = new ActorRestrictionsInformations();
-            Alignment = new Alignment() { Side= AlignmentSideEnum.ALIGNMENT_WITHOUT };
-            Disposition = new Disposition() { CellId=250, Direction= DirectionsEnum.DIRECTION_SOUTH_WEST };
+            Alignment = new Alignment() { Side = AlignmentSideEnum.ALIGNMENT_WITHOUT };
+            Disposition = new Disposition() { CellId = 371, Direction = DirectionsEnum.DIRECTION_SOUTH_WEST };
             Title = new Title { Id = 0, Params = "" };
             InitValues();
             InitEvents();

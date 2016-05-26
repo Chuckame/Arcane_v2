@@ -15,7 +15,7 @@ namespace Arcane.Game
             return new EntityLook(entityLook.bonesId, entityLook.skins, entityLook.indexedColors, entityLook.scales, entityLook.subentities);
         }
 
-        private static Tuple<int, int> ExtractIndexedColor(int indexedColor)
+        public static Tuple<int, int> ExtractIndexedColor(int indexedColor)
         {
             int num = indexedColor >> 0x18;
             return new Tuple<int, int>(num, indexedColor & 0xffffff);
