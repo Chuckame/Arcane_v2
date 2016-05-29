@@ -25,6 +25,12 @@ namespace Arcane.Login.Network
         {
             this.OnMessageReceived += LoginClient_OnMessageReceived;
             OnIddleTimeout += LoginClient_OnIddleTimeout;
+            OnDisconnected += LoginClient_OnDisconnected;
+        }
+
+        private void LoginClient_OnDisconnected(LoginClient obj)
+        {
+            OnIddleTimeout -= LoginClient_OnIddleTimeout;
         }
 
         private void LoginClient_OnIddleTimeout(LoginClient obj)

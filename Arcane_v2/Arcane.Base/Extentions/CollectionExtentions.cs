@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arcane.Base.Extentions
+namespace Arcane.Base
 {
     public static class CollectionExtentions
     {

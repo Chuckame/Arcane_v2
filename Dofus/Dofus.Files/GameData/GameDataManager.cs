@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,6 +10,7 @@ namespace Dofus.Files.GameData
 {
     public class GameDataManager
     {
+        private static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
         #region Singleton
         private static GameDataManager _instance = new GameDataManager();
         public static GameDataManager Instance
@@ -38,24 +40,32 @@ namespace Dofus.Files.GameData
 
         public void Load(string filePath)
         {
-            var reader = new D2OReader(filePath);
-            foreach (var item in reader.ReadObjects())
+            LOGGER.Info($"Loading '{filePath}'...");
+            var i = 0;
+            using (var reader = new D2OReader(filePath))
             {
-                if (!_modules.ContainsKey(item.Value.GetType()))
-                    _modules.Add(item.Value.GetType(), new Dictionary<int, IDataObject>());
-                _modules[item.Value.GetType()].Add(item.Key, (IDataObject)item.Value);
+                foreach (var item in reader.ReadObjects())
+                {
+                    if (!_modules.ContainsKey(item.Value.GetType()))
+                        _modules.Add(item.Value.GetType(), new Dictionary<int, IDataObject>());
+                    _modules[item.Value.GetType()][item.Key] = ((IDataObject)item.Value);
+                    i++;
+                }
             }
-            reader.Close();
+            LOGGER.Info($"Loaded '{filePath}': {i} objects !");
         }
 
-        public T[] GetObjects<T>() where T : IDataObject
+        public IEnumerable<T> GetObjects<T>() where T : IDataObject
         {
-            return _modules[typeof(T)].Values.Cast<T>().ToArray();
+            return _modules[typeof(T)].Values.Cast<T>();
         }
 
         public T GetObject<T>(int id) where T : IDataObject
         {
-            return (T)_modules[typeof(T)][id];
+            var module = _modules[typeof(T)];
+            if (module.ContainsKey(id))
+                return (T)module[id];
+            return default(T);
         }
     }
 }

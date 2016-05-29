@@ -23,10 +23,13 @@ namespace Arcane.Game.Entities
         short _scale;
         SexEnum _sex;
         private DateTime _lastSelection;
+        private int _mapId;
+        private DirectionsEnum _direction;
+        private short _cellId;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [Property("bones_id")]
+        [Property("bones_id", NotNull = true)]
         public short BonesId
         {
             get
@@ -44,7 +47,7 @@ namespace Arcane.Game.Entities
             }
         }
 
-        [Property("breed")]
+        [Property("breed", NotNull = true)]
         public PlayableBreedEnum Breed
         {
             get
@@ -61,7 +64,7 @@ namespace Arcane.Game.Entities
             }
         }
 
-        [Property("colors", Length = 100)]
+        [Property("colors", NotNull = true, Length = 100)]
         private string DbColors
         {
             get
@@ -90,19 +93,17 @@ namespace Arcane.Game.Entities
                 {
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Colors)));
                     _colors = value;
-                    Console.WriteLine("DbColors : " + DbColors);
                 }
             }
         }
 
-        [Property("experience")]
+        [Property("experience", NotNull = true)]
         public double Experience
         {
             get
             {
                 return _experience;
             }
-
             set
             {
                 if (_experience != value)
@@ -116,14 +117,13 @@ namespace Arcane.Game.Entities
         [PrimaryKey("character_id", Generator = PrimaryKeyType.Identity)]
         public int Id { get; private set; }
 
-        [Property("name")]
+        [Property("name", NotNull = true)]
         public string Name
         {
             get
             {
                 return _name;
             }
-
             set
             {
                 if (_name != value)
@@ -134,14 +134,13 @@ namespace Arcane.Game.Entities
             }
         }
 
-        [BelongsTo("owner_id")]
+        [BelongsTo("owner_id", NotNull = true)]
         public Account Owner
         {
             get
             {
                 return _owner;
             }
-
             set
             {
                 if (_owner != value)
@@ -152,14 +151,13 @@ namespace Arcane.Game.Entities
             }
         }
 
-        [Property("scale")]
+        [Property("scale", NotNull = true)]
         public short Scale
         {
             get
             {
                 return _scale;
             }
-
             set
             {
                 if (_scale != value)
@@ -170,14 +168,13 @@ namespace Arcane.Game.Entities
             }
         }
 
-        [Property("sex")]
+        [Property("sex", NotNull = true)]
         public SexEnum Sex
         {
             get
             {
                 return _sex;
             }
-
             set
             {
                 if (_sex != value)
@@ -195,13 +192,63 @@ namespace Arcane.Game.Entities
             {
                 return _lastSelection;
             }
-
             set
             {
                 if (_lastSelection != value)
                 {
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LastSelection)));
                     _lastSelection = value;
+                }
+            }
+        }
+
+        [Property("mapId")]
+        public int MapId
+        {
+            get
+            {
+                return _mapId;
+            }
+            set
+            {
+                if (_mapId != value)
+                {
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MapId)));
+                    _mapId = value;
+                }
+            }
+        }
+
+        [Property("direction")]
+        public DirectionsEnum Direction
+        {
+            get
+            {
+                return _direction;
+            }
+            set
+            {
+                if (_direction != value)
+                {
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Direction)));
+                    _direction = value;
+                }
+            }
+        }
+
+        [Property("cellId")]
+        public short CellId
+        {
+            get
+            {
+                return _cellId;
+            }
+            set
+            {
+                if (_cellId != value)
+                {
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CellId)));
+                    _cellId = value;
                 }
             }
         }

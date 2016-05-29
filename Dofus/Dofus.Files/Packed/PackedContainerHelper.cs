@@ -8,6 +8,7 @@ namespace Dofus.Files.Packed
 {
     public static class PackedContainerHelper
     {
+        public const char PATH_SEPARATOR = '/';
         public static bool IsValidFileName(string fileName)
         {
             if (string.IsNullOrWhiteSpace(fileName))
@@ -22,7 +23,7 @@ namespace Dofus.Files.Packed
                 throw new ArgumentNullException(nameof(fileName));
             if (!IsValidFileName(fileName))
                 throw new ArgumentException($"{nameof(fileName)}: invalid file name.");
-            return fileName.Trim().Replace('\\', '/');
+            return fileName.Trim().Replace('\\', PATH_SEPARATOR);
         }
     }
 }

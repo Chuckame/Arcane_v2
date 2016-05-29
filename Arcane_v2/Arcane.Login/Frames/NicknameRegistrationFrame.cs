@@ -51,10 +51,10 @@ namespace Arcane.Login.Frames
             {
                 SendRefused(e.NicknameError);
             }
-            catch
+            catch (Exception e)
             {
                 SendRefused(NicknameErrorEnum.UNKNOWN_NICK_ERROR);
-                throw;
+                LOGGER.Error(e);
             }
         }
 

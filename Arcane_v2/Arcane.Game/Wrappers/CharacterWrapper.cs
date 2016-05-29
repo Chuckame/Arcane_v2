@@ -20,10 +20,24 @@ namespace Arcane.Game.Wrappers
         private CharacterEntity Character { get; }
         public GameContextEnum CurrentContext { get; set; }
         public EntityLook EntityLook { get; private set; }
-        //public Map CurrentMap { get; set; }
+        private MapWrapper _mCurrentMap;
+        public MapWrapper CurrentMap
+        {
+            get
+            {
+                return _mCurrentMap;
+            }
+            set
+            {
+                if (_mCurrentMap == null || _mCurrentMap.Id != value.Id)
+                {
+                    _mCurrentMap = value;
+                    MapId = _mCurrentMap.Id;
+                }
+            }
+        }
 
         public event Action<CharacterWrapper> OnLookUpdated;
-        public event Action<CharacterWrapper> OnConnectedInGame;
         public event Action<CharacterWrapper> OnExperienceChanged;
         public event Action<CharacterWrapper> OnLevelUp;
         public event Action<CharacterWrapper> OnLevelChanged;
@@ -39,7 +53,7 @@ namespace Arcane.Game.Wrappers
 
             Restrictions = new ActorRestrictionsInformations();
             Alignment = new Alignment() { Side = AlignmentSideEnum.ALIGNMENT_WITHOUT };
-            Disposition = new Disposition() { CellId = 371, Direction = DirectionsEnum.DIRECTION_SOUTH_WEST };
+            Disposition = new Disposition(this);
             Title = new Title { Id = 0, Params = "" };
             InitValues();
             InitEvents();
@@ -91,6 +105,7 @@ namespace Arcane.Game.Wrappers
                     case nameof(Name):
                     case nameof(Scale):
                     case nameof(Sex):
+                    case nameof(Direction):
                         UpdateEntityLook();
                         break;
                     default:
@@ -272,14 +287,61 @@ namespace Arcane.Game.Wrappers
             }
         }
 
+        public int MapId
+        {
+            get
+            {
+                return Character.MapId;
+            }
+            set
+            {
+                if (Character.MapId != value)
+                {
+                    Character.MapId = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MapId)));
+                }
+            }
+        }
+
         public ActorRestrictionsInformations Restrictions { get; }
         public Title Title { get; }
+        public short CellId
+        {
+            get
+            {
+                return Character.CellId;
+            }
+            set
+            {
+                if (Character.CellId != value)
+                {
+                    Character.CellId = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CellId)));
+                }
+            }
+        }
+        public DirectionsEnum Direction
+        {
+            get
+            {
+                return Character.Direction;
+            }
+            set
+            {
+                if (Character.Direction != value)
+                {
+                    Character.Direction = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Direction)));
+                }
+            }
+        }
         #endregion
 
         #region CRUD
         public void Save()
         {
-            Character.Save();
+            using (new SessionScope())
+                Character.Save();
         }
         public void Delete()
         {

@@ -40,7 +40,7 @@ namespace Arcane.Game.Frames
         [MessageHandler]
         public void CharacterNameSuggestionRequestMessage(CharacterNameSuggestionRequestMessage msg)
         {
-            Client.SendMessage(new CharacterNameSuggestionSuccessMessage(Utils.RandomString(10)));
+            Client.SendMessage(new CharacterNameSuggestionSuccessMessage(NameGenerator.GenerateName()));
         }
 
         [MessageHandler]
@@ -65,7 +65,10 @@ namespace Arcane.Game.Frames
                         Owner = Client.Account,
                         Scale = templateLook.scales[0],
                         BonesId = (short)breed.creatureBonesId,
-                        LastSelection = DateTime.Now
+                        LastSelection = DateTime.Now,
+                        CellId = Config.StartCellId,
+                        Direction = Config.StartDirection,
+                        MapId = Config.BreedsStartMaps[(PlayableBreedEnum)msg.breed]
                     };
                     createdCharacter.Create();
                     Client.SendMessage(new CharacterCreationResultMessage(CharacterCreationResultEnum.OK.ToSByte()));
@@ -79,7 +82,7 @@ namespace Arcane.Game.Frames
             }
         }
 
-        private int[] FinalizeColors(Breed breed, bool sex, int[] receivedColors)
+        private static int[] FinalizeColors(Breed breed, bool sex, int[] receivedColors)
         {
             var templateColors = (sex ? breed.femaleColors : breed.maleColors).Select(x => (int)x).ToArray();
             var finalColors = receivedColors.Take(templateColors.Length).ToArray();

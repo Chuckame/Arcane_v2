@@ -55,10 +55,10 @@ namespace Arcane.Login.Frames
             {
                 SendFail(e.IdentificationFailedMessage);
             }
-            catch
+            catch (Exception e)
             {
                 SendFail(new IdentificationFailedMessage(IdentificationFailureReasonEnum.UNKNOWN_AUTH_ERROR.ToSByte()));
-                throw;
+                LOGGER.Error(e);
             }
         }
 

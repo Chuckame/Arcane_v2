@@ -28,5 +28,10 @@ namespace Arcane.Game.Entities
 
         [Property("guild")]
         public double Guild { get; private set; }
+
+        private ExperienceStepEntity()
+        {
+
+        }
     }
 }

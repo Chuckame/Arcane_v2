@@ -1,8 +1,11 @@
 ﻿using Arcane.Base.Entities;
 using Arcane.Game.Entities;
+using Arcane.Game.Managers;
+using Arcane.Game.Network;
 using Arcane.Game.Wrappers;
 using Arcane.Protocol.Datacenter;
 using Arcane.Protocol.Enums;
+using Arcane.Protocol.Messages;
 using Arcane.Protocol.Types;
 using Castle.ActiveRecord;
 using Dofus.Files.GameData;
@@ -83,9 +86,14 @@ namespace Arcane.Game.Helpers
             return new GameRolePlayCharacterInformations(characterWrapper.Id, characterWrapper.EntityLook, characterWrapper.ToEntityDispositionInformations(), characterWrapper.Name, characterWrapper.ToHumanInformations(), characterWrapper.ToActorAlignmentInformations());
         }
 
-        public static EntityDispositionInformations ToEntityDispositionInformations(this CharacterWrapper wrapper)
+        public static IdentifiedEntityDispositionInformations ToEntityDispositionInformations(this CharacterWrapper wrapper)
         {
             return new IdentifiedEntityDispositionInformations(wrapper.Disposition.CellId, wrapper.Disposition.Direction.ToSByte(), wrapper.Id);
+        }
+
+        public static ActorOrientation ToActorOrientation(this CharacterWrapper wrapper)
+        {
+            return new ActorOrientation(wrapper.Id, wrapper.Disposition.Direction.ToSByte());
         }
 
         public static HumanInformations ToHumanInformations(this CharacterWrapper wrapper)
@@ -106,6 +114,40 @@ namespace Arcane.Game.Helpers
                 list.Insert(i, colors[i] | (i + 1) * 0x1000000);
 
             return list.ToArray();
+        }
+
+        public static void ChangeMap(this GameClient client, int newMapId, short? targetCellId = null)
+        {
+            if (client.Character.CurrentMap != null)
+                client.Character.CurrentMap.RemoveClient(client);
+            var newMap = MapManager.Instance.GetMap(newMapId);
+            short cellId;
+            if (targetCellId.HasValue)
+            {
+                cellId = targetCellId.Value;
+            }
+            else
+            {
+                cellId = client.Character.CellId;
+                if (client.Character.CurrentMap.TemplateMap.LeftNeighbourId == newMapId)
+                    cellId += 13;
+                else if (client.Character.CurrentMap.TemplateMap.RightNeighbourId == newMapId)
+                    cellId -= 13;
+                else if (client.Character.CurrentMap.TemplateMap.TopNeighbourId == newMapId)
+                    cellId += 532;
+                else if (client.Character.CurrentMap.TemplateMap.BottomNeighbourId == newMapId)
+                    cellId -= 532;
+            }
+            client.Character.CellId = cellId;
+            client.Character.CurrentMap = newMap;
+            client.Character.Save();
+            newMap.AddClient(client);
+            client.SendMessage(new CurrentMapMessage(newMapId, Config.MapKey));
+        }
+
+        public static void MoveOnMap(this GameClient client, short[] path)
+        {
+            client.Character.CurrentMap.MoveClient(client, path);
         }
     }
 }

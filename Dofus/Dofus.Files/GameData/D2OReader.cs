@@ -268,12 +268,12 @@ namespace Dofus.Files.GameData
                 {
                     result.Add(index.Key, ReadObject(index.Key, reader));
                 }
-                catch
+                catch (Exception e)
                 {
                     if (allownulled)
                         result.Add(index.Key, null);
                     else
-                        throw;
+                        throw new Exception("Exception on ReadObjects.", e);
                 }
             }
 
@@ -332,7 +332,9 @@ namespace Dofus.Files.GameData
             {
                 object fieldValue = ReadField(reader, field, field.TypeId);
 
-                if (field.FieldType.IsAssignableFrom(fieldValue.GetType()))
+                if (fieldValue == null)
+                    values.Add(fieldValue);
+                else if (field.FieldType.IsAssignableFrom(fieldValue.GetType()))
                     values.Add(fieldValue);
                 else if (fieldValue is IConvertible &&
                          field.FieldType.GetInterface("IConvertible") != null)
@@ -582,7 +584,7 @@ namespace Dofus.Files.GameData
 
         public void Dispose()
         {
-            this.m_reader.Dispose();
+            Close();
         }
     }
 }

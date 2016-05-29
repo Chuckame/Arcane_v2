@@ -2,14 +2,17 @@
 using Arcane.Base.Encryption;
 using Arcane.Base.Entities;
 using Arcane.Game.Entities;
+using Arcane.Game.Managers;
 using Arcane.Game.Network;
 using Arcane.Game.Network.GameLink;
 using Arcane.Protocol.Datacenter;
 using Arcane.Protocol.Messages;
 using Dofus.Files.GameData;
+using Dofus.Files.Packed;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,7 +31,13 @@ namespace Arcane.Game
             DofusMessageBuilderInitializer.Initialize();
             RSAProtocol.GenerateKey();
             GameDataManager.AddContainerAssembly(typeof(Breed).Assembly);
-            GameDataManager.Instance.Load(@"C:\Users\Antoine\Desktop\prog\csharp\ArpEmu\Dofus 2.6.2\data\common\Breeds.d2o");
+            foreach (var file in Directory.EnumerateFiles(@"C:\Users\Antoine\Desktop\prog\csharp\ArpEmu\Dofus 2.6.2\data\common\", "*.d2o").Where(x => x.EndsWith(".d2o")))
+            {
+                GameDataManager.Instance.Load(file);
+            }
+            var mapsFile = Dofus.Files.Common.DofusFilesUtils.CreatePakedFile();
+            mapsFile.Load(@"C:\Users\Antoine\Desktop\prog\csharp\ArpEmu\Dofus 2.6.2\content\maps\maps0.d2p");
+            MapManager.Instance.LoadMapsFromPackedFile(mapsFile);
             GameServerManager.Instance.Start();
             GameLinkConnectorManager.Instance.ServerStatus = Protocol.Enums.ServerStatusEnum.ONLINE;
             Console.ReadLine();

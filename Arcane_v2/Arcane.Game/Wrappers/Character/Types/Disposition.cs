@@ -9,7 +9,40 @@ namespace Arcane.Game.Wrappers.Character.Types
 {
     public class Disposition
     {
-        public short CellId { get; set; }
-        public DirectionsEnum Direction { get; set; }
+        private CharacterWrapper Character { get; }
+
+        public Disposition(CharacterWrapper character)
+        {
+            Character = character;
+        }
+
+        public short CellId
+        {
+            get
+            {
+                return Character.CellId;
+            }
+            set
+            {
+                if (Character.CellId != value)
+                {
+                    Character.CellId = value;
+                }
+            }
+        }
+        public DirectionsEnum Direction
+        {
+            get
+            {
+                return Character.Direction;
+            }
+            set
+            {
+                if (Character.Direction != value)
+                {
+                    Character.Direction = value;
+                }
+            }
+        }
     }
 }

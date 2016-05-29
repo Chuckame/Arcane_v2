@@ -32,7 +32,7 @@ namespace Arcane.Base.Network.GameLink
         protected AbstractGameLinkClient(Socket socket) : base(socket, BUFFER_SIZE, GameLinkMessageBuilder.Instance)
         {
             //_handles = new Dictionary<Guid, LinkMessageHandle>();
-            _handles = new LinkedList< LinkMessageHandle>();
+            _handles = new LinkedList<LinkMessageHandle>();
             OnMessageReceived += GameLinkClient_OnMessageReceived;
         }
 
@@ -45,7 +45,7 @@ namespace Arcane.Base.Network.GameLink
 
         public T SendMessageAndWaitResponse<T>(AbstractGameLinkMessage message, Predicate<T> messagePredicate, int? timeout = null) where T : AbstractGameLinkMessage
         {
-            var handle = new LinkMessageHandle((m)=> messagePredicate((T)m));
+            var handle = new LinkMessageHandle((m) => m is T && messagePredicate((T)m));
             _handles.Add(handle);
             try
             {

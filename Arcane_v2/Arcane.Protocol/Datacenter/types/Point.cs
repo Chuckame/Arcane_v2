@@ -1,6 +1,8 @@
-﻿namespace Arcane.Protocol.Datacenter
+﻿using Dofus.Files.GameData;
+
+namespace Arcane.Protocol.Datacenter
 {
-    public class Point
+    public class Point : IDataObject
     {
         public int x;
         public int y;

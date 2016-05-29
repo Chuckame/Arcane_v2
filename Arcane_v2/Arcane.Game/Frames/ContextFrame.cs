@@ -53,5 +53,11 @@ namespace Arcane.Game.Frames
         {
             Client.ClientKey = msg.key;
         }
+
+        [MessageHandler]
+        public void BasicPingMessage(BasicPingMessage msg)
+        {
+            Client.SendMessage(new BasicPongMessage(msg.quiet));
+        }
     }
 }

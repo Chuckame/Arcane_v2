@@ -82,6 +82,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -98,8 +99,9 @@
     <Compile Include="Encryption\AsnKeyBuilder.cs" />
     <Compile Include="Encryption\RSAProtocol.cs" />
     <Compile Include="Entities\Account.cs" />
-    <Compile Include="Entities\Cell.cs" />
     <Compile Include="Entities\GameServerEntity.cs" />
+    <Compile Include="Entities\MapPoint.cs" />
+    <Compile Include="Entities\MapPath.cs" />
     <Compile Include="Enums\ServerCommunitiesEnum.cs" />
     <Compile Include="Extentions\SerializationExt.cs" />
     <Compile Include="Extentions\StringExtentions.cs" />
@@ -124,6 +126,7 @@
     <Compile Include="Network\GameLink\Messages\HelloMessage.cs" />
     <Compile Include="Network\GameLink\Messages\AbstractGameLinkMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\NameGenerator.cs" />
     <Compile Include="Tools\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -132,6 +135,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Dofus\Dofus.Files\Dofus.Files.csproj">
+      <Project>{14CBD131-B777-49D0-8198-239BEA76CC06}</Project>
+      <Name>Dofus.Files</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Dofus\Dofus.IO\Dofus.IO.csproj">
       <Project>{909ECA69-52A6-47B5-9A86-99D17437F833}</Project>
       <Name>Dofus.IO</Name>
